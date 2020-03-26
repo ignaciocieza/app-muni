@@ -35,26 +35,12 @@ const AdminPermiso = () => {
             title="Editable Example"
             columns={columns}
             data={usersItems}
-            // editable={{
-            //     onRowDelete: oldData =>
-            //         new Promise(resolve => {
-            //             setTimeout(() => {
-            //                 resolve();
-            //                 // setState(prevState => {
-            //                 //     const data = [...prevState.data];
-            //                 //     data.splice(data.indexOf(oldData), 1);
-            //                 //     return { ...prevState, data };
-            //                 // });
-            //             }, 600);
-            //         }),
-            // }}
             actions={[
                 {
                     icon: 'edit',
                     tooltip: 'Edit',
                     onClick: (event, rowData) => {
                         dispatch(setCurrentUser(rowData));
-                        console.dir(rowData);
                         history.push('/generar');
                     },
                 },
