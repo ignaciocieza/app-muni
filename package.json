@@ -1,0 +1,21 @@
+{
+  "name": "app-muni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client":"cd client && yarn start",
+    "start": "json-server -p 3001 -w db.json",
+    "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn client\"",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.16.1"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
+}

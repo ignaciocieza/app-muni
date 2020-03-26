@@ -1,0 +1,1 @@
+export const deleteAuser=(users, id)=>users.filter(user => user.id !== id);
