@@ -19,7 +19,7 @@ Node.js (Express) JsonServer
 
 1) Descargar Node (https://nodejs.org/es/ ) y Yarn (https://yarnpkg.com/)
 
-2) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "yarn"
+2) Abrir consola de comandos en la carpeta "app-muni" (shift + botón derecho del mouse -> abrir ventana de comando aquí) y escibrir en la consola "yarn"
 
 3) Abrir consola de comandos en la carpeta dentro de la carpeta "client" y escibrir en la consola "yarn"
 
