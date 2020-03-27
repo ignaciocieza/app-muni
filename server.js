@@ -1,13 +1,18 @@
+const express = require('express');
 const jsonServer = require('json-server');
+const path = require('path');
+
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const compression = require('compression');
+const server = express();
 const port = process.env.PORT || 3001;
 
-
+//server.use(jsonServer.router('db.json'));
 server.use(middlewares);
 server.use(router);
+server.use(cors()); 
 server.use(compression);
 
 if (process.env.NODE_ENV === 'production') {
