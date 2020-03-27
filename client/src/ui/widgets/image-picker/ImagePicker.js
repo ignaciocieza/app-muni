@@ -26,7 +26,7 @@ const ImagePicker = () => {
         <div className={classes.imagenContent}>
             {currentImage ?
                 <img src={currentImage} alt='No imagen' className={classes.imagen} /> :
-                <h3 className={classes.titleImage}>Cargue la Imagen para Generar Permiso</h3>
+                <h3 className={classes.titleImage}>Cargue la Imagen para el Permiso</h3>
             }
             <div className={classes.uploadContent}>
                 <input

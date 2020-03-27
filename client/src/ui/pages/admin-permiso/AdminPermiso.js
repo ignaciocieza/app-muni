@@ -7,12 +7,13 @@ import MaterialTable from 'material-table';
 const AdminPermiso = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const usersItems = useSelector(state => {
-        if (state.users) {
-            return Object.values(state.users);
-        }
-        return '';
-    });
+    // const usersItems = useSelector(state => {
+    //     if (state.users) {
+    //         return Object.values(state.users);
+    //     }
+    //     return '';
+    // });
+    const usersItems = useSelector(state => state.users);
     const columns = [
         { title: 'Nombre', field: 'nombre' },
         { title: 'Apellido', field: 'apellido' },
@@ -32,7 +33,7 @@ const AdminPermiso = () => {
 
     return (
         <MaterialTable
-            title="Editable Example"
+            title="Administrar Usuarios"
             columns={columns}
             data={usersItems}
             actions={[

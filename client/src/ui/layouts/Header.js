@@ -15,6 +15,7 @@ const Header = () => {
         <AppBar position="static">
             <Toolbar>
                 <Button color="inherit" className={classes.title} onClick={() => dispatch(resetCurrents())} component={Link} to="/admin">Administrar</Button>
+                <Button color="inherit" className={classes.title} onClick={() => dispatch(resetCurrents())} component={Link} to="/">Home</Button>
                 <Button color="inherit" className={classes.title} onClick={() => dispatch(resetCurrents())} component={Link} to="/generar">Generar Permiso</Button>
             </Toolbar>
         </AppBar>

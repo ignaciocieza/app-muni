@@ -15,27 +15,25 @@ export const setUser = (user) => async (dispatch) => {
     let newUser = user;
     let qrCode;
     let response;
-    let id = false;
 
     if (!user.id) {
         response = await db.post('/users', newUser);
-        id = response.data.id;
     } else {
         response = await db.patch(`/users/${user.id}`, newUser);
     }
 
-    if (user.permiso === 'Permitido' && id) {
+    if (user.permiso === 'Permitido') {
         try {
             //qrCode = await QRCode.toDataURL(`http://192.168.1.9:3000/detail/${id}`);
-            qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${id}`);            
+            qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${response.data.id}`);            
             newUser = { ...user, qrData: qrCode }
-            response = await db.patch(`/users/${id}`, newUser);
+            response = await db.patch(`/users/${response.data.id}`, newUser);
         } catch (err) {
             console.error(err)
         }
     }
 
-    history.push(`/detail/${response.data.id}`)
+    history.push(`/detail/${response.data.id}`);
 
     dispatch({
         type: SET_USER,
@@ -76,7 +74,7 @@ export const fetchUser = (id) => async dispatch => {
 };
 
 export const deleteUser=(id)=>async dispatch => {
-    //await db.delete(`/users/${id}`); //-->falta manejo de error
+    await db.delete(`/users/${id}`); //-->falta manejo de error
 
     dispatch({
         type: DELETE_USER,

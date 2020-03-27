@@ -34,7 +34,7 @@ const GenerarPermiso = () => {
     }, [currentUser]);
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         dispatch(setUser({ ...userValues, permiso: permisoSelect ? permisoSelect : userValues.permiso, image: currentImage }));
     };
 
