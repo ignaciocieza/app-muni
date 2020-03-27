@@ -18,9 +18,9 @@ server.use(compression);
 if (process.env.NODE_ENV === 'production') {
     server.use(express.static(path.join(__dirname, 'client/build')));
 
-    server.get('*', function (req, res) {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-    }) //* -> todo url que usuario "hit", golpee. se ejecuta la funcion
+    // server.get('*', function (req, res) {
+    //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    // }) //* -> todo url que usuario "hit", golpee. se ejecuta la funcion
 }
 
 server.listen(port);
