@@ -26,7 +26,8 @@ export const setUser = (user) => async (dispatch) => {
 
     if (user.permiso === 'Permitido' && id) {
         try {
-            qrCode = await QRCode.toDataURL(`http://192.168.1.9:3000/detail/${id}`);
+            //qrCode = await QRCode.toDataURL(`http://192.168.1.9:3000/detail/${id}`);
+            qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${id}`);            
             newUser = { ...user, qrData: qrCode }
             response = await db.patch(`/users/${id}`, newUser);
         } catch (err) {
