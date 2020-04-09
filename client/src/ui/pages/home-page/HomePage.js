@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchUsers } from '../../../api/actions/indexAction';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import imageMunicipalidad from '../../../assets/MUNILASFLORES.jpg';
+import useStyles from './homePage.styles';
 
 const HomePage = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchUsers());
-    }, [dispatch])
+    const classes = useStyles();
+    const { isFetched, admin } = useSelector(state => state.user);
 
     return (
-        <h1>Home Page</h1>
+        <div className={classes.content}>
+            {(isFetched ) && <h1 className={classes.title}>¡Solicitud enviada con exito!</h1>}
+            <div className={classes.imagenContent}>
+                <img src={imageMunicipalidad} alt='No imagen' className={classes.imagen} />
+            </div>
+        </div>
+
     );
 };
 

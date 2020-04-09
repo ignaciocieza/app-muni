@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 info.txt
+vpn
+imagenes
+heroku-jsonserver

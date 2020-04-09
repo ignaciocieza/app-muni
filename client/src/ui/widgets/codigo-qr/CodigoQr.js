@@ -3,12 +3,14 @@ import Button from '@material-ui/core/Button';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import useStyles from './codigoQr.styles';
 
-const CodigoQr = ({qrData}) => {
+const CodigoQr = ({ qrData }) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.imagenContent}>
-            <img src={qrData} alt='No imagen' className={classes.imagen} /> {/**Imagen QR */}
+        <div className={classes.content}>
+            <div className={classes.imagenContent}>
+                <img src={qrData} alt='No imagen' className={classes.imagen} />
+            </div>
             <Button
                 variant="contained"
                 color="primary"

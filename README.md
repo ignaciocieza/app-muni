@@ -13,14 +13,19 @@ App que contiene cuatro páginas:
 ## Herramientas Utilizadas:
 
 React React-Hook React-Router Redux Redux-Thunk Material-Design Material-ui
-Node.js (Express) JsonServer
+Node.js (Express) MariaDB
 
 ## Pasos De Instalación: 
 
-1) Descargar Node (https://nodejs.org/es/ ) y Yarn (https://yarnpkg.com/)
+1) Descargar Node (https://nodejs.org/es/ ) 
 
-2) Abrir consola de comandos en la carpeta "app-muni" (shift + botón derecho del mouse -> abrir ventana de comando aquí) y escibrir en la consola "yarn"
+2) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm install"
 
-3) Abrir consola de comandos en la carpeta dentro de la carpeta "client" y escibrir en la consola "yarn"
+3) Abrir consola de comandos en la carpeta dentro de la carpeta "client" y escibrir en la consola "npm install"
 
-4) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "yarn dev" 
+4) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run dev" (modo dev )
+
+5) Otros comandos: 
+
+        Carpeta app-muni: "npm run build" 
+                          "npm run heroku-postbuild"

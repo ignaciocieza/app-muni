@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentImage } from '../../../api/actions/indexAction';
+import noImage from '../../../assets/no-imagen.png'
 import Button from '@material-ui/core/Button';
 import useStyles from './imagePicker.styles';
 
-const ImagePicker = () => {
-    const { currentImage } = useSelector(state => state);
+const ImagePicker = ({ title, subtitle }) => {
+    const { currentImage } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -24,11 +25,13 @@ const ImagePicker = () => {
 
     return (
         <div className={classes.imagenContent}>
-            {currentImage ?
-                <img src={currentImage} alt='No imagen' className={classes.imagen} /> :
-                <h3 className={classes.titleImage}>Cargue la Imagen para el Permiso</h3>
-            }
+            <span className={classes.title}>{title}</span>
+            {subtitle && <span className={classes.subtitle}>{subtitle}</span>}
             <div className={classes.uploadContent}>
+                {currentImage ?
+                    <img src={currentImage} alt='No imagen' className={classes.imagen} /> :
+                    <img src={noImage} alt='No imagen' className={classes.imagen} />
+                }
                 <input
                     accept="image/*"
                     className={classes.input}
@@ -40,12 +43,13 @@ const ImagePicker = () => {
                         handleImage(e);
                     }}
                 />
-                <label htmlFor="contained-button-file" className={classes.button}>
-                    <Button variant="contained" color="primary" component="span">
-                        Subir Imagen
-                        </Button>
-                </label>
             </div>
+            <label htmlFor="contained-button-file" className={classes.buttonContent} >
+                <Button variant="contained" color='primary' component="span">
+                    Subir Imagen
+                </Button>
+            </label>
+
         </div>
     );
 }

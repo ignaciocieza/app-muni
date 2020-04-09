@@ -1,7 +1,14 @@
-export const SET_USER='SET_USER';
-export const SET_CURRENT_IMG= 'SET_CURRENT_IMG';
+export const SET_USER = 'SET_USER';
+export const SET_CURRENT_IMG = 'SET_CURRENT_IMG';
 export const RESET_CURRENTS = 'RESET_CURRENTS';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USER = 'FETCH_USER';
-export const DELETE_USER= 'DELETE_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const SET_ADMIN = 'SET_ADMIN';
+export const IS_FETCHING = 'IS_FETCHING';
+export const IS_FETCHED = 'IS_FETCHED';
+export const IS_GENERATED = 'IS_GENERATED';
+export const FIND_USER = 'FIND_USER';
+export const SET_COMMERCE= 'SET_COMMERCE';
+export const IS_FETCHING_COMMERCE= 'IS_FETCHING_COMMERCE';

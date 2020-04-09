@@ -1,0 +1,62 @@
+import React, { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetCurrents } from '../../../api/actions/indexAction';
+import { Hidden } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import DescriptionIcon from '@material-ui/icons/Description';
+import useStyles from './asideBar.styles';
+
+export default function AsideBar() {
+    const [isActive, setIsActive] = useState(false);
+    const { admin } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const classes = useStyles();
+    let location = useLocation();
+
+    useEffect(() => {
+        setIsActive(location.pathname);
+    }, [location]);
+
+    return (
+        <Hidden smDown >
+            {admin &&
+                <div className={classes.root}>
+                    <div
+                        className={isActive === '/home' ? classes.contentButtonActive : classes.contentButton}
+                        onClick={() => {
+                            //setIsActive('1');
+                            dispatch(resetCurrents());
+                            history.push('/home');
+                        }}
+                    >
+                        <HomeIcon className={isActive === '/home' ? classes.iconActive : classes.icon} />
+                        <span className={classes.title}>Home</span>
+                    </div>
+                    <div
+                        className={isActive === '/permisos' ? classes.contentButtonActive : classes.contentButton}
+                        onClick={() => {
+                            //setIsActive('2');
+                            dispatch(resetCurrents());
+                            history.push('/permisos');
+                        }}
+                    >
+                        <DescriptionIcon className={isActive === '/permisos' ? classes.iconActive : classes.icon} />
+                        <span className={classes.title}>Permisos</span>
+                    </div>
+                    <div
+                        className={isActive === '/admin' ? classes.contentButtonActive : classes.contentButton}
+                        onClick={() => {
+                            //setIsActive('3');
+                            dispatch(resetCurrents());
+                            history.push('/admin');
+                        }}>
+                        <SupervisorAccountIcon className={isActive === '/admin' ? classes.iconActive : classes.icon} />
+                        <span className={classes.title}>Administrar</span>
+                    </div>
+                </div>}
+        </Hidden>
+    )
+};
