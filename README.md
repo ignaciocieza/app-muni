@@ -19,13 +19,12 @@ Node.js (Express) MariaDB
 
 1) Descargar Node (https://nodejs.org/es/ ) 
 
-2) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm install"
+2) Abrir consola de comandos dentro de la carpeta "app-muni" y escibrir en la consola "npm install".
 
-3) Abrir consola de comandos en la carpeta dentro de la carpeta "client" y escibrir en la consola "npm install"
+3) Abrir consola de comandos dentro de la carpeta "client" y escibrir en la consola "npm install".
 
-4) Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run dev" (modo dev )
+4) Modo DEV: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run dev".
 
-5) Otros comandos: 
+5) Modo Production: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run build".
 
-        Carpeta app-muni: "npm run build" 
-                          "npm run heroku-postbuild"
+6) Solo Server: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run server".
