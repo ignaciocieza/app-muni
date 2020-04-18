@@ -9,7 +9,7 @@ const CodigoQr = ({ qrData }) => {
     return (
         <div className={classes.content}>
             <div className={classes.imagenContent}>
-                <img src={qrData} alt='No se pudo generar el código QR, debido a que el estado del permiso es PENDIENTE' className={classes.imagen} />
+                <img src={qrData} alt='No se pudo generar el código QR, debido a que el estado del permiso es PENDIENTE; o por error en la base de datos.' className={classes.imagen} />
             </div>
             <a href={qrData} download className={classes.downloadTag}>
                 <Button

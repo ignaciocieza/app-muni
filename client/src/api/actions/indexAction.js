@@ -154,7 +154,7 @@ export const setCurrentUser = (user) => ({
     payload: user
 });
 
-export const setIsHeader = (value)=>({
+export const setIsHeader = (value) => ({
     type: SET_IS_HEADER,
     payload: value
 })
@@ -187,26 +187,33 @@ export const fetchUsers = () => async dispatch => {
     });
 };
 
-export const fetchUser = (id) => async dispatch => {
-    let response;
-    let image;
+export const fetchUser = (dni) => async dispatch => {
+    let response, auxResponse; 
 
     try {
-        //response = await await db.get(`/users/${id}`);
-        image = response.data.image.data;
-        response.data.image = bufferToImage(image);
+        response = await axios.post('/mariadb', { type: 'findOne', data: { dni } });
+        const {nombre, apellido, permiso, comentario, DNI_imagen, DNI, num_control, imagen }= response.data[0]
+        auxResponse={
+            nombre: nombre,
+            apellido: apellido,
+            permiso: permiso,
+            comentario: comentario,
+            image: bufferToImage(DNI_imagen),
+            dni: DNI,
+            numeroControl: num_control,
+            qrData: bufferToImage(imagen)
+        };
     } catch (err) {
         console.error(err);
     }
 
     dispatch({
         type: FETCH_USER,
-        payload: response.data
+        payload: auxResponse
     });
 };
 
 export const deleteUser = (id) => async dispatch => {
-    //await db.delete(`/users/${id}`); //-->falta manejo de error
     try {
         await axios.post('/mariadb', { type: 'delete', data: id });
 

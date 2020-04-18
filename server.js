@@ -5,7 +5,7 @@ const path = require('path');
 const compression = require('compression');//--> comprime codigo para ser subido a heroku
 const enforce = require('express-sslify'); //-->biblio. para encriptar https ("PWA")
 const mariadb = require('mariadb');
-//const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const Jimp = require('jimp');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config(); //accede .env para la clave secreta
@@ -68,7 +68,7 @@ app.post('/mariadb', async (req, res) => {
         user: 'app',
         password: 'BDmuni2020',
         database: 'app_muni_per',
-        connectionLimit: 5
+        connectionLimit: 200
     };
 
     try {
@@ -85,7 +85,8 @@ app.post('/mariadb', async (req, res) => {
                 console.log(dbResp);
                 return res.status(200).send(dbResp);
             case 'findOne':
-                return res = await conn.query("SELECT * FROM `persona` WHERE DNI = 34330373");
+                dbResp = await conn.query(`SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`);
+                return res.status(200).send(dbResp);
             case 'patch':
                 dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=? WHERE DNI = ?", [nombre, apellido, numeroControl, permiso, qrData, image, comentario, dni]);
                 return res.status(200).send(dbResp);

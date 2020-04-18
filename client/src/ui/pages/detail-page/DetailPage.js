@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { findUser } from '../../../api/actions/indexAction';
+import { findUser, fetchUser } from '../../../api/actions/indexAction';
 import TextField from '@material-ui/core/TextField';
 import CodigoQr from '../../widgets/codigo-qr/CodigoQr';
 import useStyles from './detailPage.styles';
@@ -11,10 +11,16 @@ const DetailPage = ({ match }) => {
     const { currentUser, users } = useSelector(state => state.user);
     const { permiso, qrData, nombre, apellido, dni, numeroControl, comentario, image } = currentUser ? currentUser : '';
 
-    useEffect(() => {
-        dispatch(findUser(match.params.id));
+    useEffect(() => {        
+        if (!users.length) {
+            console.log('entra al ferch user')
+            dispatch(fetchUser(match.params.id));
+        }else{
+            console.log('entra al findUser')
+            dispatch(findUser(match.params.id));
+        }
         window.scrollTo(0, 0);
-    }, [dispatch, match, currentUser, users]);
+    }, [dispatch, match, users]);
 
     return (
         <div className={classes.root}>
