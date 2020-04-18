@@ -28,46 +28,51 @@ const AdminPermiso = () => {
         if (admin) {
             dispatch(setIsFetchingUser(true))
             dispatch(fetchUsers());
+            window.scrollTo(0, 0);
         }
     }, [admin, dispatch])
 
     return (
-        <div className={classes.root}>
-            {isFetching && <Modal />}
-            <MaterialTable
-                title="Administrar Usuarios"
-                columns={columns}
-                data={users}
-                actions={[
-                    {
-                        icon: 'edit',
-                        tooltip: 'Editar',
-                        onClick: (event, rowData) => {
-                            dispatch(setCurrentUser(rowData));
-                            history.push('/permiso/circulacion');
-                        },
-                    },
-                    {
-                        icon: 'delete',
-                        tooltip: 'Borrar',
-                        onClick: (event, rowData) => {
-                            dispatch(deleteUser(rowData.dni));
-                            //console.dir(rowData.dni);
-                            //history.push('/');
-                        }
-                    },
-                    {
-                        icon: 'details',
-                        tooltip: 'Detalle',
-                        onClick: (event, rowData) => {
-                            //dispatch(deleteUser(rowData.id));
-                            //console.dir(rowData.id);
-                            history.push(`/detail/${rowData.dni}`);
-                        }
-                    }
-                ]}
-            />
-        </div>
+        <React.Fragment>
+            {admin && (
+                <div className={classes.root}>
+                    {isFetching && <Modal />}
+                    <MaterialTable
+                        title="Administrar Usuarios"
+                        columns={columns}
+                        data={users}
+                        actions={[
+                            {
+                                icon: 'edit',
+                                tooltip: 'Editar',
+                                onClick: (event, rowData) => {
+                                    dispatch(setCurrentUser(rowData));
+                                    history.push('/permiso/circulacion');
+                                },
+                            },
+                            {
+                                icon: 'delete',
+                                tooltip: 'Borrar',
+                                onClick: (event, rowData) => {
+                                    dispatch(deleteUser(rowData.dni));
+                                    //console.dir(rowData.dni);
+                                    //history.push('/');
+                                }
+                            },
+                            {
+                                icon: 'details',
+                                tooltip: 'Detalle',
+                                onClick: (event, rowData) => {
+                                    //dispatch(deleteUser(rowData.id));
+                                    //console.dir(rowData.id);
+                                    history.push(`/detail/${rowData.dni}`);
+                                }
+                            }
+                        ]}
+                    />
+                </div>
+            )}
+        </React.Fragment>
     );
 };
 

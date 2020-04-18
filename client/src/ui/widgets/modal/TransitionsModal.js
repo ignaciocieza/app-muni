@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Backdrop, Fade } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import {setErrorDB} from '../../../api/actions/indexAction';
 import Spinner from '../with-spinner/Spinner';
 import useStyles from './transitionsModal.styles';
 
-export default function TransitionsModal() {
+/**
+ * Si no se pone entre {} los paramentros, se considera que cada uno tiene un objeto vacio,
+ * en cambio con {}, se considera undefine --> Porque se considera como Componente y no una funcion ????
+ * @param {*} param0 
+ */
+export default function TransitionsModal({ timeOut, comentTitle, comentSubtitle }) {
+    const [open, setOpen] = useState(true);
     const classes = useStyles();
+    const dispatch= useDispatch();
     //React.forwardRef: se usa cuando los componentes usan referencias internas ("innerRef")
-    const AuxSpinner= React.forwardRef((props, ref) =><Spinner innerRef={ref} {...props} />);
+    const AuxSpinner = !comentTitle && React.forwardRef((props, ref) => <Spinner innerRef={ref} {...props} />);
+    
+    if (timeOut) {
+        setTimeout(() => {
+            setOpen(false);
+            dispatch(setErrorDB(false))
+        }, timeOut);
+    };
+
 
     return (
         <div>
@@ -14,22 +31,24 @@ export default function TransitionsModal() {
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 className={classes.modal}
-                open={true}
+                open={open}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
-                // BackdropProps={{
-                //     timeout: 500,
-                // }}
+            // BackdropProps={{
+            //     timeout: 500,
+            // }}
             >
-                <Fade in={true}><AuxSpinner /></Fade>
+                {
+                    comentTitle ? (
+                        <div className={classes.paper}>
+                            <h2 id="transition-modal-title" className={classes.text}>{comentTitle}</h2>
+                            <p id="transition-modal-description" className={classes.text}>{comentSubtitle}</p>
+                        </div>)
+                        : (
+                            <Fade in={true}><AuxSpinner /></Fade>
+                        )
+                }
             </Modal>
         </div>
     );
 }
-
-/**
- * <div className={classes.paper}>
-                        <h2 id="transition-modal-title" className={classes.text}>Gracias por el comentario!</h2>
-                        <p id="transition-modal-description" className={classes.text}>A la brevedad responderé.</p>
-                    </div> 
- */

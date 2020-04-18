@@ -27,7 +27,6 @@ export default function AsideBar() {
                     <div
                         className={isActive === '/home' ? classes.contentButtonActive : classes.contentButton}
                         onClick={() => {
-                            //setIsActive('1');
                             dispatch(resetCurrents());
                             history.push('/home');
                         }}
@@ -38,7 +37,6 @@ export default function AsideBar() {
                     <div
                         className={isActive === '/permisos' ? classes.contentButtonActive : classes.contentButton}
                         onClick={() => {
-                            //setIsActive('2');
                             dispatch(resetCurrents());
                             history.push('/permisos');
                         }}
@@ -49,7 +47,6 @@ export default function AsideBar() {
                     <div
                         className={isActive === '/admin' ? classes.contentButtonActive : classes.contentButton}
                         onClick={() => {
-                            //setIsActive('3');
                             dispatch(resetCurrents());
                             history.push('/admin');
                         }}>

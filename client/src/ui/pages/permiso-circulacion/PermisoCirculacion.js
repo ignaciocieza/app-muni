@@ -4,15 +4,16 @@ import { TextField, Button, Icon, MenuItem, Select, FormControl } from '@materia
 import ImagePicker from '../../widgets/image-picker/ImagePicker';
 import { setUser, setIsFetchingUser } from '../../../api/actions/indexAction';
 import Modal from '../../widgets/modal/TransitionsModal';
+import { isDNI } from './validation';
 import useStyles from './permisoCirculacion.style';
 
 const PermisoCirculacion = () => {
     const [userValues, setUserValues] = useState({ nombre: '', apellido: '', dni: '', numeroControl: '', comentario: '', permiso: '' });
-    const [permisoSelect, setPermisoSelect] = useState('');
-    const { currentImage, currentUser, admin, isFetching } = useSelector(state => state.user);
+    //const [permisoSelect, setPermisoSelect] = useState('');
+    const [errorValue, setErrorValue] = useState('');
+    const { currentImage, currentUser, admin, isFetching, error } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const classes = useStyles();
-
 
     useEffect(() => {
         if (currentUser) {
@@ -29,43 +30,53 @@ const PermisoCirculacion = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        let isValid = !isDNI(userValues.dni);
 
-        dispatch(setIsFetchingUser(true));
+        if (isValid) {
+            dispatch(setIsFetchingUser(true));
 
-        if (admin) {
-            dispatch(setUser({ ...userValues, permiso: permisoSelect ? permisoSelect : userValues.permiso, image: currentImage }, !!currentUser));
-        } else {
-            dispatch(setUser({ ...userValues, permiso: 'PENDIENTE', image: currentImage }));
+            if (admin) {
+                //dispatch(setUser({ ...userValues, permiso: permisoSelect ? permisoSelect : userValues.permiso, image: currentImage }, !!currentUser));
+                dispatch(setUser({ ...userValues, image: currentImage }, !!currentUser));
+            } else {
+                dispatch(setUser({ ...userValues, permiso: 'PENDIENTE', image: currentImage }));
+            }
         }
     };
 
     const handleChange = (event) => {
         const { value, name } = event.target;
+
+        if (name === 'dni') {
+            setErrorValue(isDNI(value));
+        }
+
         setUserValues({ ...userValues, [name]: value });
     };
 
-    const selectChange = (event) => {
-        setPermisoSelect(event.target.value)
-    };
-
+    // const selectChange = (event) => {
+    //     setPermisoSelect(event.target.value)
+    // };
     return (
         <form className={classes.form} onSubmit={handleSubmit}>
+            {isFetching && <Modal />}
+            {error && <Modal timeOut={6000} comentTitle='Error!' comentSubtitle={error} />}
             <span className={classes.title}>FORMULARIO DE CIRCULACIÓN</span>
             <span className={classes.subtitle}>NOMBRE</span>
             <TextField
                 variant="outlined"
-                //required
+                required
                 name="nombre"
                 className={classes.textfield}
                 onChange={handleChange}
-                value={userValues.nombre}
+                value={userValues.nombre || ''}
             />
             <span className={classes.subtitle}>APELLIDO</span>
             <TextField
                 variant="outlined"
-                //required
+                required
                 name="apellido"
-                value={userValues.apellido}
+                value={userValues.apellido || ''}
                 className={classes.textfield}
                 onChange={handleChange} />
             {admin && (
@@ -73,11 +84,11 @@ const PermisoCirculacion = () => {
                     <span className={classes.subtitle}>PERMISO</span>
                     <FormControl variant="outlined" required className={classes.formControl}>
                         <Select
-                            labelId="demo-simple-select-required-label"
-                            id="demo-simple-select-required"
-                            value={permisoSelect || userValues.permiso === 'PENDIENTE' ? permisoSelect : userValues.permiso}
+                            //value={(permisoSelect || userValues.permiso === 'PENDIENTE') ? permisoSelect : userValues.permiso}
+                            value={userValues.permiso || ''}
                             name='permiso'
-                            onChange={selectChange}
+                            //onChange={selectChange}
+                            onChange={handleChange}
                         >
                             <MenuItem value={'PERMITIDO'}>PERMITIDO</MenuItem>
                             <MenuItem value={'DENEGADO'}>DENEGADO</MenuItem>
@@ -87,10 +98,12 @@ const PermisoCirculacion = () => {
             )}
             <span className={classes.subtitle}>D.N.I</span>
             <TextField
+                error={errorValue ? true : false}
+                helperText={errorValue}
                 variant="outlined"
-                //required
+                required
                 name="dni"
-                value={userValues.dni}
+                value={userValues.dni || ''}
                 className={classes.textfield}
                 onChange={handleChange}
             />
@@ -99,9 +112,9 @@ const PermisoCirculacion = () => {
                     <span className={classes.subtitle}>NRO DE CONTROL INTERNO</span>
                     <TextField
                         variant="outlined"
-                        //required
+                        required
                         name="numeroControl"
-                        value={userValues.numeroControl}
+                        value={userValues.numeroControl || ''}
                         className={classes.textfield}
                         onChange={handleChange} />
                 </React.Fragment>
@@ -113,8 +126,8 @@ const PermisoCirculacion = () => {
                 className={classes.textArea}
                 placeholder='Escriba sus comentarios de permiso'
                 onChange={handleChange}
-                value={userValues.comentario}
-            //required
+                value={userValues.comentario || ''}
+                required
             />
             {admin ?
                 <Button
@@ -136,7 +149,6 @@ const PermisoCirculacion = () => {
                     Enviar
                 </Button>
             }
-            {isFetching && <Modal />}
         </form>
     );
 };

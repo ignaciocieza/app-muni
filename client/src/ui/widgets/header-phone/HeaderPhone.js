@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setAdmin, resetCurrents } from '../../../api/actions/indexAction';
+import { setAdmin, resetCurrents, setIsHeader } from '../../../api/actions/indexAction';
 import { SwipeableDrawer, IconButton, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -21,21 +21,21 @@ export default function HeaderPhone() {
     const itemList = [
         {
             text: 'Home',
-            route: '/',
+            route: '/home',
             icon: <HomeIcon />,
             keyValue: 'home'
         },
-        admin ? {
+        {
+            text: 'Permisos',
+            route: '/permisos',
+            icon: <DescriptionIcon />,
+            keyValue: 'generar'
+        },
+        {
             text: 'Administrar',
             route: '/admin',
             icon: <SupervisorAccountIcon />,
             keyValue: 'admin'
-        } : { keyValue: 'admin' },
-        {
-            text: 'Generar Permiso',
-            route: '/generar',
-            icon: <DescriptionIcon />,
-            keyValue: 'generar'
         }
     ];
 
@@ -53,48 +53,55 @@ export default function HeaderPhone() {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            <List>
-                {itemList.map((item) => (
-                    <ListItem
-                        key={item.keyValue}
-                        button
-                        onClick={() => {
-                            setState(false);
-                            dispatch(resetCurrents())
-                            history.push(item.route);
-                        }}
-                    >
-                        <ListItemIcon >{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.text} />
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {admin ?
-                    <ListItem
-                        button
-                        onClick={() => {
-                            setState(false);
-                            dispatch(setAdmin(false));
-                            history.push('/');
-                        }}>
-                        <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-                        <ListItemText primary='Sign Out' />
-                    </ListItem>
-                    :
-                    <ListItem
-                        button
-                        onClick={() => {
-                            setState(false);
-                            history.push('/signin');
-                        }}
-                    >
-                        <ListItemIcon><VpnKeyIcon /></ListItemIcon>
-                        <ListItemText primary='Sign In' />
-                    </ListItem>
-                }
-            </List>
+            {admin ? (
+                <React.Fragment>
+                    <List>
+                        {itemList.map((item) => (
+                            <ListItem
+                                key={item.keyValue}
+                                button
+                                onClick={() => {
+                                    setState(false);
+                                    dispatch(resetCurrents());
+                                    history.push(item.route);
+                                }}
+                            >
+                                <ListItemIcon >{item.icon}</ListItemIcon>
+                                <ListItemText primary={item.text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <List>
+                        <ListItem
+                            button
+                            onClick={() => {
+                                setState(false);
+                                dispatch(setAdmin(false));
+                                dispatch(resetCurrents());
+                                history.push('/home');
+                            }}>
+                            <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                            <ListItemText primary='Sign Out' />
+                        </ListItem>
+                    </List>
+                </React.Fragment>
+            ) : (
+                    <List>
+                        <ListItem
+                            button
+                            onClick={() => {
+                                setState(false);
+                                dispatch(setIsHeader(false));
+                                dispatch(resetCurrents());
+                                history.push('/signin');
+                            }}
+                        >
+                            <ListItemIcon><VpnKeyIcon /></ListItemIcon>
+                            <ListItemText primary='Sign In' />
+                        </ListItem>
+                    </List>
+                )}
         </div>
     );
 

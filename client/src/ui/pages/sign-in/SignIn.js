@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setAdmin } from '../../../api/actions/indexAction';
+import { setAdmin, setIsHeader } from '../../../api/actions/indexAction';
 import { TextField, Button } from '@material-ui/core';
 import imageLogo from '../../../assets/gob-municipal-abajo.png';
 import useStyles from './signIn.styles';
@@ -12,9 +12,12 @@ export default function SignIn() {
     const history = useHistory();
     const classes = useStyles();
 
+    useEffect(()=>window.scrollTo(0, 0),[]);    
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(setAdmin(adminValue))
+        dispatch(setAdmin(adminValue));
+        dispatch(setIsHeader(true));
         history.push('/home');
     };
 

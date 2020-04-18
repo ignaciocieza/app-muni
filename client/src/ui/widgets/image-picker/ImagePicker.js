@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentImage } from '../../../api/actions/indexAction';
+//import axios from 'axios';
 import noImage from '../../../assets/no-imagen.png'
 import Button from '@material-ui/core/Button';
 import useStyles from './imagePicker.styles';
@@ -11,9 +12,14 @@ const ImagePicker = ({ title, subtitle }) => {
     const classes = useStyles();
 
     const handleImage = (e) => {
-        const file = e.target.files[0];
         let reader;
-
+        //let formData;
+        const file = e.target.files[0];
+        // formData = new FormData();
+        // formData.append('file', file);
+        // console.dir(formData)
+        //axios.post('/fileupload', formData)
+        
         if (file) {
             reader = new FileReader();
             reader.readAsDataURL(file);
@@ -31,7 +37,7 @@ const ImagePicker = ({ title, subtitle }) => {
                 {currentImage ?
                     <img src={currentImage} alt='No imagen' className={classes.imagen} /> :
                     <img src={noImage} alt='No imagen' className={classes.imagen} />
-                }
+                } 
                 <input
                     accept="image/*"
                     className={classes.input}

@@ -28,31 +28,26 @@ const useStyles = makeStyles(theme => ({
         width: '78%',
         height: '80%',
         [theme.breakpoints.down('md')]: {
-            width: '100%',
-        }
-    },
-    button: {
-        margin: '2% 0% 2% 0%',
-        width: '14%',
-        backgroundColor: colors.blueOne,
-        position:'relative',
-        [theme.breakpoints.down('md')]: {
-            top: '83%',
-            right: '8%',
-            fontSize: '0.6rem',
+            height: 'auto',
         }
     },
     downloadTag: {
+        width: '15%',
+        margin: '2% 0% 2% 0%',
         fontSize: '1.2rem',
-        color: 'transparent',
-        position: 'absolute',
-        top: '72%',
-        right: '40%',
+        color: 'transparent',    
         [theme.breakpoints.down('md')]: {
-            top: '85%',
-            right: '8%',
+            width: '44%',
         }
-    }
+    },
+    button: {
+        width: '100%',
+        backgroundColor: colors.blueOne,
+        [theme.breakpoints.down('md')]: {
+            fontSize: '0.6rem',
+            marginTop: '6%',
+        }
+    }    
 }));
 
 export default useStyles;

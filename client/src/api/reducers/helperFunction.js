@@ -20,6 +20,7 @@ export const addUser = (users, newUser) => {
     return mapArray;
 };
 
-export const findUserValue = (users, userDni) => (
-    users.find(user => user.dni === parseInt(userDni)) 
-)
+export const findUserValue = (users, userDni) => {
+    const aux = users.find(user => (user.dni === userDni || user.dni === parseInt(userDni)))
+    return aux;
+}

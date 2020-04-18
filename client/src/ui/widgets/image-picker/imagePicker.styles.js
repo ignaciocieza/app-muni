@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
             width: '80%',
             height: `calc(${innerHeight}px * 0.4)`,
             top: `calc(${innerHeight}px * 0.8)`,
-            margin: '1%',
+            marginBottom: '15%',
         }
     },
     title: {
@@ -24,17 +24,6 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 900,
         alignSelf: 'flex-start',
         opacity: 0.54,
-    },
-    imagen: {
-        width: '100%',
-        height: `calc(${innerHeight}px * 0.5)`,
-    },
-    titleImage: {
-        fontSize: '1rem',
-        fontWeight: 900,
-        // position: 'absolute',
-        // top: '30%',
-        // right: '30%',
     },
     subtitle: {
         margin: '0% 0% 2% 3%',
@@ -48,21 +37,25 @@ const useStyles = makeStyles(theme => ({
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         width: '100%',
         height: '70%',
+        [theme.breakpoints.down('md')]: {
+            height: '80%',
+        }        
     },
+    imagen: {
+        width: '100%',
+        height: `calc(${innerHeight}px * 0.5)`,
+        [theme.breakpoints.down('md')]: {
+            height: `calc(${innerHeight}px * 0.3)`
+        }
+    },   
     input: {
         display: 'none',
-    },
+    },  
     buttonContent: {
         marginTop: '5%',
         marginBottom: '2%',
         backgroundColor: colors.blueOne,
     },
-    button: {
-        backgroundColor: colors.blueOne,
-        [theme.breakpoints.down('md')]: {
-            right: '20%',
-        }
-    }
 }));
 
 export default useStyles;

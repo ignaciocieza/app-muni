@@ -12,3 +12,5 @@ export const IS_GENERATED = 'IS_GENERATED';
 export const FIND_USER = 'FIND_USER';
 export const SET_COMMERCE= 'SET_COMMERCE';
 export const IS_FETCHING_COMMERCE= 'IS_FETCHING_COMMERCE';
+export const SET_ERROR= 'SET_ERROR';
+export const SET_IS_HEADER= 'SET_IS_HEADER';

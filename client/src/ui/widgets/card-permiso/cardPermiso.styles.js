@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         fontFamily: 'Roboto, sans-serif',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        [theme.breakpoints.down('md')]: {
+            width: '80vw',
+        }
     },
     details: {
         display: 'flex',
@@ -19,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.4rem',
         margin: '16% 0% 0% 16%',
         fontWeight: 900,
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.2rem',
+            zIndex: 1,
+        }
     },
     subtitle: {
         fontSize: '0.9rem',

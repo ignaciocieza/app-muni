@@ -15,15 +15,21 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: colors.white,
         display: 'flex',
         justifyContent: 'space-between',
+        [theme.breakpoints.down('md')]: {
+            alignItems: 'center',
+        }
     },
     imageContent: {
         width: '13%',
         margin: '1% 1% 1% 3%',
+        [theme.breakpoints.down('md')]: {
+            width: '44%',
+            margin: '1% 7% 1% 3%',
+        }
     },
     image: {
         width: '100%',
-        //height: '100%',
-        height:'auto,'
+        height:'auto',
     },
     buttonContent: {
         width: '20%',

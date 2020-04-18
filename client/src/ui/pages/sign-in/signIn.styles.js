@@ -9,11 +9,16 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
         display: 'flex',
         fontFamily: 'Noto Sans, sans-serif',
+        //transition: 'box-shadow 2000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
     },
     form: {
         marginTop: '4%',
         [theme.breakpoints.down('md')]: {
-            position: 'relative',
+            height: `calc(${innerHeight}px * 1)`,
+            width: '100%',
+            position: 'absolute',
+            top: `calc(${innerHeight}px * 0.01)`,
+            zIndex: 1,
         }
     },
     contentField: {
@@ -24,10 +29,10 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         [theme.breakpoints.down('md')]: {
-            height: `calc(${innerHeight}px * 0.8)`,
-            width: '100%',
-            position: 'absolute',
-            top: `calc(${innerHeight}px * 0.2)`,
+            // height: `calc(${innerHeight}px * 0.8)`,
+            // width: '100%',
+            // position: 'absolute',
+            // top: `calc(${innerHeight}px * 0.2)`,
         }
     },
     textField: {
@@ -35,25 +40,27 @@ const useStyles = makeStyles(theme => ({
         width: '47%',
         margin: '2%',
         [theme.breakpoints.down('md')]: {
-            width: '65%',
+            width: '70%',
         }
     },
     imageContent: {
         flexGrow: 1,
         //marginTop: '15%',
         width: '27%',
+        [theme.breakpoints.down('md')]: {
+            width: '44%',
+        }
     },
     image: {
         width: '100%',
-        height: '100%',
+        height: 'auto',
     },
     button: {
         width: '47%',
         margin: '2% 9%',
         backgroundColor: colors.blueOne,
         [theme.breakpoints.down('md')]: {
-            width: '35%',
-            marginBottom: '43%',
+            opacity: 0.9,
         }
     },
     rightSideContent: {
@@ -66,7 +73,12 @@ const useStyles = makeStyles(theme => ({
         //height: '100%',
         //backgroundPosition: 'center', 
         //backgroundRepeat: 'no-repeat', 
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        [theme.breakpoints.down('md')]: {
+            height: `calc(${innerHeight}px * 1.1)`,
+            width: '100%',
+            opacity: 0.2,
+        }        
     },
     square: {
         border: `1px solid ${colors.white}`,
@@ -76,6 +88,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        } 
     },
     squareTitle: {
         fontWeight: 400,

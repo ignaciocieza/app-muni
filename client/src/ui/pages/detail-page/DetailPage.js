@@ -8,11 +8,13 @@ import useStyles from './detailPage.styles';
 const DetailPage = ({ match }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { currentUser} = useSelector(state => state.user);
-    const {permiso, qrData, nombre , apellido, dni, numeroControl, comentario, image } = currentUser ? currentUser : 'nodata';
+    const { currentUser, users } = useSelector(state => state.user);
+    const { permiso, qrData, nombre, apellido, dni, numeroControl, comentario, image } = currentUser ? currentUser : '';
+
     useEffect(() => {
         dispatch(findUser(match.params.id));
-    }, [match, dispatch]);
+        window.scrollTo(0, 0);
+    }, [dispatch, match, currentUser, users]);
 
     return (
         <div className={classes.root}>
@@ -28,7 +30,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={nombre ? nombre : "Nombre"}
+                value={nombre || ''}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -37,7 +39,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={apellido ? apellido : "Apellido"}
+                value={apellido || ''}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -46,7 +48,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={dni ? dni : "DNI"}
+                value={dni || ''}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -55,7 +57,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={numeroControl ? numeroControl : "Control"}
+                value={numeroControl || ''}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -64,7 +66,7 @@ const DetailPage = ({ match }) => {
             <textarea
                 variant="outlined"
                 className={classes.textArea}
-                value={comentario}
+                value={comentario || ''}
                 readOnly="readonly"
             />
             <div className={classes.imagenContein}>

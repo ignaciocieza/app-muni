@@ -6,6 +6,7 @@ import {
     SET_USER,
     SET_CURRENT_IMG,
     SET_CURRENT_USER,
+    SET_IS_HEADER,
     RESET_CURRENTS,
     FETCH_USERS,
     FETCH_USER,
@@ -15,39 +16,89 @@ import {
     IS_FETCHING_COMMERCE,
     IS_FETCHED,
     FIND_USER,
-    SET_COMMERCE
+    SET_COMMERCE,
+    SET_ERROR
 } from './typeAction';
 import { imageToBuffer, bufferToImage } from './herlperFunction';
 
 
 export const setUser = (user, isCurrentUser) => async (dispatch) => {
+    const { image, permiso } = user;
     let newUser = user;
     let qrCode;
-    let response;
+    //let response;
+    let error = 'Error interno del sistema';
+    // let formData;
+    // let auxImg;
+    // let respImg;
+    // let miPrimeraPromise;
 
-    newUser.image = await imageToBuffer(user.image);
+    try {
+        newUser.image = await imageToBuffer(image);
+        //console.dir(user.image);
+        //auxImg = await axios.post('/jimp', user.image);
+        // formData = new FormData();
+        // formData.append('file', user.image);
+        // formData.append('dni', user.dni);
+        // respImg = await axios.post('/fileupload', formData);
+        // console.dir(respImg);
+        //https://github.com/axios/axios/issues/2002
+        //https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise
+        // miPrimeraPromise = new Promise((resolve, reject) => {
+        //     auxImg= imageToBuffer(user.image, user.dni);
+        //     console.dir(auxImg);
+        //     resolve(auxImg)
+        // })
 
-    if (user.permiso === 'PERMITIDO') {
-        try {
-            qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${newUser.dni}`);
+        // miPrimeraPromise.then((resp)=>{
+        //     console.dir(resp);
+        //     respImg= axios.post('/fileupload', resp);
+        //     console.dir(respImg);
+        // })
+
+        // axuImg = await imageToBuffer(user.image, user.dni);
+        // console.dir(axuImg);
+        // await axios.post('/fileupload', axuImg)
+
+
+        // console.dir(axuImg)
+        // if (axuImg) {
+        //     respImg = await axios.post('/fileupload', axuImg);
+        //     newUser.image = respImg;
+        // }
+
+        //newUser.qrData = qrData ? qrData : 'nodata';
+
+        // if (permiso === 'PERMITIDO') {
+        //     qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${newUser.dni}`);
+        //     newUser.qrData = qrCode;
+        // } else if (permiso === 'PENDIENTE') {
+        //     newUser.numeroControl = '00000';
+        //     newUser.qrData ='nodata';
+        // } 
+        if (permiso === 'PENDIENTE') {
+            newUser.numeroControl = '00000';
+            newUser.qrData = 'nodata';
+        }
+        else {
+            qrCode = await QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
             newUser.qrData = qrCode;
-        } catch (err) {
-            console.error(err)
         }
-    }else{
-        newUser.qrData = 'nodata';
+
+        if (isCurrentUser) {
+            error = 'Error en la base de datos';
+            await axios.post('/mariadb', { type: 'patch', data: newUser });
+        } else {
+            error = 'Error con la base de datos, reintente o consulte en administrar en caso de que el usuario ya esté registrado';
+            await axios.post('/mariadb', { type: 'post', data: newUser });
+        }
+    } catch (err) {
+        console.error(err);
+        return dispatch({
+            type: SET_ERROR,
+            payload: error
+        });
     }
-    try{
-        if(isCurrentUser){
-            response = await axios.post('/mariadb', { type: 'patch', data: newUser });
-        }else{
-            response = await axios.post('/mariadb', { type: 'post', data: newUser });
-        }
-        
-    }catch(err) {
-        //throw err;
-        console.log(err);
-    }   
 
     if (user.permiso === 'PENDIENTE') {
         history.push('/home');
@@ -59,8 +110,6 @@ export const setUser = (user, isCurrentUser) => async (dispatch) => {
         type: SET_USER,
         payload: newUser
     });
-
-    
 };
 
 export const setCommerce = (commerce) => async (dispatch) => {
@@ -103,6 +152,11 @@ export const resetCurrents = () => ({
 export const setCurrentUser = (user) => ({
     type: SET_CURRENT_USER,
     payload: user
+});
+
+export const setIsHeader = (value)=>({
+    type: SET_IS_HEADER,
+    payload: value
 })
 
 export const fetchUsers = () => async dispatch => {
@@ -183,7 +237,8 @@ export const setAdmin = (admin) => {
 export const setIsFetchingUser = (value) => ({
     type: IS_FETCHING,
     payload: value
-});
+})
+
 
 export const setIsFetchingCommerce = (value) => ({
     type: IS_FETCHING_COMMERCE,
@@ -203,7 +258,13 @@ export const setIsFetchedUser = (value) => ({
 export const findUser = (userDni) => ({
     type: FIND_USER,
     payload: userDni
+});
+
+export const setErrorDB = (value) => ({
+    type: SET_ERROR,
+    payload: value
 })
+
 
 
 

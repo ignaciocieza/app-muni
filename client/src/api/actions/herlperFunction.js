@@ -5,15 +5,18 @@ import Jimp from 'jimp';
  * @param {*} img 
  */
 export const imageToBuffer = async (img) => {
-    let avatar;
-    let resp;
-    
+    let avatar, resp;
+    // console.dir(img)
     try {
         avatar = await Jimp.read(img);
         avatar.resize(200, Jimp.AUTO);
         avatar.quality(80);
         // await avatar.getBufferAsync(Jimp.MIME_JPEG);
-        resp = await avatar.getBase64Async(Jimp.MIME_JPEG);;
+        resp = await avatar.getBase64Async(Jimp.MIME_JPEG);
+        // formData = new FormData();
+        // formData.append('file', resp);
+        // formData.append('dni', '34330373');
+        // console.dir(formData)
         return resp;
     } catch (err) {
         console.error(err);
@@ -32,7 +35,8 @@ export const bufferToImage = (img) => {
     const enc = new TextDecoder("utf-8");
     const arr = new Uint8Array(data);
     return enc.decode(arr);
-}
+};
+
 
 
 

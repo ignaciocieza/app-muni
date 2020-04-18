@@ -6,9 +6,10 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        //transition: 'box-shadow 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
     },
     title: {
-        marginTop:'2%',
+        marginTop: '2%',
         fontSize: '3rem',
         opacity: 0.5,
         flexGrow: 1,
@@ -16,19 +17,20 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             //flexGrow: 3,
             flexGrow: 'unset',
-            fontSize: '2rem',    
+            fontSize: '2rem',
+            paddingTop: '9%',
         }
     },
-    titleError:{
+    titleError: {
         fontSize: '3rem',
         opacity: 0.5,
         flexGrow: 1,
         textAlign: 'center',
-        color:'red',
+        color: 'red',
         [theme.breakpoints.down('md')]: {
             //flexGrow: 3,
             flexGrow: 'unset',
-            fontSize: '2rem',    
+            fontSize: '2rem',
         }
     },
     imagenContent: {
@@ -40,13 +42,13 @@ const useStyles = makeStyles(theme => ({
             width: '93%',
             // flexGrow: 5,
             // marginBottom: '76%',
-            marginTop: '33%',
+            marginTop: '50%',
         }
     },
     imagen: {
         width: '100%',
         //height: '100%',
-        height:'auto,'
+        height: 'auto,'
     }
 }));
 

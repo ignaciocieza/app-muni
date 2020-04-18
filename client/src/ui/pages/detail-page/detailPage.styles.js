@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Roboto, sans-serif',
         [theme.breakpoints.down('md')]: {
             height: '200vh',
+            margin: '6% 0% 0% 0%',
         }
     },
     title: {
@@ -22,6 +23,8 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         [theme.breakpoints.down('md')]: {
             fontSize: '1rem',
+            marginTop: '2%',
+            alignSelf: 'center',
         }
     },
     subtitlePermitido: {
@@ -54,20 +57,28 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 900,
         alignSelf: 'flex-start',
         opacity: 0.54,
+        [theme.breakpoints.down('md')]: {
+            margin: '3% 0% 1% 11%',
+        }
     },
     textfield: {
         margin:'2%',
         width: '54%',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        }
     },
     textArea: {
         margin: '2%',
+        padding:' 1%',
         height: '14%',
-        width: '54%',
+        width: '52%',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         [theme.breakpoints.down('md')]: {
-            width: '66%',
+            width: '78%',
             margin: ' 1%',
+            padding:'2%',
             flexGrow: 9,
         }
     },
@@ -83,7 +94,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             height: '15%',
             width: '80%',
-            margin: '2%',
+            margin: '3%',
         }
     },
     imagen: {

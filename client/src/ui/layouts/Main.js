@@ -17,13 +17,14 @@ const Main = () => (
         <Switch>
             <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>
-                    <Route exact path='/' component={SignIn} />    
-                    <Route exact path='/home' component={HomePage} />                
+                    <Route exact path='/' component={PermisoCirculacion} />
+                    <Route exact path='/signin' component={SignIn} />
+                    <Route exact path='/home' component={HomePage} />
                     <Route exact path='/permisos' component={Permisos} />
                     <Route exact path='/permiso/circulacion' component={PermisoCirculacion} />
                     <Route exact path='/permiso/delivery' component={PermisoDelivery} />
-                    <Route exact path='/admin' component={AdminPermiso} />  
-                    <Route exact path='/detail/:id' component={DetailPage} /> 
+                    <Route exact path='/admin' component={AdminPermiso} />
+                    <Route exact path='/detail/:id' component={DetailPage} />
                 </Suspense>
             </ErrorBoundary>
         </Switch>
