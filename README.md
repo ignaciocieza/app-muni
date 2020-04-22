@@ -23,8 +23,10 @@ Node.js (Express) MariaDB
 
 3) Abrir consola de comandos dentro de la carpeta "client" y escibrir en la consola "npm install".
 
-4) Modo DEV: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run dev".
+4) Abrir archivo "package.json" de la carpeta "app-muni" y agregar las versiones de "node" y "npm" (linea 5 y 6)
 
-5) Modo Production: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run build".
+5) Modo DEV: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run dev".
 
-6) Solo Server: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run server".
+6) Modo Production: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run build".
+
+7) Solo Server: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run server".

@@ -16,9 +16,9 @@ const port = process.env.PORT || 5000;
 app.use(compression());
 app.use(bodyParser.json()); //Middalware: que hace que todos los request los parsee a json
 app.use(bodyParser.urlencoded({ extended: true })); //hace que se pasen solo los caracteres habilitados para url
-app.use(enforce.HTTPS({ trustProtoHeader: true })); //encriptado https para que "PWA" pueda usarse en "Heroku"
+//app.use(enforce.HTTPS({ trustProtoHeader: true })); //encriptado https para que "PWA" pueda usarse en "Heroku"
 app.use(cors());                                    //|_Activar Al actualizar Heroku!!!!! (desactivar en desarrollo)
-//app.use(fileUpload());
+app.use(fileUpload());
 
 
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -56,33 +56,36 @@ MariaDB [app_muni_per]> desc persona;
 | comentario  | mediumtext  | YES  |     | NULL    |       |
 +-------------+-------------+------+-----+---------+-------+
  */
-
-app.post('/mariadb', async (req, res) => {
-    const { type, data } = req.body;
-    const { nombre, apellido, dni, comentario, permiso, image, numeroControl, qrData } = data ? data : 'nodata';
-    let dbResp;
-    let conn;
+try {
     const config = {
         host: '192.168.150.101',
         port: 3306,
         user: 'app',
         password: 'BDmuni2020',
         database: 'app_muni_per',
-        connectionLimit: 200
+        //connectionLimit: 200
     };
+    var pool = mariadb.createPool(config);
+
+} catch (error) {
+    console.log(error);
+}
+
+app.post('/mariadb', async (req, res) => {
+    const { type, data } = req.body;
+    const { nombre, apellido, dni, comentario, permiso, image, numeroControl, qrData } = data ? data : 'nodata';
+    let dbResp;
+    let conn;
 
     try {
-        const pool = mariadb.createPool(config);
         conn = await pool.getConnection();
         switch (type) {
             case 'post':
                 dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?)", [parseInt(dni), nombre, apellido, parseInt(numeroControl), permiso, qrData, image, comentario]);
                 //dbResp= await conn.query("INSERT INTO `persona` VALUE (?)", [34330373])
-                console.log('Entra al post');
                 return res.status(200).send(dbResp);
             case 'get':
                 dbResp = await conn.query("SELECT * FROM persona");
-                console.log(dbResp);
                 return res.status(200).send(dbResp);
             case 'findOne':
                 dbResp = await conn.query(`SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`);

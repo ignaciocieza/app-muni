@@ -13,7 +13,7 @@ const DetailPage = ({ match }) => {
 
     useEffect(() => {        
         if (!users.length) {
-            console.log('entra al ferch user')
+            console.log('entra al fetchUser')
             dispatch(fetchUser(match.params.id));
         }else{
             console.log('entra al findUser')

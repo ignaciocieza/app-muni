@@ -78,7 +78,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case FETCH_USERS:
             return ({
                 ...state,
-                currentUser: action.payload,
+                //currentUser: action.payload,
+                users: action.payload,
                 isFetching: false,
                 isFetched: true,
             });
