@@ -6,7 +6,7 @@ const innerHeight = window.innerHeight;
 const useStyles = makeStyles(theme => ({
     imagenContent: {
         width: '54%',
-        height: '29%',
+        height: '22%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         borderRadius: 4,
         [theme.breakpoints.down('md')]: {
-            height: '80%',
+            height: '72%',
         }        
     },
     imagen: {
