@@ -12,16 +12,20 @@ const AdminPermiso = () => {
     const { users, admin, isFetching } = useSelector(state => state.user);
     const classes = useStyles();
     const columns = [
-        { title: 'Nombre', field: 'nombre' },
-        { title: 'Apellido', field: 'apellido' },
-        { title: 'Dni', field: 'dni' },
-        { title: 'Nro Control', field: 'numeroControl' },
         {
             title: 'Imagen',
             field: 'image',
-            render: rowData => <img alt='no img' src={rowData.image} style={{ width: 50, borderRadius: '50%' }} />
+            render: rowData => <img alt='no img' src={rowData.image} style={{ boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)', width: 50, borderRadius: '50%', height: 50 }} />
         },
-        { title: 'Permiso', field: 'permiso' },
+        { title: 'Nombre', field: 'nombre' },
+        { title: 'Apellido', field: 'apellido' },
+        { title: 'Dni', field: 'dni' },
+        { title: 'Estado del Permiso', field: 'permiso' },
+        { title: 'Tipo de Permiso', field: 'permisoTipo' },        
+        { title: 'Email', field: 'email' },
+        { title: 'Teléfono', field: 'numeroTelefono' },
+        { title: 'Nro Control', field: 'numeroControl' },
+        
     ];
 
     useEffect(() => {

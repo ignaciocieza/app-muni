@@ -82,7 +82,7 @@ export default function HeaderPhone() {
                                 history.push('/home');
                             }}>
                             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-                            <ListItemText primary='Sign Out' />
+                            <ListItemText primary='Salir' />
                         </ListItem>
                     </List>
                 </React.Fragment>
@@ -98,7 +98,7 @@ export default function HeaderPhone() {
                             }}
                         >
                             <ListItemIcon><VpnKeyIcon /></ListItemIcon>
-                            <ListItemText primary='Sign In' />
+                            <ListItemText primary='Entrar' />
                         </ListItem>
                     </List>
                 )}

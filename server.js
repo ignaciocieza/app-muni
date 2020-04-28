@@ -3,10 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');//--> comprime codigo para ser subido a heroku
-const enforce = require('express-sslify'); //-->biblio. para encriptar https ("PWA")
 const mariadb = require('mariadb');
-const fileUpload = require('express-fileupload');
-const Jimp = require('jimp');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config(); //accede .env para la clave secreta
 
@@ -16,10 +13,7 @@ const port = process.env.PORT || 5000;
 app.use(compression());
 app.use(bodyParser.json()); //Middalware: que hace que todos los request los parsee a json
 app.use(bodyParser.urlencoded({ extended: true })); //hace que se pasen solo los caracteres habilitados para url
-//app.use(enforce.HTTPS({ trustProtoHeader: true })); //encriptado https para que "PWA" pueda usarse en "Heroku"
-app.use(cors());                                    //|_Activar Al actualizar Heroku!!!!! (desactivar en desarrollo)
-app.use(fileUpload());
-
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -43,18 +37,24 @@ app.listen(port, error => {
 /**
  * La descripción de la nueva bd
 MariaDB [app_muni_per]> desc persona;
-+-------------+-------------+------+-----+---------+-------+
-| Field       | Type        | Null | Key | Default | Extra |
-+-------------+-------------+------+-----+---------+-------+
-| DNI         | int(8)      | NO   | PRI | NULL    |       |
-| nombre      | varchar(20) | YES  |     | NULL    |       |
-| apellido    | varchar(20) | YES  |     | NULL    |       |
-| num_control | int(11)     | YES  |     | NULL    |       |
-| permiso     | varchar(20) | YES  |     | NULL    |       |
-| imagen      | mediumblob  | YES  |     | NULL    |       |
-| DNI_imagen  | mediumblob  | YES  |     | NULL    |       |
-| comentario  | mediumtext  | YES  |     | NULL    |       |
-+-------------+-------------+------+-----+---------+-------+
+ * +--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| DNI          | int(8)      | NO   | PRI | 0       |       |
+| nombre       | varchar(20) | YES  |     | NULL    |       |
+| apellido     | varchar(20) | YES  |     | NULL    |       |
+| num_control  | int(11)     | YES  |     | NULL    |       |
+| permiso      | varchar(20) | YES  |     | NULL    |       |
+| imagen       | mediumblob  | YES  |     | NULL    |       |
+| DNI_imagen   | mediumblob  | YES  |     | NULL    |       |
+| comentario   | mediumtext  | YES  |     | NULL    |       |
+-------------------------------------------------------------
+| tel          | varchar(15) | YES  |     | NULL    |       |
+| dir          | varchar(50) | YES  |     | NULL    |       |
+| comercio     | varchar(20) | YES  |     | NULL    |       |
+| correo       | varchar(35) | YES  |     | NULL    |       |
+| tipo_permiso | varchar(15) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
  */
 try {
     const config = {
@@ -66,14 +66,15 @@ try {
         //connectionLimit: 200
     };
     var pool = mariadb.createPool(config);
-
 } catch (error) {
     console.log(error);
 }
 
 app.post('/mariadb', async (req, res) => {
     const { type, data } = req.body;
-    const { nombre, apellido, dni, comentario, permiso, image, numeroControl, qrData } = data ? data : 'nodata';
+    const { dni, nombre, apellido, numeroControl, permiso, qrData, image,
+        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo
+    } = data ? data : 'nodata';
     let dbResp;
     let conn;
 
@@ -81,8 +82,9 @@ app.post('/mariadb', async (req, res) => {
         conn = await pool.getConnection();
         switch (type) {
             case 'post':
-                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?)", [parseInt(dni), nombre, apellido, parseInt(numeroControl), permiso, qrData, image, comentario]);
-                //dbResp= await conn.query("INSERT INTO `persona` VALUE (?)", [34330373])
+                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [parseInt(dni), nombre, apellido, parseInt(numeroControl), permiso, qrData, image,
+                        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo]);
                 return res.status(200).send(dbResp);
             case 'get':
                 dbResp = await conn.query("SELECT * FROM persona");
@@ -91,7 +93,8 @@ app.post('/mariadb', async (req, res) => {
                 dbResp = await conn.query(`SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`);
                 return res.status(200).send(dbResp);
             case 'patch':
-                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=? WHERE DNI = ?", [nombre, apellido, numeroControl, permiso, qrData, image, comentario, dni]);
+                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=? WHERE DNI=?",
+                    [nombre, apellido, numeroControl, permiso, qrData, image, comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo, dni]);
                 return res.status(200).send(dbResp);
             case 'delete':
                 dbResp = await conn.query(`DELETE FROM persona WHERE DNI ='${req.body.data}'`);
@@ -106,41 +109,3 @@ app.post('/mariadb', async (req, res) => {
         if (conn) conn.release(); //release to pool
     }
 });
-
-app.post('/fileupload', async (req, res) => {
-    // if (req.files === null) {
-    //     return res.status(400).json({ msg: 'No file uploaded' });
-    // }
-    //console.log(req)
-    //const file = req.files.file;
-    //const file= req.body.file;
-    // console.log(file)
-    // const dni = req.body.dni;
-    var formData = new FormData();
-    formData.append('file', req.body.file);
-    console.log(formData);
-
-    await file.mv(`${__dirname}/client/public/uploads/${dni}${file.name}`, err => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send(err)
-        }
-
-        res.json({ fileName: file.name, filePath: `/uploads/${file.name}` })
-    });
-});
-
-app.post('/jimp', async (req, res) => {
-
-    const file = req.files.file;
-    console.log(file);
-    await Jimp.read(file, (err, lenna) => {
-        if (err) throw err;
-        lenna
-            .resize(200, Jimp.AUTO) // resize
-            .quality(80) // set JPEG quality
-            .write(`${__dirname}/client/public/uploads/${dni}${file.name}`); // save
-    });
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` })
-})

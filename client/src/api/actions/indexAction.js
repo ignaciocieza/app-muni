@@ -84,7 +84,6 @@ export const setUser = (user, isCurrentUser) => async (dispatch) => {
             qrCode = await QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
             newUser.qrData = qrCode;
         }
-
         if (isCurrentUser) {
             error = 'Error en la base de datos';
             await axios.post('/mariadb', { type: 'patch', data: newUser });
@@ -174,9 +173,14 @@ export const fetchUsers = () => async dispatch => {
                 image: bufferToImage(item.DNI_imagen),
                 dni: item.DNI,
                 numeroControl: item.num_control,
-                qrData: bufferToImage(item.imagen)
+                qrData: bufferToImage(item.imagen),
+                numeroTelefono: item.tel,
+                domicilio: item.dir,
+                nombreComercio: item.comercio,
+                email: item.correo,
+                permisoTipo: item.tipo_permiso,
             });
-        })
+        });
     } catch (err) {
         console.error(err);
     }
@@ -188,12 +192,16 @@ export const fetchUsers = () => async dispatch => {
 };
 
 export const fetchUser = (dni) => async dispatch => {
-    let response, auxResponse; 
+    let response, auxResponse;
 
     try {
         response = await axios.post('/mariadb', { type: 'findOne', data: { dni } });
-        const {nombre, apellido, permiso, comentario, DNI_imagen, DNI, num_control, imagen }= response.data[0]
-        auxResponse={
+        const { nombre, apellido, permiso, comentario,
+            DNI_imagen, DNI, num_control, imagen,
+            tel, dir, comercio, correo, tipo_permiso
+        } = response.data[0];
+
+        auxResponse = {
             nombre: nombre,
             apellido: apellido,
             permiso: permiso,
@@ -201,7 +209,12 @@ export const fetchUser = (dni) => async dispatch => {
             image: bufferToImage(DNI_imagen),
             dni: DNI,
             numeroControl: num_control,
-            qrData: bufferToImage(imagen)
+            qrData: bufferToImage(imagen),
+            numeroTelefono: tel,
+            domicilio: dir,
+            nombreComercio: comercio,
+            email: correo,
+            permisoTipo: tipo_permiso
         };
     } catch (err) {
         console.error(err);

@@ -33,10 +33,11 @@ const useStyles = makeStyles(theme => ({
         opacity: 0.7,
     },
     uploadContent: {
-        border: '1px solid rgba(181, 170, 170, .5)',
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         width: '100%',
         height: '70%',
+        border: '1px solid rgba(181, 170, 170, .5)',
+        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             height: '80%',
         }        
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: `calc(${innerHeight}px * 0.5)`,
         [theme.breakpoints.down('md')]: {
-            height: `calc(${innerHeight}px * 0.3)`
+            height: `calc(${innerHeight}px * 0.3)`,
         }
     },   
     input: {

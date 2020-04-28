@@ -10,12 +10,16 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            height: '18%',
+        }
     },
     imagenContent: {
         width: '22%',
         height: '64%',
         border: '1px solid rgba(181, 170, 170, .5)',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        borderRadius: 4,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

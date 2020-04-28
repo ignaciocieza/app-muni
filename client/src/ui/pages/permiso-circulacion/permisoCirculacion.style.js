@@ -4,15 +4,16 @@ const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     form: {
+        height: `calc(${innerHeight}px * 3.5)`,
         marginLeft: '10%',
-        height: '250vh',
         paddingTop: '2%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         [theme.breakpoints.down('md')]: {
-            height: `calc(${innerHeight}px * 2.2)`,
+            width: '100vw',
+            height: `calc(${innerHeight}px * 3)`,
             position: 'absolute',
             top: `calc(${innerHeight}px * .15)`,
             margin: '1%',
@@ -64,14 +65,15 @@ const useStyles = makeStyles(theme => ({
         opacity: 0.5,
         fontSize: '1.2rem',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             width: '78%',
             height: '22%',
-            padding:'2%',
+            padding: '2%',
         }
     },
     button: {
-        margin: '1%',
+        margin: '3%',
         width: '14%',
         backgroundColor: colors.blueOne,
         [theme.breakpoints.down('md')]: {

@@ -1,9 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 import {colors} from '../../../constants';
+const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: '240vh',
+        //height: '240vh',
+        height: `calc(${innerHeight}px * 3.5)`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -11,7 +13,9 @@ const useStyles = makeStyles(theme => ({
         marginTop: '3%',
         fontFamily: 'Roboto, sans-serif',
         [theme.breakpoints.down('md')]: {
-            height: '200vh',
+            //height: '200vh',
+            height: `calc(${innerHeight}px * 2.8)`,
+            width: '100vw',
             margin: '6% 0% 0% 0%',
         }
     },
@@ -28,29 +32,14 @@ const useStyles = makeStyles(theme => ({
         }
     },
     subtitlePermitido: {
-        //fontSize: '2rem',
         color: 'green',
     },
     subtitleDenegado: {
-        //fontSize: '2rem',
         color: 'red',
     },
     qrCode: {
         flexGrow: 1,
     },
-    // textFieldContent: {
-    //     width: '74%',
-    //     flexGrow: 1,
-    //     flexWrap: 'wrap',
-    //     display: 'flex',
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',
-    //     [theme.breakpoints.down('md')]: {
-    //         width: '68%',
-    //         flexGrow: '8',
-    //         margin: '1%',
-    //     }
-    // },
     subtitle:{
         margin: '1% 0 -1% 23%',
         fontSize: '0.9rem',
@@ -75,6 +64,7 @@ const useStyles = makeStyles(theme => ({
         height: '14%',
         width: '52%',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             width: '78%',
             margin: ' 1%',
@@ -91,10 +81,11 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         border: '1px solid rgba(181, 170, 170, .5)',
+        borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             height: '15%',
             width: '80%',
-            margin: '3%',
+            margin: '3% 3% 9% 3%',
         }
     },
     imagen: {
