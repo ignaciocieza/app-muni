@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
+        position: 'relative',
         [theme.breakpoints.down('md')]: {
             width: '100vw',
             height: `calc(${innerHeight}px * 3)`,
@@ -66,9 +67,10 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.2rem',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         borderRadius: 4,
+        textAlign: 'justify',
         [theme.breakpoints.down('md')]: {
             width: '78%',
-            height: '22%',
+            height: '14%',
             padding: '2%',
         }
     },

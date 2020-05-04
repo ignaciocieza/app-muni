@@ -20,7 +20,7 @@ export default function HeaderPhone() {
 
     const itemList = [
         {
-            text: 'Home',
+            text: 'Principal',
             route: '/home',
             icon: <HomeIcon />,
             keyValue: 'home'

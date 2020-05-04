@@ -13,9 +13,9 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Roboto, sans-serif',
         [theme.breakpoints.down('md')]: {
             width: '80%',
-            height: `calc(${innerHeight}px * 0.4)`,
+            height: `calc(${innerHeight}px * 0.5)`,
             top: `calc(${innerHeight}px * 0.8)`,
-            marginBottom: '15%',
+            marginBottom: '12%',
         }
     },
     title: {
@@ -40,18 +40,20 @@ const useStyles = makeStyles(theme => ({
         borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             height: '72%',
-        }        
+        }
     },
     imagen: {
         width: '100%',
         height: `calc(${innerHeight}px * 0.5)`,
         [theme.breakpoints.down('md')]: {
-            height: `calc(${innerHeight}px * 0.3)`,
+            // height: `calc(${innerHeight}px * 0.3)`,
+            maxHeight: '100%',
+            maxWidth: '100%',
         }
-    },   
+    },
     input: {
         display: 'none',
-    },  
+    },
     buttonContent: {
         marginTop: '5%',
         marginBottom: '2%',

@@ -32,7 +32,7 @@ export default function AsideBar() {
                         }}
                     >
                         <HomeIcon className={isActive === '/home' ? classes.iconActive : classes.icon} />
-                        <span className={classes.title}>Home</span>
+                        <span className={classes.title}>Principal</span>
                     </div>
                     <div
                         className={isActive === '/permisos' ? classes.contentButtonActive : classes.contentButton}

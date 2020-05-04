@@ -64,6 +64,7 @@ const useStyles = makeStyles(theme => ({
         height: '14%',
         width: '52%',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        textAlign: 'justify',
         borderRadius: 4,
         [theme.breakpoints.down('md')]: {
             width: '78%',

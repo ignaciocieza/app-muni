@@ -17,7 +17,8 @@ import {
     IS_FETCHED,
     FIND_USER,
     SET_COMMERCE,
-    SET_ERROR
+    SET_ERROR,
+    SET_ALERTS
 } from './typeAction';
 import { imageToBuffer, bufferToImage } from './herlperFunction';
 
@@ -35,6 +36,8 @@ export const setUser = (user, isCurrentUser) => async (dispatch) => {
 
     try {
         newUser.image = await imageToBuffer(image);
+        newUser.nombreComercio = user.nombreComercio ? user.nombreComercio : 'Sin especificar';
+        newUser.domicilio = user.domicilio ? user.domicilio : 'Sin especificar';
         //console.dir(user.image);
         //auxImg = await axios.post('/jimp', user.image);
         // formData = new FormData();
@@ -285,6 +288,10 @@ export const setErrorDB = (value) => ({
     payload: value
 })
 
+export const setAlerts = (values) => ({
+    type: SET_ALERTS,
+    payload: values
+})
 
 
 

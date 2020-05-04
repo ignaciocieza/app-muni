@@ -10,7 +10,7 @@ import useStyles from './transitionsModal.styles';
  * en cambio con {}, se considera undefine --> Porque se considera como Componente y no una funcion ????
  * @param {*} param0 
  */
-export default function TransitionsModal({ timeOut, comentTitle, comentSubtitle }) {
+export default function TransitionsModal({ timeOut, comentTitle, comentSubtitle, multitex }) {
     const [open, setOpen] = useState(true);
     const classes = useStyles();
     const dispatch= useDispatch();

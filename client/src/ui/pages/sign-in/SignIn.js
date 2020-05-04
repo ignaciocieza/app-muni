@@ -57,7 +57,7 @@ export default function SignIn() {
                         className={classes.button}
                         type='submit'
                     >
-                        Sign In
+                        Entrar
                 </Button>
                 </div>
             </form>

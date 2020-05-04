@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
         width: '78%',
         height: '80%',
         [theme.breakpoints.down('md')]: {
-            height: 'auto',
+            maxHeight: '100%',
+            maxWidth: '100%',
         }
     },
     downloadTag: {

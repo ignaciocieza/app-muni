@@ -11,7 +11,8 @@ import {
     IS_FETCHING,
     IS_FETCHED,
     FIND_USER,
-    SET_ERROR
+    SET_ERROR,
+    SET_ALERTS
 } from '../actions/typeAction';
 import { deleteAuser, addUser, findUserValue } from './helperFunction.js';
 
@@ -24,6 +25,7 @@ const INITIAL_STATE = {
     isFetched: false,
     isHeader: true,
     error: '',
+    alerts:'',
     //isGenerated: false,
 };
 
@@ -36,6 +38,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 currentUser: action.payload,
                 isFetching: false,
                 isFetched: true,
+                error: '',
+                alerts: ''
                 //isGenerated: action.payload.generate,
             });
         case SET_CURRENT_IMG:
@@ -59,6 +63,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 error: action.payload,
                 isFetching: false,
+                isFetched: false,
             });
         case SET_IS_HEADER:
             return({
@@ -73,6 +78,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isFetching: false,
                 isFetched: false,
                 error: false,
+                alerts: false,
                 users: []
             });
         case FETCH_USERS:
@@ -99,6 +105,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isFetching: action.payload,
                 isFetched: false,
                 error: false,
+                alerts:false
             });
         case IS_FETCHED:
             return ({
@@ -110,6 +117,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: findUserValue(state.users, action.payload)
             });
+            case SET_ALERTS:
+                return ({
+                    ...state,
+                    alerts: action.payload
+                })
         default:
             return state;
     }

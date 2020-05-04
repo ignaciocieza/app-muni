@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         position: 'fixed',
         height: '13vh',
         width: '100%',
-        zIndex: '10',
+        zIndex: 20,
         borderBottom: `5px solid ${colors.gold}`,
         backgroundColor: colors.white,
         display: 'flex',

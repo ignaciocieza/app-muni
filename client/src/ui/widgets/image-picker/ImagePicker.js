@@ -47,7 +47,7 @@ const ImagePicker = ({ title, subtitle }) => {
                     type="file"
                     onChange={(e) => {
                         handleImage(e);
-                    }}
+                    }}                    
                 />
             </div>
             <label htmlFor="contained-button-file" className={classes.buttonContent} >
