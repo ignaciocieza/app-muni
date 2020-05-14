@@ -41,7 +41,7 @@ export const isMail = (value) => {
  * Devuelve un array vacio si no tiene errores.
  * @param {valores de usuario} values 
  */
-export const isValidSubmit = (values, currentImage,admin) => {
+export const isValidSubmit = (values, currentImage, admin) => {
     let respError = [];
 
     if (isDNI(values.dni)) {
@@ -59,8 +59,8 @@ export const isValidSubmit = (values, currentImage,admin) => {
     if (!currentImage) {
         respError.push({ type: 'error', text: 'Debe ingresar una Imagen', key: '5' });
     }
-    if(admin){
-        if(values.permiso === 'PENDIENTE' || !values.permiso ){
+    if (admin) {
+        if (values.permiso === 'PENDIENTE' || !values.permiso) {
             respError.push({ type: 'error', text: 'Debe ingresar un Permiso', key: '6' })
         }
     }

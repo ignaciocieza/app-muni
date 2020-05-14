@@ -17,7 +17,7 @@ export default function AlertsList({ alertas }) {
     )
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     rootAlertsList: {
         width: '90%',
         display: 'flex',
@@ -26,5 +26,8 @@ const useStyles = makeStyles(() => ({
         position: 'fixed',
         bottom: '0%',
         right: '2%',
+        [theme.breakpoints.down('md')]: {
+            width: '97%',
+        }
     },
 }));

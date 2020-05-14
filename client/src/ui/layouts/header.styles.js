@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     icon: {
         cursor:'pointer',
         width: 50,
-        marginLeft:'9%',
+        marginLeft:'2%',
         color: colors.blueOne,
     },
     iconSignIn: {

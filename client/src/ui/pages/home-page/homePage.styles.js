@@ -58,6 +58,16 @@ const useStyles = makeStyles(theme => ({
             bottom: 0,
             left: 0,
         },
+    },
+    alertSuccs:{
+        width: '78vw',
+        position: 'fixed',
+        bottom: 0,
+        [theme.breakpoints.down('md')]: {
+            width: '99vw',
+            margin:0,
+            left: 0,
+        },
     }
 }));
 

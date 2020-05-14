@@ -22,16 +22,19 @@ const PermisoCirculacion = () => {
                 apellido: currentUser.apellido,
                 dni: currentUser.dni,
                 comentario: currentUser.comentario,
-                numeroControl: currentUser.numeroControl,
                 permiso: currentUser.permiso,
                 permisoTipo: currentUser.permisoTipo,
                 email: currentUser.email,
                 nombreComercio: currentUser.nombreComercio,
                 domicilio: currentUser.domicilio,
                 numeroTelefono: currentUser.numeroTelefono,
+                fechaAlta: currentUser.fechaAlta,
+                fechaModificacion: currentUser.fechaModificacion,
+                numeroControl: currentUser.numeroControl,
+                //image: currentImage
             });
         }
-    }, [currentUser]);
+    }, [currentUser, currentImage]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -39,8 +42,7 @@ const PermisoCirculacion = () => {
         //seteo error en input de permisoTipo y permiso
         setErrorValues({ ...errorValues, permisoTipo: !userValues.permisoTipo, permiso: (!userValues.permiso || userValues.permiso === 'PENDIENTE') });
         //seteo errores para la ventana modal 
-        isValidArray = isValidSubmit(userValues, currentImage, admin);
-
+        isValidArray = isValidSubmit(userValues, !!currentImage, admin);
         if (!isValidArray.length) {
             dispatch(setIsFetchingUser(true));
             if (admin) {
@@ -172,7 +174,7 @@ const PermisoCirculacion = () => {
                     onChange={handleChange}
                     placeholder="Whatsapp: CODIGO DE AREA + NUMERO (TOTAL 10 NUMEROS)"
                 />
-                {admin && (
+                {/* {admin && (
                     <React.Fragment>
                         <span className={classes.subtitle}>* NRO DE CONTROL INTERNO</span>
                         <TextField
@@ -183,7 +185,7 @@ const PermisoCirculacion = () => {
                             className={classes.textfield}
                             onChange={handleChange} />
                     </React.Fragment>
-                )}
+                )} */}
                 <ImagePicker title='* ADJUNTAR IMAGEN DEL FRENTE DEL DNI' />
                 <span className={classes.subtitle}>* MOTIVO DE SOLICITUD DE PERMISO</span>
                 <textarea
@@ -194,26 +196,15 @@ const PermisoCirculacion = () => {
                     value={userValues.comentario || ''}
                     required
                 />
-                {admin ?
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<Icon>send</Icon>}
-                        type='submit'
-                    >
-                        Generar QR
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>send</Icon>}
+                    type='submit'
+                >
+                    {admin ? 'Generar QR' : 'Enviar'}
                 </Button> :
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<Icon>send</Icon>}
-                        type='submit'
-                    >
-                        Enviar
-                </Button>
-                }
                 {alerts && <AlertsList alertas={alerts} />}
             </form>
         </Fragment>

@@ -13,6 +13,7 @@
     "axios": "^0.19.2",
     "jimp": "^0.10.0",
     "material-table": "^1.57.2",
+    "nanoid": "^3.1.5",
     "node-sass": "^4.13.1",
     "qrcode": "^1.4.4",
     "react": "^16.13.1",

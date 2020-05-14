@@ -7,7 +7,6 @@ const Permisos = () => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-
     return (
         <div className={classes.root}>
             <span className={classes.title}>GESTIÓN DE PERMISOS</span>

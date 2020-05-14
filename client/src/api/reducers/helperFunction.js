@@ -24,3 +24,14 @@ export const findUserValue = (users, userDni) => {
     const aux = users.find(user => (user.dni === userDni || user.dni === parseInt(userDni)))
     return aux;
 }
+
+export const addUserAux = (users, newUser) => {
+    //console.dir(newUser);
+    
+    return { ...users, [newUser.dni]: newUser }
+}
+
+export const deleteAux = (users, id) =>{
+    delete users[id];
+    return users;
+}

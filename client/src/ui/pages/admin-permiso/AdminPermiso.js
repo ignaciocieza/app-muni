@@ -1,32 +1,48 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setCurrentUser, deleteUser, fetchUsers, setIsFetchingUser } from '../../../api/actions/indexAction';
-import MaterialTable from 'material-table';
+import { setCurrentUser, deleteUser, fetchUsers, setIsFetchingUser, setToggleImg } from '../../../api/actions/indexAction';
 import Modal from '../../widgets/modal/TransitionsModal';
+import MaterialTable from 'material-table';
 import useStyles from './adminPermiso.styles';
 
 const AdminPermiso = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { users, admin, isFetching } = useSelector(state => state.user);
+    const { users, admin, isFetching, toggleImage } = useSelector(state => state.user);
     const classes = useStyles();
     const columns = [
         {
             title: 'Imagen',
             field: 'image',
-            render: rowData => <img alt='no img' src={rowData.image} style={{ boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)', width: 50, borderRadius: '50%', height: 50 }} />
+            render: rowData => (
+                <img
+                    alt='no img'
+                    src={rowData.image}
+                    className={classes.image}
+                    onClick={() => {
+                        dispatch(setToggleImg(rowData.image))
+                    }}
+                />
+            )
         },
+        { title: 'Fecha de Alta', field: 'fechaAlta' },
+        { title: 'Fecha de Última Modificación', field: 'fechaModificacion' },
         { title: 'Nombre', field: 'nombre' },
         { title: 'Apellido', field: 'apellido' },
         { title: 'Dni', field: 'dni' },
         { title: 'Estado del Permiso', field: 'permiso' },
-        { title: 'Tipo de Permiso', field: 'permisoTipo' },        
+        { title: 'Tipo de Permiso', field: 'permisoTipo' },
         { title: 'Email', field: 'email' },
         { title: 'Teléfono', field: 'numeroTelefono' },
         { title: 'Nro Control', field: 'numeroControl' },
-        
+
     ];
+    // const pruebaData = [{
+    //     nombre: 'Ignacio',
+    //     apellido: 'Cieza',
+    //     dni: 34330373
+    // }]
 
     useEffect(() => {
         if (admin) {
@@ -36,47 +52,77 @@ const AdminPermiso = () => {
         }
     }, [admin, dispatch])
 
+    if (!admin) { return null };
+
     return (
-        <React.Fragment>
-            {admin && (
-                <div className={classes.root}>
-                    {isFetching && <Modal />}
-                    <MaterialTable
-                        title="Administrar Usuarios"
-                        columns={columns}
-                        data={users}
-                        actions={[
-                            {
-                                icon: 'edit',
-                                tooltip: 'Editar',
-                                onClick: (event, rowData) => {
-                                    dispatch(setCurrentUser(rowData));
-                                    history.push('/permiso/circulacion');
-                                },
+        <div className={classes.root}>
+            {toggleImage.toggle && <Modal image={toggleImage.imgData} />}
+            {isFetching ? <Modal /> : (
+                <MaterialTable
+                    title="Administrar Usuarios"
+                    columns={columns}
+                    //data={users}
+                    data={Object.values(users)}
+                    //data={pruebaData}
+                    //options={{ pageSize: 10 }}
+                    localization={{
+                        body: {
+                            emptyDataSourceMessage: 'No hay items para mostrar',
+                            deleteTooltip: 'Borrar',
+                            editRow: {
+                                deleteText: '¿Desea borrar definitivamente?',
+                                saveTooltip: 'Aceptar',
+                                cancelTooltip: 'Cancelar'
                             },
-                            {
-                                icon: 'delete',
-                                tooltip: 'Borrar',
-                                onClick: (event, rowData) => {
-                                    dispatch(deleteUser(rowData.dni));
-                                    //console.dir(rowData.dni);
-                                    //history.push('/');
-                                }
+                        },
+                        header: {
+                            actions: 'Acciones'
+                        },
+                        pagination: {
+                            labelRowsSelect: 'renglones'
+                        },
+                        toolbar: {
+                            searchPlaceholder: 'Buscar...'
+                        }
+                    }}
+                    editable={{
+                        onRowDelete: (oldData) =>
+                            new Promise((resolve) => {
+                                setTimeout(() => {
+                                    resolve();
+                                    dispatch(deleteUser(oldData.dni));
+                                }, 100);
+                            }),
+                    }}
+                    actions={[
+                        {
+                            icon: 'edit',
+                            tooltip: 'Editar',
+                            onClick: (event, rowData) => {
+                                dispatch(setCurrentUser(rowData));
+                                history.push('/permiso/circulacion');
                             },
-                            {
-                                icon: 'details',
-                                tooltip: 'Detalle',
-                                onClick: (event, rowData) => {
-                                    //dispatch(deleteUser(rowData.id));
-                                    //console.dir(rowData.id);
-                                    history.push(`/detail/${rowData.dni}`);
-                                }
+                        },
+                        // {
+                        //     icon: 'delete',
+                        //     tooltip: 'Borrar',
+                        //     onClick: (event, rowData) => {
+                        //         dispatch(deleteUser(rowData.dni));
+                        //         //console.dir(rowData.dni);
+                        //         //history.push('/');
+                        //     }
+                        // },
+                        {
+                            icon: 'details',
+                            tooltip: 'Detalle',
+                            onClick: (event, rowData) => {
+                                history.push(`/detail/${rowData.dni}`);
                             }
-                        ]}
-                    />
-                </div>
+                        }
+                    ]}
+                />
             )}
-        </React.Fragment>
+        </div>
     );
 };
 

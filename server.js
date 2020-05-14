@@ -3,9 +3,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');//--> comprime codigo para ser subido a heroku
+//const enforce = require('express-sslify'); //-->biblio. para encriptar https ("PWA")
 const mariadb = require('mariadb');
+const bcrypt = require('bcryptjs');
+//const fileUpload = require('express-fileupload');
+//const Jimp = require('jimp');
 
-if (process.env.NODE_ENV !== 'production') require('dotenv').config(); //accede .env para la clave secreta
+require('dotenv').config(); //accede .env para la clave secreta
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -13,14 +17,16 @@ const port = process.env.PORT || 5000;
 app.use(compression());
 app.use(bodyParser.json()); //Middalware: que hace que todos los request los parsee a json
 app.use(bodyParser.urlencoded({ extended: true })); //hace que se pasen solo los caracteres habilitados para url
-app.use(cors());
+//app.use(enforce.HTTPS({ trustProtoHeader: true })); //encriptado https para que "PWA" pueda usarse en "Heroku"
+app.use(cors());                                    //|_Activar Al actualizar Heroku!!!!! (desactivar en desarrollo)
+//app.use(fileUpload());
 
-app.use(express.static(path.join(__dirname, 'client/build')));
-
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-}) //* -> todo url que usuario "hit", golpee. se ejecuta la funcion
-
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    }) //* -> todo url que usuario "hit", golpee. se ejecuta la funcion
+}
 
 //cuando el servidor reciba la peticion de service-worker, 
 //devuelva el archivo service-worker de la carpeta build 
@@ -34,35 +40,13 @@ app.listen(port, error => {
     console.log('server running on port:' + port);
 });
 
-/**
- * La descripción de la nueva bd
-MariaDB [app_muni_per]> desc persona;
- * +--------------+-------------+------+-----+---------+-------+
-| Field        | Type        | Null | Key | Default | Extra |
-+--------------+-------------+------+-----+---------+-------+
-| DNI          | int(8)      | NO   | PRI | 0       |       |
-| nombre       | varchar(20) | YES  |     | NULL    |       |
-| apellido     | varchar(20) | YES  |     | NULL    |       |
-| num_control  | int(11)     | YES  |     | NULL    |       |
-| permiso      | varchar(20) | YES  |     | NULL    |       |
-| imagen       | mediumblob  | YES  |     | NULL    |       |
-| DNI_imagen   | mediumblob  | YES  |     | NULL    |       |
-| comentario   | mediumtext  | YES  |     | NULL    |       |
--------------------------------------------------------------
-| tel          | varchar(15) | YES  |     | NULL    |       |
-| dir          | varchar(50) | YES  |     | NULL    |       |
-| comercio     | varchar(20) | YES  |     | NULL    |       |
-| correo       | varchar(35) | YES  |     | NULL    |       |
-| tipo_permiso | varchar(15) | YES  |     | NULL    |       |
-+--------------+-------------+------+-----+---------+-------+
- */
 try {
     const config = {
-        host: '192.168.150.101',
-        port: 3306,
-        user: 'app',
-        password: 'BDmuni2020',
-        database: 'app_muni_per',
+        host: process.env.DB_HOST_PROD,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
         //connectionLimit: 200
     };
     var pool = mariadb.createPool(config);
@@ -71,20 +55,20 @@ try {
 }
 
 app.post('/mariadb', async (req, res) => {
-    const { type, data } = req.body;
-    const { dni, nombre, apellido, numeroControl, permiso, qrData, image,
-        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo
-    } = data ? data : 'nodata';
-    let dbResp;
-    let conn;
-
+    let conn, dbResp;
     try {
         conn = await pool.getConnection();
+        const { type, data } = req.body;
+        const { dni, nombre, apellido, permiso, qrData, image, numeroControl,
+            comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo,
+            fechaAlta, fechaModificacion
+        } = data ? data : 'Sin especificar';
+
         switch (type) {
             case 'post':
-                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    [parseInt(dni), nombre, apellido, parseInt(numeroControl), permiso, qrData, image,
-                        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo]);
+                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [parseInt(dni), nombre, apellido, numeroControl, permiso, qrData, image,
+                        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo, fechaModificacion, fechaAlta]);
                 return res.status(200).send(dbResp);
             case 'get':
                 dbResp = await conn.query("SELECT * FROM persona");
@@ -93,8 +77,9 @@ app.post('/mariadb', async (req, res) => {
                 dbResp = await conn.query(`SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`);
                 return res.status(200).send(dbResp);
             case 'patch':
-                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=? WHERE DNI=?",
-                    [nombre, apellido, numeroControl, permiso, qrData, image, comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo, dni]);
+                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=?, fecha_mod=?, fecha_alta=? WHERE DNI=?",
+                    [nombre, apellido, numeroControl, permiso, qrData, image, comentario, numeroTelefono, domicilio, nombreComercio,
+                        email, permisoTipo, fechaModificacion, fechaAlta, dni]);
                 return res.status(200).send(dbResp);
             case 'delete':
                 dbResp = await conn.query(`DELETE FROM persona WHERE DNI ='${req.body.data}'`);
@@ -102,6 +87,52 @@ app.post('/mariadb', async (req, res) => {
             default:
                 break;
         }
+    } catch (err) {
+        console.log('Error en la conexion!!', err);
+        res.status(500).send({ error: err })
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+});
+
+app.post('/mariadb/login', async (req, res) => {
+    let conn, dbResp, isMatch = false;;
+    try {
+        conn = await pool.getConnection();
+        const { email, password } = req.body;
+        dbResp = await conn.query(`SELECT * FROM ingreso WHERE usuario = '${email.toLowerCase().trim()}'`);
+        //dbResp = await conn.query("SELECT * FROM ingreso");
+
+        //por cuestiones de seguridad 
+        //no se debe especificar si es el mail o la contraseña lo que esta mal!!!!
+        if (dbResp) {
+            isMatch = await bcrypt.compare(password, dbResp[0].clave);
+        }
+        return res.status(200).send({ isUser: isMatch });
+    } catch (err) {
+        console.log('Error en la conexion!!', err);
+        res.status(500).send({ error: err })
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+});
+
+app.post('/mariadb/signup', async (req, res) => {
+    let conn, dbResp, hashClave, isMatch = false;;
+    try {
+        conn = await pool.getConnection();
+        const { email, newPassword, password } = req.body;
+        dbResp = await conn.query(`SELECT * FROM ingreso WHERE usuario = '${email.toLowerCase().trim()}'`);
+
+        if (dbResp) {
+            isMatch = await bcrypt.compare(password, dbResp[0].clave);
+            if (isMatch) {
+                hashClave = await bcrypt.hash(newPassword, 8);
+                dbResp = await conn.query("UPDATE `ingreso` SET clave= ? WHERE usuario=? ",
+                    [hashClave, email]);
+            }
+        }
+        return res.status(200).send({ isUser: isMatch });
     } catch (err) {
         console.log('Error en la conexion!!', err);
         res.status(500).send({ error: err })

@@ -1,6 +1,7 @@
-import QRCode from 'qrcode';
-import db from '../db';
 import axios from 'axios';
+import QRCode from 'qrcode';
+import { customAlphabet } from 'nanoid';
+import db from '../db';
 import history from '../history';
 import {
     SET_USER,
@@ -18,7 +19,9 @@ import {
     FIND_USER,
     SET_COMMERCE,
     SET_ERROR,
-    SET_ALERTS
+    SET_ALERTS,
+    LOGOUT,
+    SET_TOGGLE_IMG
 } from './typeAction';
 import { imageToBuffer, bufferToImage } from './herlperFunction';
 
@@ -27,66 +30,33 @@ export const setUser = (user, isCurrentUser) => async (dispatch) => {
     const { image, permiso } = user;
     let newUser = user;
     let qrCode;
-    //let response;
     let error = 'Error interno del sistema';
-    // let formData;
-    // let auxImg;
-    // let respImg;
-    // let miPrimeraPromise;
+    let nanoid;
+    let date;
 
     try {
         newUser.image = await imageToBuffer(image);
         newUser.nombreComercio = user.nombreComercio ? user.nombreComercio : 'Sin especificar';
         newUser.domicilio = user.domicilio ? user.domicilio : 'Sin especificar';
-        //console.dir(user.image);
-        //auxImg = await axios.post('/jimp', user.image);
-        // formData = new FormData();
-        // formData.append('file', user.image);
-        // formData.append('dni', user.dni);
-        // respImg = await axios.post('/fileupload', formData);
-        // console.dir(respImg);
-        //https://github.com/axios/axios/issues/2002
-        //https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise
-        // miPrimeraPromise = new Promise((resolve, reject) => {
-        //     auxImg= imageToBuffer(user.image, user.dni);
-        //     console.dir(auxImg);
-        //     resolve(auxImg)
-        // })
+        //https://stackoverflow.com/questions/2013255/how-to-get-year-month-day-from-a-date-object
+        //newUser.fechaAlta =  new Date().toLocaleString().split(' ')[0];
+        date = new Date().toLocaleString();
+        newUser.fechaAlta = user.fechaAlta ? user.fechaAlta : date;
+        newUser.fechaModificacion = date;
 
-        // miPrimeraPromise.then((resp)=>{
-        //     console.dir(resp);
-        //     respImg= axios.post('/fileupload', resp);
-        //     console.dir(respImg);
-        // })
+        if (!user.numeroControl) {
+            nanoid = customAlphabet(user.dni, 10);
+            newUser.numeroControl = nanoid();
+        }
 
-        // axuImg = await imageToBuffer(user.image, user.dni);
-        // console.dir(axuImg);
-        // await axios.post('/fileupload', axuImg)
-
-
-        // console.dir(axuImg)
-        // if (axuImg) {
-        //     respImg = await axios.post('/fileupload', axuImg);
-        //     newUser.image = respImg;
-        // }
-
-        //newUser.qrData = qrData ? qrData : 'nodata';
-
-        // if (permiso === 'PERMITIDO') {
-        //     qrCode = await QRCode.toDataURL(`https://app-muni.herokuapp.com/detail/${newUser.dni}`);
-        //     newUser.qrData = qrCode;
-        // } else if (permiso === 'PENDIENTE') {
-        //     newUser.numeroControl = '00000';
-        //     newUser.qrData ='nodata';
-        // } 
         if (permiso === 'PENDIENTE') {
-            newUser.numeroControl = '00000';
             newUser.qrData = 'nodata';
         }
         else {
             qrCode = await QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
             newUser.qrData = qrCode;
         }
+
         if (isCurrentUser) {
             error = 'Error en la base de datos';
             await axios.post('/mariadb', { type: 'patch', data: newUser });
@@ -94,6 +64,7 @@ export const setUser = (user, isCurrentUser) => async (dispatch) => {
             error = 'Error con la base de datos, reintente o consulte en administrar en caso de que el usuario ya esté registrado';
             await axios.post('/mariadb', { type: 'post', data: newUser });
         }
+
     } catch (err) {
         console.error(err);
         return dispatch({
@@ -161,14 +132,15 @@ export const setIsHeader = (value) => ({
     payload: value
 })
 
+
 export const fetchUsers = () => async dispatch => {
-    let response;
-    let newResponse = [];
+    let response, returnObj;
 
     try {
         response = await axios.post('/mariadb', { type: 'get' });
-        response.data.forEach(item => {
-            newResponse.push({
+        //https://stackoverflow.com/questions/19874555/how-do-i-convert-array-of-objects-into-one-object-in-javascript
+        returnObj = response.data.reduce((accumulator, item) => {
+            accumulator[item.DNI] = {
                 nombre: item.nombre,
                 apellido: item.apellido,
                 permiso: item.permiso,
@@ -182,15 +154,38 @@ export const fetchUsers = () => async dispatch => {
                 nombreComercio: item.comercio,
                 email: item.correo,
                 permisoTipo: item.tipo_permiso,
-            });
-        });
+                fechaModificacion: item.fecha_mod,
+                fechaAlta: item.fecha_alta,
+            };
+            return accumulator;
+        }, {});
+
+        // response.data.forEach(item => {
+        //     newResponse.push({
+        //         nombre: item.nombre,
+        //         apellido: item.apellido,
+        //         permiso: item.permiso,
+        //         comentario: item.comentario,
+        //         image: bufferToImage(item.DNI_imagen),
+        //         dni: item.DNI,
+        //         numeroControl: item.num_control,
+        //         qrData: bufferToImage(item.imagen),
+        //         numeroTelefono: item.tel,
+        //         domicilio: item.dir,
+        //         nombreComercio: item.comercio,
+        //         email: item.correo,
+        //         permisoTipo: item.tipo_permiso,
+        //         fechaModificacion: item.fecha_mod,
+        //         fechaAlta: item.fecha_alta
+        //     });
+        // });
     } catch (err) {
         console.error(err);
     }
 
     dispatch({
         type: FETCH_USERS,
-        payload: newResponse
+        payload: returnObj
     });
 };
 
@@ -201,7 +196,7 @@ export const fetchUser = (dni) => async dispatch => {
         response = await axios.post('/mariadb', { type: 'findOne', data: { dni } });
         const { nombre, apellido, permiso, comentario,
             DNI_imagen, DNI, num_control, imagen,
-            tel, dir, comercio, correo, tipo_permiso
+            tel, dir, comercio, correo, tipo_permiso, fecha_alta, fecha_mod
         } = response.data[0];
 
         auxResponse = {
@@ -217,7 +212,9 @@ export const fetchUser = (dni) => async dispatch => {
             domicilio: dir,
             nombreComercio: comercio,
             email: correo,
-            permisoTipo: tipo_permiso
+            permisoTipo: tipo_permiso,
+            fechaModificacion: fecha_mod,
+            fechaAlta: fecha_alta
         };
     } catch (err) {
         console.error(err);
@@ -243,17 +240,36 @@ export const deleteUser = (id) => async dispatch => {
     });
 };
 
-export const setAdmin = (admin) => {
-    const { email, password } = admin;
-    let returnValue = false;
+export const setAdmin = (admin) => async dispatch => {
+    const { email, password, isSignUp, newPassword } = admin;
+    let response;
 
-    if (email === 'admin@admin.com' && password === 'admin') {
-        returnValue = true;
+    try {
+        if (isSignUp) {
+            response = await axios.post('/mariadb/signup', { email, newPassword, password });
+        } else {
+            response = await axios.post('/mariadb/login', { email, password });
+        }
+    } catch (error) {
+        console.log(error)
     }
 
-    return ({
-        type: SET_ADMIN,
-        payload: returnValue
+    // if (email === 'admin@admin.com' && password === 'admin') {
+    //     returnValue = true;
+    // }
+    if (response) {
+        if (response.data.isUser) {
+            history.push('/home');
+            return dispatch({
+                type: SET_ADMIN,
+                payload: admin.email
+            });
+        }
+    }
+
+    dispatch({
+        type: SET_ALERTS,
+        payload: 'El email o la contraseña son incorrectos. Reintente!'
     });
 };
 
@@ -273,11 +289,6 @@ export const setIsFetchedUser = (value) => ({
     payload: value
 });
 
-// export const setIsGenerated = (value) => ({
-//     type: IS_GENERATED,
-//     payload: value
-// });
-
 export const findUser = (userDni) => ({
     type: FIND_USER,
     payload: userDni
@@ -291,7 +302,13 @@ export const setErrorDB = (value) => ({
 export const setAlerts = (values) => ({
     type: SET_ALERTS,
     payload: values
-})
+});
 
+export const logout = () => ({ type: LOGOUT })
+
+export const setToggleImg = (img) => ({
+    type: SET_TOGGLE_IMG,
+    payload: img
+})
 
 

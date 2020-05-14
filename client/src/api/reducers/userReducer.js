@@ -12,9 +12,11 @@ import {
     IS_FETCHED,
     FIND_USER,
     SET_ERROR,
-    SET_ALERTS
+    SET_ALERTS,
+    LOGOUT,
+    SET_TOGGLE_IMG
 } from '../actions/typeAction';
-import { deleteAuser, addUser, findUserValue } from './helperFunction.js';
+import {deleteAux} from './helperFunction.js';
 
 const INITIAL_STATE = {
     users: [],
@@ -25,7 +27,11 @@ const INITIAL_STATE = {
     isFetched: false,
     isHeader: true,
     error: '',
-    alerts:'',
+    alerts: '',
+    toggleImage: {
+        imgData: '',
+        toggle: false
+    },
     //isGenerated: false,
 };
 
@@ -34,13 +40,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case SET_USER:
             return ({
                 ...state,
-                users: addUser(state.users, action.payload),
+                //users: addUser(state.users, action.payload),
+                users:{ ...state.users, [action.payload.dni]: action.payload },
                 currentUser: action.payload,
                 isFetching: false,
                 isFetched: true,
                 error: '',
                 alerts: ''
-                //isGenerated: action.payload.generate,
             });
         case SET_CURRENT_IMG:
             return ({
@@ -50,13 +56,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case SET_CURRENT_USER:
             return ({
                 ...state,
-                currentUser: action.payload,
+                currentUser: { ...action.payload, image: 'especificada en currentImage' },
                 currentImage: action.payload.image
             });
         case SET_ADMIN:
             return ({
                 ...state,
-                admin: action.payload
+                admin: action.payload,
+                alerts: '',
+                isHeader: true
             });
         case SET_ERROR:
             return ({
@@ -66,9 +74,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isFetched: false,
             });
         case SET_IS_HEADER:
-            return({
+            return ({
                 ...state,
-                isHeader:action.payload
+                isHeader: action.payload
             })
         case RESET_CURRENTS:
             return ({
@@ -79,12 +87,10 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isFetched: false,
                 error: false,
                 alerts: false,
-                users: []
             });
         case FETCH_USERS:
             return ({
                 ...state,
-                //currentUser: action.payload,
                 users: action.payload,
                 isFetching: false,
                 isFetched: true,
@@ -97,7 +103,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case DELETE_USER:
             return ({
                 ...state,
-                users: deleteAuser(state.users, action.payload),
+                //users: deleteAuser(state.users, action.payload),
+                users: deleteAux(state.users, action.payload)
+                //users: delete state.users[action.payload]
             });
         case IS_FETCHING:
             return ({
@@ -105,7 +113,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isFetching: action.payload,
                 isFetched: false,
                 error: false,
-                alerts:false
+                alerts: false
             });
         case IS_FETCHED:
             return ({
@@ -115,13 +123,27 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case FIND_USER:
             return ({
                 ...state,
-                currentUser: findUserValue(state.users, action.payload)
+                //currentUser: findUserValue(state.users, action.payload)
+                currentUser: state.users[action.payload]
             });
-            case SET_ALERTS:
-                return ({
-                    ...state,
-                    alerts: action.payload
-                })
+        case SET_ALERTS:
+            return ({
+                ...state,
+                alerts: action.payload
+            })
+        case LOGOUT:
+            return ({
+                ...state,
+                ...INITIAL_STATE
+            })
+        case SET_TOGGLE_IMG:
+            return ({
+                ...state,
+                toggleImage: {
+                    imgData: action.payload,
+                    toggle: !state.toggleImage.toggle
+                }
+            })
         default:
             return state;
     }

@@ -4,7 +4,7 @@ import Header from './Header';
 import AsideBar from './aside-bar/AsideBar';
 import './app.styles.scss';
 
-const App = () => (
+const App = () =>(
     <React.Fragment>
         <Header />
         <AsideBar/>

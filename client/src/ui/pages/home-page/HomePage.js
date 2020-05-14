@@ -9,7 +9,7 @@ import useStyles from './homePage.styles';
 
 const HomePage = () => {
     const classes = useStyles();
-    const { isFetched , admin} = useSelector(state => state.user);
+    const { isFetched, admin } = useSelector(state => state.user);
     // const defaultOptions = {
     //     loop: true,
     //     autoplay: true,
@@ -30,12 +30,12 @@ const HomePage = () => {
             </div>
             {(isFetched) && (
                 <div className={classes.alert}>
-                    <ActionAlerts type='success' text='Solicitud enviada con éxito.'  />
+                    <ActionAlerts type='success' text='Solicitud enviada con éxito.' />
                 </div>
             )}
             {(admin) && (
-                <div className={classes.alert}>
-                    <ActionAlerts type='info' text='Bienvenido! Ha ingresado correctamente.'/>
+                <div className={classes.alertSuccs}>
+                    <ActionAlerts type='info' text='Bienvenido! Ha ingresado correctamente.' />
                 </div>
             )}
         </div>

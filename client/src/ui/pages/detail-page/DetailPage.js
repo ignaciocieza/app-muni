@@ -14,10 +14,10 @@ const DetailPage = ({ match }) => {
     } = currentUser ? currentUser : '';
 
     useEffect(() => {
-        if (!users.length) {
-            dispatch(fetchUser(match.params.id));
-        } else {
+        if (Object.keys(users).length) {
             dispatch(findUser(match.params.id));
+        } else {
+            dispatch(fetchUser(match.params.id));
         }
         window.scrollTo(0, 0);
     }, [dispatch, match, users]);

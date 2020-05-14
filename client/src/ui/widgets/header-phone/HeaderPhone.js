@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setAdmin, resetCurrents, setIsHeader } from '../../../api/actions/indexAction';
+import { resetCurrents, setIsHeader, logout } from '../../../api/actions/indexAction';
 import { SwipeableDrawer, IconButton, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -77,8 +77,7 @@ export default function HeaderPhone() {
                             button
                             onClick={() => {
                                 setState(false);
-                                dispatch(setAdmin(false));
-                                dispatch(resetCurrents());
+                                dispatch(logout());
                                 history.push('/home');
                             }}>
                             <ListItemIcon><ExitToAppIcon /></ListItemIcon>

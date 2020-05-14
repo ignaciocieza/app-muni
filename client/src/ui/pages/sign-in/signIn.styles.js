@@ -13,17 +13,18 @@ const useStyles = makeStyles(theme => ({
     },
     form: {
         marginTop: '4%',
+        width: '50%',
         [theme.breakpoints.down('md')]: {
             height: `calc(${innerHeight}px * 1)`,
             width: '100%',
             position: 'absolute',
             top: `calc(${innerHeight}px * 0.01)`,
-            zIndex: 1,
+            zIndex: 2,
         }
     },
     contentField: {
         width: '100%',
-        height: '78%',
+        height: '81%',
         marginLeft: '2%',
         display: 'flex',
         flexDirection: 'column',
@@ -63,6 +64,16 @@ const useStyles = makeStyles(theme => ({
             opacity: 0.9,
         }
     },
+    textPass:{
+        cursor: 'pointer',
+        color: colors.blueOne,
+        fontWeight: 'bold',
+        marginBottom: '1%',
+        fontSize: '0.9em',
+        [theme.breakpoints.down('md')]: {
+            marginBottom: '10%'
+        }
+    },
     rightSideContent: {
         width: '50%',
         display: 'flex',
@@ -70,6 +81,9 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         backgroundImage: `url(${imageIglesia})`,
         backgroundColor: colors.grayTwo,
+        // boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+        zIndex: 2,
+        boxShadow: ' -2px 0px 11px -1px rgba(0,0,0,0.65)',
         //height: '100%',
         //backgroundPosition: 'center', 
         //backgroundRepeat: 'no-repeat', 
@@ -78,7 +92,8 @@ const useStyles = makeStyles(theme => ({
             height: `calc(${innerHeight}px * 1.1)`,
             width: '100%',
             opacity: 0.2,
-        }        
+            zIndex: 1
+        }
     },
     square: {
         border: `1px solid ${colors.white}`,
@@ -90,13 +105,27 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         [theme.breakpoints.down('md')]: {
             display: 'none',
-        } 
+        }
     },
     squareTitle: {
         fontWeight: 400,
         fontSize: 21,
         padding: '1%',
         color: colors.white
+    },
+    alertErr: {
+        width: '46%',
+        margin: '0 0 0.2% 3%',
+        zIndex: 4,
+        position: 'fixed',
+        bottom: 0,
+        [theme.breakpoints.down('md')]: {
+            width: '91%',
+            padding: '0 0 6% 3%',
+        },
+    },
+    accountCircle:{
+        opacity: 0.5
     }
 }));
 
