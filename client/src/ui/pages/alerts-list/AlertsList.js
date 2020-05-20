@@ -8,6 +8,9 @@ import ActionAlerts from '../../widgets/action-alerts/ActionAlerts';
  */
 export default function AlertsList({ alertas }) {
     const classes = useStyles();
+
+    if (typeof (alertas) === 'string') { return null };
+
     return (
         <div className={classes.rootAlertsList}>
             {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Backdrop, Fade, Zoom } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { Modal, Backdrop, Fade, Zoom } from '@material-ui/core';
 import { setErrorDB, setToggleImg } from '../../../api/actions/indexAction';
 import Spinner from '../with-spinner/Spinner';
 import useStyles from './transitionsModal.styles';
@@ -41,10 +41,28 @@ export default function TransitionsModal({ timeOut, comentTitle, comentSubtitle,
                 <Zoom in={open}>
                     <img alt='no img' src={image} className={classes.image} />
                 </Zoom>
-
             </Modal>
         )
-    }
+    };
+
+    // if (animation) {
+    //     const defaultOptions = {
+    //         loop: true,
+    //         autoplay: true,
+    //         animationData: animationData,
+    //         rendererSettings: {
+    //             preserveAspectRatio: 'xMidYMid slice'
+    //         }
+    //     };
+    //     return (
+    //         <div style={{ position: "absolute", top: 0, height: '100vh', width: '100vw' }}>
+    //             <Lottie options={defaultOptions}
+    //                 height={400}
+    //                 width={400}
+    //             />
+    //         </div>
+    //     )
+    // }
 
     return (
         <div>

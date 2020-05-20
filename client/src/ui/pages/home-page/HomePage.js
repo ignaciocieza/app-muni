@@ -1,30 +1,33 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 //import Lottie from 'react-lottie';
+import { setIsHeader } from '../../../api/actions/indexAction';
 import imageMunicipalidad from '../../../assets/MUNILASFLORES.jpg';
 import ActionAlerts from '../../widgets/action-alerts/ActionAlerts';
 import useStyles from './homePage.styles';
 
-//const animationData = require('../../../assets/20033-buildings-going-up.json')
+//const animationData = require('../../../assets/progress-and-loading-animation.json');
 
 const HomePage = () => {
-    const classes = useStyles();
     const { isFetched, admin } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const classes = useStyles();
     // const defaultOptions = {
     //     loop: true,
     //     autoplay: true,
     //     animationData: animationData,
     //     rendererSettings: {
-    //         preserveAspectRatio: 'xMidYMid slice'
+    //         preserveAspectRatio: 'xMidYMid slice',
+    //          //preserveAspectRatio: 'xMidYMid meet'
     //     }
     // };
+    useEffect(() => {dispatch(setIsHeader(true))}, [dispatch]);
 
     return (
         <div className={classes.content}>
             {/* <Lottie options={defaultOptions}
                 height={400}
                 width={400} /> */}
-            {/* {(isFetched) && <h1 className={classes.title}>¡Solicitud enviada con éxito!</h1>} */}
             <div className={classes.imagenContent}>
                 <img src={imageMunicipalidad} alt='No imagen' className={classes.imagen} />
             </div>

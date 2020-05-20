@@ -21,7 +21,7 @@ import {
     SET_ERROR,
     SET_ALERTS,
     LOGOUT,
-    SET_TOGGLE_IMG
+    SET_TOGGLE_IMG,
 } from './typeAction';
 import { imageToBuffer, bufferToImage } from './herlperFunction';
 
@@ -299,16 +299,20 @@ export const setErrorDB = (value) => ({
     payload: value
 })
 
+/**
+ * Puede introducudir un string, si es para una sola alerta.
+ * O, un array para varias alertas.
+ * @param {Array o String} values 
+ */
 export const setAlerts = (values) => ({
     type: SET_ALERTS,
     payload: values
 });
 
-export const logout = () => ({ type: LOGOUT })
+export const logout = () => ({ type: LOGOUT });
 
 export const setToggleImg = (img) => ({
     type: SET_TOGGLE_IMG,
     payload: img
-})
-
+});
 

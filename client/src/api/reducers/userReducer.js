@@ -14,9 +14,9 @@ import {
     SET_ERROR,
     SET_ALERTS,
     LOGOUT,
-    SET_TOGGLE_IMG
+    SET_TOGGLE_IMG,
 } from '../actions/typeAction';
-import {deleteAux} from './helperFunction.js';
+import { deleteAux } from './helperFunction.js';
 
 const INITIAL_STATE = {
     users: [],
@@ -41,7 +41,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 //users: addUser(state.users, action.payload),
-                users:{ ...state.users, [action.payload.dni]: action.payload },
+                users: { ...state.users, [action.payload.dni]: action.payload },
                 currentUser: action.payload,
                 isFetching: false,
                 isFetched: true,
@@ -143,7 +143,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     imgData: action.payload,
                     toggle: !state.toggleImage.toggle
                 }
-            })
+            });
         default:
             return state;
     }

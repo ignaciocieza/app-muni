@@ -34,7 +34,7 @@ export default function SignIn() {
         if(adminValue.isSignUp){
             if(adminValue.newPassword.length !== 8){
                 setErrorValues({nuevaContrasena: true});
-                dispatch(setAlerts('Debe introducir un nueva contraseña de 8 digitos'));
+                dispatch(setAlerts('Debe introducir un nueva contraseña de 8 dígitos'));
                 return
             }
         }

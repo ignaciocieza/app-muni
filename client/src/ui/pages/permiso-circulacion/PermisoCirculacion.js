@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Icon, MenuItem, Select, FormControl } from '@material-ui/core';
+import { setUser, setIsFetchingUser, setAlerts, setIsHeader } from '../../../api/actions/indexAction';
 import ImagePicker from '../../widgets/image-picker/ImagePicker';
-import { setUser, setIsFetchingUser, setAlerts } from '../../../api/actions/indexAction';
 import Modal from '../../widgets/modal/TransitionsModal';
 import AlertsList from '../alerts-list/AlertsList';
 import { isDNI, isTelefono, isMail, isValidSubmit } from './validation';
+import { TextField, Button, Icon, MenuItem, Select, FormControl } from '@material-ui/core';
 import useStyles from './permisoCirculacion.style';
 
 const PermisoCirculacion = () => {
@@ -16,6 +16,8 @@ const PermisoCirculacion = () => {
     const classes = useStyles();
 
     useEffect(() => {
+        dispatch(setIsHeader(true));
+        
         if (currentUser) {
             setUserValues({
                 nombre: currentUser.nombre,
@@ -31,10 +33,9 @@ const PermisoCirculacion = () => {
                 fechaAlta: currentUser.fechaAlta,
                 fechaModificacion: currentUser.fechaModificacion,
                 numeroControl: currentUser.numeroControl,
-                //image: currentImage
             });
         }
-    }, [currentUser, currentImage]);
+    }, [currentUser, dispatch]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -204,7 +205,7 @@ const PermisoCirculacion = () => {
                     type='submit'
                 >
                     {admin ? 'Generar QR' : 'Enviar'}
-                </Button> :
+                </Button>
                 {alerts && <AlertsList alertas={alerts} />}
             </form>
         </Fragment>
