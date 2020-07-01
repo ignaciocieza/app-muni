@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Backdrop, Fade, Zoom } from '@material-ui/core';
-import { setErrorDB, setToggleImg } from '../../../api/actions/indexAction';
+import { setToggleImg } from '../../../api/actions/user/userActions';
+import { setErrorDB } from '../../../api/actions/commonActions';
 import Spinner from '../with-spinner/Spinner';
 import useStyles from './transitionsModal.styles';
 

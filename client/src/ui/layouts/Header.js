@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetCurrents, setIsHeader, logout } from '../../api/actions/indexAction';
+import { resetCurrents, setIsHeader, logout } from '../../api/actions/commonActions';
 import HeaderPhone from '../widgets/header-phone/HeaderPhone';
 import { Hidden } from '@material-ui/core';
 import imageMuni from '../../assets/escudo-gob-municipal.png';
@@ -14,6 +14,7 @@ const Header = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { admin, isHeader } = useSelector(state => state.user);
+    const { agente } = useSelector(state => state.agente);
     const history = useHistory();
 
     if (!isHeader) { return null }
@@ -28,12 +29,12 @@ const Header = () => {
                     <img src={imageMuni} alt='no imagen' className={classes.image} />
                 </div>
                 <Hidden smDown >
-                    {admin ?
+                    {(admin || agente) ?
                         <div className={classes.buttonContent}>
                             <Avatar className={classes.imageAvatar}>AD</Avatar>
                             <div className={classes.titleContent}>
-                                <span className={classes.title}>ADMINISTRADOR</span>
-                                <span className={classes.subTitle}>{admin}</span>
+                                <span className={classes.title}>{admin ? 'ADMINISTRADOR' : 'AGENTE DE TRANSITO'}</span>
+                                <span className={classes.subTitle}>{admin || agente}</span>
                             </div>
                             <ExitToAppIcon
                                 className={classes.icon}

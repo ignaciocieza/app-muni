@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetCurrents } from '../../../api/actions/indexAction';
+import { resetCurrents } from '../../../api/actions/commonActions';
 import { Hidden } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -11,6 +11,7 @@ import useStyles from './asideBar.styles';
 export default function AsideBar() {
     const [isActive, setIsActive] = useState(false);
     const { admin } = useSelector(state => state.user);
+    const { agente } = useSelector(state => state.agente);
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
@@ -20,7 +21,7 @@ export default function AsideBar() {
         setIsActive(location.pathname);
     }, [location]);
 
-    if (!admin) { return null };
+    if (!admin && !agente) { return null };
 
     return (
         <Hidden smDown >
@@ -45,7 +46,7 @@ export default function AsideBar() {
                     <DescriptionIcon className={isActive === '/permisos' ? classes.iconActive : classes.icon} />
                     <span className={classes.title}>Permisos</span>
                 </div>
-                <div
+                {admin && (<div
                     className={isActive === '/admin' ? classes.contentButtonActive : classes.contentButton}
                     onClick={() => {
                         dispatch(resetCurrents());
@@ -53,7 +54,7 @@ export default function AsideBar() {
                     }}>
                     <SupervisorAccountIcon className={isActive === '/admin' ? classes.iconActive : classes.icon} />
                     <span className={classes.title}>Administrar</span>
-                </div>
+                </div>)}
             </div>
         </Hidden>
     )

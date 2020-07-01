@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentImage } from '../../../api/actions/indexAction';
-//import axios from 'axios';
+import { setCurrentImage } from '../../../api/actions/user/userActions';
 import noImage from '../../../assets/no-imagen.png'
 import Button from '@material-ui/core/Button';
 import useStyles from './imagePicker.styles';
@@ -34,9 +33,9 @@ const ImagePicker = ({ title, subtitle }) => {
             <span className={classes.title}>{title}</span>
             {subtitle && <span className={classes.subtitle}>{subtitle}</span>}
             <div className={classes.uploadContent}>
-                {currentImage ?
-                    <img src={currentImage} alt='No imagen' className={classes.imagen} /> :
-                    <img src={noImage} alt='No imagen' className={classes.imagen} />
+                {(currentImage &&  (currentImage !== 'Sin especificar')) ?(
+                    <img src={currentImage} alt='No imagen' className={classes.imagen} />) :(
+                    <img src={noImage} alt='No imagen' className={classes.imagen} />)
                 } 
                 <input
                     accept="image/*"

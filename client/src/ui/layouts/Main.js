@@ -9,7 +9,8 @@ const AdminPermiso = lazy(() => import('../pages/admin-permiso/AdminPermiso'));
 const DetailPage = lazy(() => import('../pages/detail-page/DetailPage'));
 const SignIn = lazy(() => import('../pages/sign-in/SignIn'));
 const Permisos = lazy(() => import('../pages/permisos/Permisos'));
-const PermisoDelivery = lazy(() => import('../pages/permiso-delivery/PermisoDelivery'));
+const PermisoIngresoEgreso = lazy(() => import('../pages/permiso-ingreso/PermisoIngresoEgreso'));
+const EditPage = lazy(() => import('../pages/edit-page/EditPage'));
 
 
 const Main = () => (
@@ -22,7 +23,8 @@ const Main = () => (
                     <Route exact path='/home' component={HomePage} />
                     <Route exact path='/permisos' component={Permisos} />
                     <Route exact path='/permiso/circulacion' component={PermisoCirculacion} />
-                    <Route exact path='/permiso/delivery' component={PermisoDelivery} />
+                    <Route exact path='/permiso/ingreso' component={PermisoIngresoEgreso} />
+                    <Route exact path='/permiso/edit' component={EditPage} />
                     <Route exact path='/admin' component={AdminPermiso} />
                     <Route exact path='/detail/:id' component={DetailPage} />
                 </Suspense>

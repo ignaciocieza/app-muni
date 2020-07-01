@@ -42,7 +42,7 @@ app.listen(port, error => {
 
 try {
     const config = {
-        host: process.env.DB_HOST_PROD,
+        host: process.env.DB_HOST_TEST,
         port: process.env.DB_PORT,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
@@ -66,9 +66,11 @@ app.post('/mariadb', async (req, res) => {
 
         switch (type) {
             case 'post':
-                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    [parseInt(dni), nombre, apellido, numeroControl, permiso, qrData, image,
-                        comentario, numeroTelefono, domicilio, nombreComercio, email, permisoTipo, fechaModificacion, fechaAlta]);
+                dbResp = await conn.query("INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [parseInt(dni), nombre, apellido, numeroControl,
+                        permiso, qrData, image, comentario,
+                        numeroTelefono, domicilio, nombreComercio,
+                        email, permisoTipo, fechaModificacion, fechaAlta, 'user']);
                 return res.status(200).send(dbResp);
             case 'get':
                 dbResp = await conn.query("SELECT * FROM persona");
@@ -77,9 +79,11 @@ app.post('/mariadb', async (req, res) => {
                 dbResp = await conn.query(`SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`);
                 return res.status(200).send(dbResp);
             case 'patch':
-                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=?, fecha_mod=?, fecha_alta=? WHERE DNI=?",
-                    [nombre, apellido, numeroControl, permiso, qrData, image, comentario, numeroTelefono, domicilio, nombreComercio,
-                        email, permisoTipo, fechaModificacion, fechaAlta, dni]);
+                dbResp = await conn.query("UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=?, fecha_mod=?, fecha_alta=?, userDbType=? WHERE DNI=?",
+                    [nombre, apellido, numeroControl, permiso,
+                        qrData, image, comentario, numeroTelefono,
+                        domicilio, nombreComercio, email, permisoTipo,
+                        fechaModificacion, fechaAlta, 'user', dni]);
                 return res.status(200).send(dbResp);
             case 'delete':
                 dbResp = await conn.query(`DELETE FROM persona WHERE DNI ='${req.body.data}'`);
@@ -133,6 +137,58 @@ app.post('/mariadb/signup', async (req, res) => {
             }
         }
         return res.status(200).send({ isUser: isMatch });
+    } catch (err) {
+        console.log('Error en la conexion!!', err);
+        res.status(500).send({ error: err })
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+});
+
+app.post('/mariadb/acceso', async (req, res) => {
+    let conn, dbResp;
+    try {
+        conn = await pool.getConnection();
+        const { type, data } = req.body;
+        const {
+            dni, nombre, apellido, cantidadPasajeros, dniPasajeros,
+            acceso, residencia, domicilio, registro, motivoViaje,
+            numeroTelefono, destinoViaje, tiempoDestino, patente,
+            entraCuarentena, observaciones, fechaAlta, otroDestinoViaje,
+            otroAcceso, otroMotivoViaje, otroResidencia, otroTiempoDestino,
+        } = data ? data : 'Sin especificar';
+
+        switch (type) {
+            case 'post':
+                dbResp = await conn.query("INSERT INTO `acceso` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [parseInt(dni), acceso, registro, motivoViaje, residencia, domicilio,
+                        destinoViaje, tiempoDestino, 'numeroTelefono', 'alt', patente,
+                        cantidadPasajeros, dniPasajeros, entraCuarentena, observaciones,
+                        nombre, apellido, fechaAlta, numeroTelefono, otroDestinoViaje, otroAcceso,
+                        otroMotivoViaje, otroResidencia, otroTiempoDestino, 'age'
+                    ]);
+                return res.status(200).send(dbResp);
+            case 'get':
+                dbResp = await conn.query("SELECT * FROM acceso");
+                return res.status(200).send(dbResp);
+            case 'findOne':
+                dbResp = await conn.query(`SELECT * FROM acceso WHERE DNI = ${parseInt(dni)}`);
+                return res.status(200).send(dbResp);
+            case 'patch':
+                dbResp = await conn.query("UPDATE `acceso` SET acceso_ciudad= ?, registro= ?, motivo=?, residencia=?, origen=?, destino=?, tiempo_destino=?, dir_destino=?, altura_destino=?, patente=?, pasajeros=?, DNI_pasajeros=?, cuarentena=?, observaciones=?,nombre=?,apellido=?, fecha_alta=?, numeroTelefono=?, otroDestinoViaje=?, otroAcceso=?, otroMotivoViaje=?, otroResidencia=?, otroTiempoDestino=?, agenteDbType=?  WHERE DNI=?",
+                    [acceso, registro, motivoViaje, residencia, domicilio,
+                        destinoViaje, tiempoDestino, 'numeroTelefono', 'alt', patente,
+                        cantidadPasajeros, dniPasajeros, entraCuarentena, observaciones,
+                        nombre, apellido, fechaAlta, numeroTelefono, otroDestinoViaje, otroAcceso,
+                        otroMotivoViaje, otroResidencia, otroTiempoDestino, 'age',
+                        dni]);
+                return res.status(200).send(dbResp);
+            case 'delete':
+                dbResp = await conn.query(`DELETE FROM acceso WHERE DNI ='${req.body.data}'`);
+                return res.status(200).send(dbResp);
+            default:
+                break;
+        }
     } catch (err) {
         console.log('Error en la conexion!!', err);
         res.status(500).send({ error: err })

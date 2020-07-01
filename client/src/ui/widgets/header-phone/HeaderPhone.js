@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { resetCurrents, setIsHeader, logout } from '../../../api/actions/indexAction';
+import { resetCurrents, setIsHeader, logout } from '../../../api/actions/commonActions';
 import { SwipeableDrawer, IconButton, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';

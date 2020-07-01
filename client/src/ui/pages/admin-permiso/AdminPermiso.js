@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setCurrentUser, deleteUser, fetchUsers, setIsFetchingUser, setToggleImg } from '../../../api/actions/indexAction';
+import { setCurrentUser, setToggleImg } from '../../../api/actions/user/userActions';
+import { setIsFetching } from '../../../api/actions/commonActions';
+import { fetchUsersAgentesStart, deleteUserAgenteStart, setCurrentUserAgente } from '../../../api/actions/merge/mergeActions';
 import Modal from '../../widgets/modal/TransitionsModal';
 import MaterialTable from 'material-table';
 import useStyles from './adminPermiso.styles';
@@ -9,45 +11,50 @@ import useStyles from './adminPermiso.styles';
 const AdminPermiso = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { users, admin, isFetching, toggleImage } = useSelector(state => state.user);
+    const { admin, toggleImage } = useSelector(state => state.user);
+    const { merge, isFetchingMerge } = useSelector(state => state.merge);
     const classes = useStyles();
     const columns = [
         {
             title: 'Imagen',
             field: 'image',
             render: rowData => (
-                <img
-                    alt='no img'
-                    src={rowData.image}
-                    className={classes.image}
-                    onClick={() => {
-                        dispatch(setToggleImg(rowData.image))
-                    }}
-                />
+                ((rowData.image) && (rowData.image !== 'Sin especificar')) && (
+                    <img
+                        alt='no img'
+                        src={rowData.image}
+                        className={classes.image}
+                        onClick={() => {
+                            dispatch(setToggleImg(rowData.image))
+                        }}
+                    />)
             )
         },
         { title: 'Fecha de Alta', field: 'fechaAlta' },
         { title: 'Fecha de Última Modificación', field: 'fechaModificacion' },
+        {
+            title: 'Agente de Control de Tránsito',
+            field: 'esAgente',
+            render: rowData => (rowData.esAgente ? 'SI' : 'NO')
+        },
         { title: 'Nombre', field: 'nombre' },
         { title: 'Apellido', field: 'apellido' },
         { title: 'Dni', field: 'dni' },
-        { title: 'Estado del Permiso', field: 'permiso' },
+        {
+            title: 'Estado del Permiso',
+            field: 'permiso',
+            render: rowData => (rowData.permiso ? rowData.permiso : 'PENDIENTE')
+        },
         { title: 'Tipo de Permiso', field: 'permisoTipo' },
         { title: 'Email', field: 'email' },
         { title: 'Teléfono', field: 'numeroTelefono' },
         { title: 'Nro Control', field: 'numeroControl' },
-
     ];
-    // const pruebaData = [{
-    //     nombre: 'Ignacio',
-    //     apellido: 'Cieza',
-    //     dni: 34330373
-    // }]
 
     useEffect(() => {
         if (admin) {
-            dispatch(setIsFetchingUser(true))
-            dispatch(fetchUsers());
+            dispatch(setIsFetching(true))
+            dispatch(fetchUsersAgentesStart())
             window.scrollTo(0, 0);
         }
     }, [admin, dispatch])
@@ -57,12 +64,12 @@ const AdminPermiso = () => {
     return (
         <div className={classes.root}>
             {toggleImage.toggle && <Modal image={toggleImage.imgData} />}
-            {isFetching ? <Modal /> : (
+            {(isFetchingMerge) ? <Modal /> : (
                 <MaterialTable
                     title="Administrar Usuarios"
                     columns={columns}
                     //data={users}
-                    data={Object.values(users)}
+                    data={Object.values(merge)}
                     //data={pruebaData}
                     //options={{ pageSize: 10 }}
                     localization={{
@@ -90,7 +97,7 @@ const AdminPermiso = () => {
                             new Promise((resolve) => {
                                 setTimeout(() => {
                                     resolve();
-                                    dispatch(deleteUser(oldData.dni));
+                                    dispatch(deleteUserAgenteStart(oldData.dni))
                                 }, 100);
                             }),
                     }}
@@ -100,7 +107,7 @@ const AdminPermiso = () => {
                             tooltip: 'Editar',
                             onClick: (event, rowData) => {
                                 dispatch(setCurrentUser(rowData));
-                                history.push('/permiso/circulacion');
+                                history.push('/permiso/edit');
                             },
                         },
                         // {
@@ -116,6 +123,7 @@ const AdminPermiso = () => {
                             icon: 'details',
                             tooltip: 'Detalle',
                             onClick: (event, rowData) => {
+                                dispatch(setCurrentUserAgente(rowData))
                                 history.push(`/detail/${rowData.dni}`);
                             }
                         }

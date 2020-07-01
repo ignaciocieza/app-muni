@@ -1,23 +1,10 @@
-import {
-    SET_USER,
-    SET_CURRENT_IMG,
-    SET_CURRENT_USER,
-    SET_IS_HEADER,
-    RESET_CURRENTS,
-    FETCH_USERS,
-    FETCH_USER,
-    DELETE_USER,
-    SET_ADMIN,
-    IS_FETCHING,
-    IS_FETCHED,
-    FIND_USER,
-    SET_ERROR,
-    SET_ALERTS,
-    LOGOUT,
-    SET_TOGGLE_IMG,
-} from '../actions/typeAction';
+import userTypeActions from '../actions/user/userTypeActions';
+import commonTypes from '../actions/commonTypes';
 import { deleteAux } from './helperFunction.js';
 
+/**
+ * user--> db "persona"
+ */
 const INITIAL_STATE = {
     users: [],
     currentUser: '',
@@ -37,7 +24,7 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case SET_USER:
+        case userTypeActions.SET_USER_SUCCESS:
             return ({
                 ...state,
                 //users: addUser(state.users, action.payload),
@@ -48,37 +35,42 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 error: '',
                 alerts: ''
             });
-        case SET_CURRENT_IMG:
+        case userTypeActions.SET_CURRENT_IMG:
             return ({
                 ...state,
                 currentImage: action.payload
             });
-        case SET_CURRENT_USER:
+        case userTypeActions.SET_CURRENT_USER:
             return ({
                 ...state,
                 currentUser: { ...action.payload, image: 'especificada en currentImage' },
                 currentImage: action.payload.image
             });
-        case SET_ADMIN:
+        case userTypeActions.SET_ADMIN_SUCCESS:
             return ({
                 ...state,
                 admin: action.payload,
                 alerts: '',
                 isHeader: true
             });
-        case SET_ERROR:
+        case commonTypes.SET_ERROR:
             return ({
                 ...state,
                 error: action.payload,
                 isFetching: false,
                 isFetched: false,
             });
-        case SET_IS_HEADER:
+        case commonTypes.SET_IS_HEADER:
             return ({
                 ...state,
                 isHeader: action.payload
-            })
-        case RESET_CURRENTS:
+            });
+        case commonTypes.SET_ALERTS:
+            return ({
+                ...state,
+                alerts: action.payload
+            });
+        case commonTypes.RESET_CURRENTS:
             return ({
                 ...state,
                 currentUser: '',
@@ -88,26 +80,30 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 error: false,
                 alerts: false,
             });
-        case FETCH_USERS:
+        case userTypeActions.FETCH_USERS_SUCCESS:
             return ({
                 ...state,
                 users: action.payload,
                 isFetching: false,
                 isFetched: true,
+                error: false,
             });
-        case FETCH_USER:
+        case userTypeActions.FETCH_USER_SUCCESS:
             return ({
                 ...state,
                 currentUser: action.payload,
+                isFetching: false,
+                isFetched: true,
+                error: false,
             });
-        case DELETE_USER:
+        case userTypeActions.DELETE_USER_SUCCESS:
             return ({
                 ...state,
                 //users: deleteAuser(state.users, action.payload),
                 users: deleteAux(state.users, action.payload)
                 //users: delete state.users[action.payload]
             });
-        case IS_FETCHING:
+        case commonTypes.IS_FETCHING:
             return ({
                 ...state,
                 isFetching: action.payload,
@@ -115,28 +111,23 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 error: false,
                 alerts: false
             });
-        case IS_FETCHED:
+        case commonTypes.IS_FETCHED:
             return ({
                 ...state,
                 isFetched: action.payload
             });
-        case FIND_USER:
+        case userTypeActions.FIND_USER:
             return ({
                 ...state,
                 //currentUser: findUserValue(state.users, action.payload)
                 currentUser: state.users[action.payload]
             });
-        case SET_ALERTS:
-            return ({
-                ...state,
-                alerts: action.payload
-            })
-        case LOGOUT:
+        case commonTypes.LOGOUT:
             return ({
                 ...state,
                 ...INITIAL_STATE
-            })
-        case SET_TOGGLE_IMG:
+            });
+        case userTypeActions.SET_TOGGLE_IMG:
             return ({
                 ...state,
                 toggleImage: {

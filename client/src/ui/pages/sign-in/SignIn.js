@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAdmin, setAlerts } from '../../../api/actions/indexAction';
+import { setAdminStart } from '../../../api/actions/user/userActions';
+import { setAlerts } from '../../../api/actions/commonActions';
 import imageLogo from '../../../assets/gob-municipal-abajo.png';
 import ActionAlerts from '../../widgets/action-alerts/ActionAlerts';
 import {
@@ -13,7 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import useStyles from './signIn.styles';
 
 export default function SignIn() {
-    const [errorValues, setErrorValues]= useState({nuevaContrasena:false});
+    const [errorValues, setErrorValues] = useState({ nuevaContrasena: false });
     const [adminValue, setAdminValue] = useState({
         email: '',
         password: '',
@@ -30,15 +31,15 @@ export default function SignIn() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
-        if(adminValue.isSignUp){
-            if(adminValue.newPassword.length !== 8){
-                setErrorValues({nuevaContrasena: true});
+
+        if (adminValue.isSignUp) {
+            if (adminValue.newPassword.length !== 8) {
+                setErrorValues({ nuevaContrasena: true });
                 dispatch(setAlerts('Debe introducir un nueva contraseña de 8 dígitos'));
                 return
             }
         }
-        dispatch(setAdmin(adminValue));
+        dispatch(setAdminStart(adminValue));
     }
 
     return (
@@ -97,7 +98,7 @@ export default function SignIn() {
                                     name='password'
                                     type={adminValue.showNewPassword ? 'text' : 'password'}
                                     value={adminValue.newPassword}
-                                    error={errorValues.nuevaContrasena }
+                                    error={errorValues.nuevaContrasena}
                                     onChange={(event) => setAdminValue({ ...adminValue, newPassword: event.target.value })}
                                     endAdornment={
                                         <InputAdornment position="end">

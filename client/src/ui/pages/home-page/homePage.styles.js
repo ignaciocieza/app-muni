@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
         height: 'auto,'
     },
     alert: {
-        width: '90vw',
+        width: '80vw',
         [theme.breakpoints.down('md')]: {
             width: '99vw',
             position: 'absolute',

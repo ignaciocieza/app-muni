@@ -4,20 +4,17 @@ const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     form: {
-        height: `calc(${innerHeight}px * 3.5)`,
         marginLeft: '10%',
+        height: '630vh',
         paddingTop: '2%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
-        position: 'relative',
         [theme.breakpoints.down('md')]: {
-            width: '100vw',
-            height: `calc(${innerHeight}px * 3)`,
-            position: 'absolute',
-            top: `calc(${innerHeight}px * .15)`,
-            margin: '1%',
+            height: `calc(${innerHeight}px * 5)`,
+            marginLeft: '0%',
+            marginTop: '3%',
         }
     },
     title: {
@@ -38,7 +35,7 @@ const useStyles = makeStyles(theme => ({
         alignSelf: 'flex-start',
         opacity: 0.54,
         [theme.breakpoints.down('md')]: {
-            margin: '1% 0 0% 8%',
+        margin: '1% 0 0% 8%',
         }
     },
     textfield: {
@@ -74,13 +71,42 @@ const useStyles = makeStyles(theme => ({
             padding: '2%',
         }
     },
+    radioButtons: {
+        width: '54%',
+        //margin: '2% 0% 2% 3%',
+        margin: '0% 0% 0% 3%',
+    },
+    error: {
+        border: '1px solid #f44336',
+        width: '47vw',
+        margin: '2%',
+    },
+    contentOtro: {
+        display: 'flex',
+        width: '184%'
+    },
+    errorContent: {
+        width: '47vw',
+        margin: '2%',
+        [theme.breakpoints.down('md')]: {
+            width: '80vw',
+        }
+    },
+    textfieldOtro: {
+        margin: '2%',
+        width: '100%',
+        [theme.breakpoints.down('md')]: {
+            margin: '5%',
+        }
+    },
     button: {
-        margin: '3%',
+        margin: '1%',
         width: '14%',
         backgroundColor: colors.blueOne,
         [theme.breakpoints.down('md')]: {
             width: '60%',
             marginTop: '6%',
+            marginBottom: '6%'
         }
     },
 }));

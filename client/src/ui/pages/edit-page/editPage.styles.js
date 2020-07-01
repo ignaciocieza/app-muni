@@ -4,7 +4,7 @@ const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     form: {
-        height: `calc(${innerHeight}px * 3.5)`,
+        height: `calc(${innerHeight}px * 7.5)`,
         marginLeft: '10%',
         paddingTop: '2%',
         display: 'flex',
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         [theme.breakpoints.down('md')]: {
             width: '100vw',
-            height: `calc(${innerHeight}px * 3)`,
+            height: `calc(${innerHeight}px * 7)`,
             position: 'absolute',
             top: `calc(${innerHeight}px * .15)`,
             margin: '1%',
@@ -72,6 +72,33 @@ const useStyles = makeStyles(theme => ({
             width: '78%',
             height: '14%',
             padding: '2%',
+        }
+    },
+    radioButtons: {
+        width: '54%',
+        margin: '0% 0% 0% 3%',
+    },
+    error: {
+        border: '1px solid #f44336',
+        width: '47vw',
+        margin: '2%',
+    },
+    contentOtro: {
+        display: 'flex',
+        width: '184%'
+    },
+    errorContent: {
+        width: '47vw',
+        margin: '2%',
+        [theme.breakpoints.down('md')]: {
+            width: '80vw',
+        }
+    },
+    textfieldOtro: {
+        margin: '2%',
+        width: '100%',
+        [theme.breakpoints.down('md')]: {
+            margin: '5%',
         }
     },
     button: {

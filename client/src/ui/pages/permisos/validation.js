@@ -41,7 +41,7 @@ export const isMail = (value) => {
  * Devuelve un array vacio si no tiene errores.
  * @param {valores de usuario} values 
  */
-export const isValidSubmit = (values, currentImage, admin) => {
+export const isValidSubmitCirculacion = (values, currentImage, admin) => {
     let respError = [];
 
     if (isDNI(values.dni)) {
@@ -50,8 +50,10 @@ export const isValidSubmit = (values, currentImage, admin) => {
     if (isTelefono(values.numeroTelefono)) {
         respError.push({ type: 'error', text: 'Debe ingresar un Número de Teléfono válido', key: '2' });
     }
-    if (isMail(values.email)) {
-        respError.push({ type: 'error', text: 'Debe ingresar un Email válido', key: '3' });
+    if (values.email) {
+        if (isMail(values.email)) {
+            respError.push({ type: 'error', text: 'Debe ingresar un Email válido', key: '3' });
+        }
     }
     if (!values.permisoTipo) {
         respError.push({ type: 'error', text: 'Debe ingresar un Tipo de Permiso', key: '4' });
@@ -64,8 +66,43 @@ export const isValidSubmit = (values, currentImage, admin) => {
             respError.push({ type: 'error', text: 'Debe ingresar un Permiso', key: '6' })
         }
     }
-
     return respError;
-}
+};
 
+export const isValidSubmitIngreso = (userValues) => {
+    let respError = [];
 
+    if (isDNI(userValues.dni)) {
+        respError.push({ type: 'error', text: 'Debe ingresar un DNI válido', key: '7' });
+    };
+    if (userValues.numeroTelefono) {
+        if (isTelefono(userValues.numeroTelefono)) {
+            respError.push({ type: 'error', text: 'Debe ingresar un Número de Teléfono válido', key: '8' });
+        };
+    }
+    if (!userValues.cantidadPasajeros) {
+        respError.push({ type: 'error', text: 'Debe ingresar cantidad de pasajeros', key: '9' });
+    };
+    if (!userValues.acceso) {
+        respError.push({ type: 'error', text: 'Debe ingresar un acceso', key: '10' });
+    };
+    if (!userValues.residencia) {
+        respError.push({ type: 'error', text: 'Debe ingresar una residencia', key: '11' });
+    };
+    if (!userValues.registro) {
+        respError.push({ type: 'error', text: 'Debe ingresar un registro', key: '12' });
+    }
+    if (!userValues.motivoViaje) {
+        respError.push({ type: 'error', text: 'Debe ingresar un motivo de viaje', key: '13' });
+    }
+    if (!userValues.destinoViaje) {
+        respError.push({ type: 'error', text: 'Debe ingresar el destino de viaje', key: '14' });
+    }
+    if (!userValues.tiempoDestino) {
+        respError.push({ type: 'error', text: 'Debe ingresar un tiempo en destino', key: '15' });
+    }
+    if (!userValues.entraCuarentena) {
+        respError.push({ type: 'error', text: 'Debe ingresar si entra en cuarentena', key: '16' });
+    }
+    return respError;
+};

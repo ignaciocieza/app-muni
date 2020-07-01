@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //import Lottie from 'react-lottie';
-import { setIsHeader } from '../../../api/actions/indexAction';
+import { setIsHeader } from '../../../api/actions/commonActions';
 import imageMunicipalidad from '../../../assets/MUNILASFLORES.jpg';
 import ActionAlerts from '../../widgets/action-alerts/ActionAlerts';
 import useStyles from './homePage.styles';
@@ -10,6 +10,7 @@ import useStyles from './homePage.styles';
 
 const HomePage = () => {
     const { isFetched, admin } = useSelector(state => state.user);
+    const { agente, isFetchedAgente } = useSelector(state => state.agente);
     const dispatch = useDispatch();
     const classes = useStyles();
     // const defaultOptions = {
@@ -21,7 +22,7 @@ const HomePage = () => {
     //          //preserveAspectRatio: 'xMidYMid meet'
     //     }
     // };
-    useEffect(() => {dispatch(setIsHeader(true))}, [dispatch]);
+    useEffect(() => { dispatch(setIsHeader(true)) }, [dispatch]);
 
     return (
         <div className={classes.content}>
@@ -31,18 +32,19 @@ const HomePage = () => {
             <div className={classes.imagenContent}>
                 <img src={imageMunicipalidad} alt='No imagen' className={classes.imagen} />
             </div>
-            {(isFetched) && (
+            {(isFetched || isFetchedAgente) ? (
                 <div className={classes.alert}>
                     <ActionAlerts type='success' text='Solicitud enviada con éxito.' />
                 </div>
-            )}
-            {(admin) && (
-                <div className={classes.alertSuccs}>
-                    <ActionAlerts type='info' text='Bienvenido! Ha ingresado correctamente.' />
-                </div>
-            )}
+            ) : (
+                    (admin || agente) && (
+                        <div className={classes.alertSuccs}>
+                            <ActionAlerts type='info' text={`Bienvenido ${admin || agente}!  Ha ingresado correctamente.`} />
+                        </div>
+                    )
+                )
+            }
         </div>
-
     );
 };
 
