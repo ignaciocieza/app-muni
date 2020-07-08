@@ -14,7 +14,7 @@ import useStyles from './headerPhone.styles';
 export default function HeaderPhone() {
     const [state, setState] = useState(false);
     const history = useHistory();
-    const { admin } = useSelector(state => state.user);
+    const { user: { admin }, agente: { agente } } = useSelector(state => state);
     const dispatch = useDispatch()
     const classes = useStyles();
 
@@ -53,10 +53,10 @@ export default function HeaderPhone() {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {admin ? (
+            {(admin || agente) ? (
                 <React.Fragment>
                     <List>
-                        {itemList.map((item) => (
+                        {admin && itemList.map((item) => (
                             <ListItem
                                 key={item.keyValue}
                                 button
@@ -70,6 +70,19 @@ export default function HeaderPhone() {
                                 <ListItemText primary={item.text} />
                             </ListItem>
                         ))}
+                        {agente && (
+                            <ListItem
+                                button
+                                onClick={() => {
+                                    setState(false);
+                                    dispatch(resetCurrents());
+                                    history.push(itemList[1].route);
+                                }}
+                            >
+                                <ListItemIcon >{itemList[1].icon}</ListItemIcon>
+                                <ListItemText primary={itemList[1].text} />
+                            </ListItem>
+                        )}
                     </List>
                     <Divider />
                     <List>

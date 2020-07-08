@@ -15,7 +15,7 @@ export default function AsideBar() {
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
-    let location = useLocation();
+    const location = useLocation();
 
     useEffect(() => {
         setIsActive(location.pathname);

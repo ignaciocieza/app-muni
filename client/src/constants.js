@@ -8,5 +8,6 @@ export const colors = {
     grayAccent: '#EEEEEE',
     grayTwo:'#CCCCCC',
     white: '#FFFFFF',
+    shadow: '5px 5px 8px -6px rgba(0,0,0,0.65)'
 };
 

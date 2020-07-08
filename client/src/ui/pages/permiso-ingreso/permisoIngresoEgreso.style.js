@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         [theme.breakpoints.down('md')]: {
-            height: `calc(${innerHeight}px * 5)`,
+            height: `calc(${innerHeight}px * 5.3)`,
             marginLeft: '0%',
             marginTop: '3%',
         }
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     textfield: {
         margin: '2%',
         width: '54%',
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             width: '80%',
             margin: '4% 0% 4% 0%',
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     formControl: {
         margin: '2%',
         width: '54%',
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             width: '80%',
         }
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
         width: '52%',
         height: '14%',
         opacity: 0.5,
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         borderRadius: 4,
         textAlign: 'justify',
         fontSize: '1.5em',
@@ -78,23 +78,29 @@ const useStyles = makeStyles(theme => ({
     },
     error: {
         border: '1px solid #f44336',
-        width: '47vw',
+        //width: '47vw',
+        width: '54%',
         margin: '2%',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        }
     },
     contentOtro: {
         display: 'flex',
         width: '184%'
     },
     errorContent: {
-        width: '47vw',
+        //width: '47vw',
+        width: '54%',
         margin: '2%',
         [theme.breakpoints.down('md')]: {
-            width: '80vw',
+            width: '80%',
         }
     },
     textfieldOtro: {
         margin: '2%',
         width: '100%',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             margin: '5%',
         }

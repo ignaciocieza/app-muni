@@ -21,6 +21,7 @@ const DetailPage = ({ match }) => {
         otroDestinoViaje, otroMotivoViaje, otroResidencia, otroTiempoDestino
     } = currentMerge ? currentMerge : '';
 
+    console.dir(currentMerge)
 
     useEffect(() => {
         if (flag) {
@@ -127,7 +128,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={otroAcceso ? otroAcceso : acceso}
+                value={otroAcceso !== "Sin especificar" ? otroAcceso : acceso}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -136,7 +137,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={otroResidencia ? otroResidencia : residencia}
+                value={otroResidencia !== "Sin especificar" ? otroResidencia : residencia}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -163,7 +164,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={otroMotivoViaje ? otroMotivoViaje : motivoViaje}
+                value={otroMotivoViaje !== "Sin especificar" ? otroMotivoViaje : motivoViaje}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -181,7 +182,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={otroDestinoViaje ? otroDestinoViaje : destinoViaje}
+                value={otroDestinoViaje !== "Sin especificar" ? otroDestinoViaje : destinoViaje}
                 InputProps={{
                     readOnly: true,
                 }}
@@ -190,7 +191,7 @@ const DetailPage = ({ match }) => {
             <TextField
                 className={classes.textfield}
                 variant="outlined"
-                value={otroTiempoDestino ? otroTiempoDestino : tiempoDestino}
+                value={otroTiempoDestino !== "Sin especificar" ? otroTiempoDestino : tiempoDestino}
                 InputProps={{
                     readOnly: true,
                 }}

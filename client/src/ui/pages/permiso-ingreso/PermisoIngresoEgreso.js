@@ -195,7 +195,7 @@ const PermisoIngresoEgreso = () => {
                         <FormControlLabel value="Funcionario publico" control={<Radio color="primary" />} label="Funcionario publico" />
                         <div className={classes.contentOtro} >
                             <FormControlLabel value="otroMotivoViaje" control={<Radio color="primary" />} label="Otro:" />
-                            <TextField
+                            <TextField 
                                 variant="outlined"
                                 name="otroMotivoViaje"
                                 value={userValues.otroMotivoViaje || ''}

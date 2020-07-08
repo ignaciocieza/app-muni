@@ -9,8 +9,7 @@ import useStyles from './homePage.styles';
 //const animationData = require('../../../assets/progress-and-loading-animation.json');
 
 const HomePage = () => {
-    const { isFetched, admin } = useSelector(state => state.user);
-    const { agente, isFetchedAgente } = useSelector(state => state.agente);
+    const { user: { isFetched }, user: { admin }, agente: { agente }, agente: { isFetchedAgente } } = useSelector(state => state);
     const dispatch = useDispatch();
     const classes = useStyles();
     // const defaultOptions = {
@@ -39,7 +38,7 @@ const HomePage = () => {
             ) : (
                     (admin || agente) && (
                         <div className={classes.alertSuccs}>
-                            <ActionAlerts type='info' text={`Bienvenido ${admin || agente}!  Ha ingresado correctamente.`} />
+                            <ActionAlerts type='info' text={`Bienvenido usuario: ${(admin && admin.split('@')[0]) || (agente && agente.split('@')[0])}!  Ha ingresado correctamente.`} />
                         </div>
                     )
                 )

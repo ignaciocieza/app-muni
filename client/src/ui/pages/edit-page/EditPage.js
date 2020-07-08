@@ -185,7 +185,7 @@ const EditPage = () => {
                 onChange={handleChange}
                 placeholder="Whatsapp: CODIGO DE AREA + NUMERO (TOTAL 10 NUMEROS)"
             />
-            <ImagePicker title='* ADJUNTAR IMAGEN DEL FRENTE DEL DNI' />
+            <ImagePicker title='ADJUNTAR IMAGEN DEL FRENTE DEL DNI' />
             <span className={classes.subtitle}>* ACCESO</span>
             <div className={errorValues.acceso ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
