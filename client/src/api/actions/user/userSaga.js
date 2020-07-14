@@ -172,13 +172,15 @@ export function* setAdmin({ payload }) {
         }
         if (response) {
             if (response.data.isUser) {
-
                 if (email === 'agente@transito.com.ar') {
                     yield put(setAgenteSuccess(email));
                 } else {
                     yield put(setAdminSuccess(email));
                 }
                 history.push('/home');
+            }
+            else {
+                yield put(setAlerts('El email o la contraseña son incorrectos. Reintente!'));
             }
         }
     } catch (error) {

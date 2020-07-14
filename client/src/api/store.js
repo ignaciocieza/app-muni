@@ -1,9 +1,7 @@
 //Develop
 //import { createStore, compose, applyMiddleware } from "redux";
-//import thunk from "redux-thunk";
 //Production
 import { createStore, applyMiddleware } from "redux";
-
 import createSagaMiddleware from 'redux-saga';
 import { persistStore } from 'redux-persist';
 import reducer from "./reducers/indexReducer";
@@ -18,7 +16,6 @@ import rootSaga from './reducers/rootSaga';
 //         { ...action, data: '<<LONG_BLOB>>' } : action
 // );
 
-//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
 //     actionSanitizer,
 //     stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state,

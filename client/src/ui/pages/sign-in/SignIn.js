@@ -31,14 +31,14 @@ export default function SignIn() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const auxSignUp = adminValue.isSignUp && adminValue.newPassword.length !== 8;
 
-        if (adminValue.isSignUp) {
-            if (adminValue.newPassword.length !== 8) {
-                setErrorValues({ nuevaContrasena: true });
-                dispatch(setAlerts('Debe introducir un nueva contraseña de 8 dígitos'));
-                return
-            }
+        if (auxSignUp || adminValue.password.length !== 8) {
+            setErrorValues((auxSignUp && { nuevaContrasena: true }));
+            dispatch(setAlerts('Debe introducir una contraseña de 8 dígitos'));
+            return
         }
+
         dispatch(setAdminStart(adminValue));
     }
 
