@@ -22,19 +22,12 @@ export function* setAgenteValues({ payload }) {
         newAgente.otroTiempoDestino = payload.otroTiempoDestino ? payload.otroTiempoDestino : 'Sin especificar';
 
         auxPost = yield axios.post('/mariadb/acceso', { type: 'patch', data: newAgente });
-    
+        
         if (!auxPost.data.affectedRows) {
             yield axios.post('/mariadb/acceso', { type: 'post', data: newAgente })
         }
 
-        // if (payload.isPatch && payload.currentUser) {
-        //     yield axios.post('/mariadb/acceso', { type: 'patch', data: newAgente });
-        // } else {
-        //     yield axios.post('/mariadb/acceso', { type: 'post', data: newAgente })
-        // }
-        if (!payload.isPatch) {
-            history.push('/home');
-        }
+        history.push('/home');
 
         yield put(setAgenteValueSuccess(newAgente));
     } catch (err) {
@@ -49,38 +42,39 @@ export function* fetchAgentes() {
     try {
         response = yield axios.post('/mariadb/acceso', { type: 'get' });
         auxResponse = response.data;
-        auxUser = new schema.Entity('users', {}, {
-            idAttribute: 'DNI',
-            processStrategy: (value, parent, key) => {
-                return ({
-                    nombre: value.nombre,
-                    apellido: value.apellido,
-                    dni: value.DNI,
-                    cantidadPasajeros: value.pasajeros,
-                    dniPasajeros: value.DNI_pasajeros,
-                    acceso: value.acceso_ciudad,
-                    residencia: value.residencia,
-                    domicilio: value.origen,
-                    registro: value.registro,
-                    motivoViaje: value.motivo,
-                    numeroTelefono: value.numeroTelefono,
-                    destinoViaje: value.destino,
-                    tiempoDestino: value.tiempo_destino,
-                    patente: value.patente,
-                    entraCuarentena: value.cuarentena,
-                    observaciones: value.observaciones,
-                    fechaAlta: value.fecha_alta,
-                    otroDestinoViaje: value.otroDestinoViaje,
-                    otroAcceso: value.otroAcceso,
-                    otroMotivoViaje: value.otroMotivoViaje,
-                    otroResidencia: value.otroResidencia,
-                    otroTiempoDestino: value.otroTiempoDestino,
-                    //agenteDbType: value.agenteDbType,
-                    esAgente: 'si'
-                })
-            }
-        });
+
         if (auxResponse.length) {
+            auxUser = new schema.Entity('users', {}, {
+                idAttribute: 'DNI',
+                processStrategy: (value, parent, key) => {
+                    return ({
+                        nombre: value.nombre,
+                        apellido: value.apellido,
+                        dni: value.DNI,
+                        cantidadPasajeros: value.pasajeros,
+                        dniPasajeros: value.DNI_pasajeros,
+                        acceso: value.acceso_ciudad,
+                        residencia: value.residencia,
+                        domicilio: value.origen,
+                        registro: value.registro,
+                        motivoViaje: value.motivo,
+                        numeroTelefono: value.numeroTelefono,
+                        destinoViaje: value.destino,
+                        tiempoDestino: value.tiempo_destino,
+                        patente: value.patente,
+                        entraCuarentena: value.cuarentena,
+                        observaciones: value.observaciones,
+                        fechaAlta: value.fecha_alta,
+                        otroDestinoViaje: value.otroDestinoViaje,
+                        otroAcceso: value.otroAcceso,
+                        otroMotivoViaje: value.otroMotivoViaje,
+                        otroResidencia: value.otroResidencia,
+                        otroTiempoDestino: value.otroTiempoDestino,
+                        //agenteDbType: value.agenteDbType,
+                        esAgente: 'si'
+                    })
+                }
+            });
             returnObj = normalize(auxResponse, [auxUser]);
             yield put(fetchAgentesSuccess(returnObj.entities.users));
         }

@@ -129,19 +129,10 @@ export function* setUser({ payload }) {
             yield axios.post('/mariadb', { type: 'post', data: newUser });
         }
 
-        // if (payload.isPatch && payload.currentUser) {
-        //     error = 'Error en la base de datos';
-        //     yield axios.post('/mariadb', { type: 'patch', data: newUser });
-        // } else {
-        //     error = 'Error con la base de datos, reintente o consulte en administrar en caso de que el usuario ya esté registrado';
-        //     yield axios.post('/mariadb', { type: 'post', data: newUser });
-        // }
-        if (!payload.isPatch) {
-            if (payload.permiso === 'PENDIENTE') {
-                history.push('/home');
-            } else {
-                history.push(`/detail/${newUser.dni}`);
-            }
+        if (payload.permiso === 'PENDIENTE') {
+            history.push('/home');
+        } else {
+            history.push(`/detail/${newUser.dni}`);
         }
 
         yield put(setUserSuccess(newUser));
