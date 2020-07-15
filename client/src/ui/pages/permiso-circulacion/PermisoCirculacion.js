@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserStart } from '../../../api/actions/user/userActions';
-import { setAlerts, setIsFetching } from '../../../api/actions/commonActions'
+import { setAlerts, setIsFetching, setIsHeader } from '../../../api/actions/commonActions'
 import ImagePicker from '../../widgets/image-picker/ImagePicker';
 import Modal from '../../widgets/modal/TransitionsModal';
 import AlertsList from '../alerts-list/AlertsList';
@@ -15,6 +15,8 @@ const PermisoCirculacion = () => {
     const { currentImage, admin, isFetching, alerts, error } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const classes = useStyles();
+
+    useEffect(() => { dispatch(setIsHeader(true)) }, [dispatch]);
 
     /**
      * Funcion Geolocalizacion
