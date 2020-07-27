@@ -6,6 +6,7 @@ import { setIsFetching } from '../../../api/actions/commonActions';
 import { fetchUsersAgentesStart, deleteUserAgenteStart, setCurrentUserAgente } from '../../../api/actions/merge/mergeActions';
 import Modal from '../../widgets/modal/TransitionsModal';
 import MaterialTable from 'material-table';
+import { sinEspecificar } from '../../../constants';
 import useStyles from './adminPermiso.styles';
 
 const AdminPermiso = () => {
@@ -19,7 +20,7 @@ const AdminPermiso = () => {
             title: 'Imagen',
             field: 'image',
             render: rowData => (
-                ((rowData.image) && (rowData.image !== 'Sin especificar')) && (
+                ((rowData.image) && (rowData.image !== sinEspecificar)) && (
                     <img
                         alt='no img'
                         src={rowData.image}
@@ -32,20 +33,20 @@ const AdminPermiso = () => {
         },
         { title: 'Fecha de Alta', field: 'fechaAlta' },
         { title: 'Fecha de Última Modificación', field: 'fechaModificacion' },
-        {
-            title: 'Agente de Control de Tránsito',
-            field: 'esAgente',
-            render: rowData => (rowData.esAgente ? 'SI' : 'NO')
-        },
-        { title: 'Nombre', field: 'nombre' },
-        { title: 'Apellido', field: 'apellido' },
-        { title: 'Dni', field: 'dni' },
+        { title: 'Tipo de Permiso', field: 'permisoTipo' },
         {
             title: 'Estado del Permiso',
             field: 'permiso',
             render: rowData => (rowData.permiso ? rowData.permiso : 'PENDIENTE')
         },
-        { title: 'Tipo de Permiso', field: 'permisoTipo' },
+        { title: 'Nombre', field: 'nombre' },
+        { title: 'Apellido', field: 'apellido' },
+        { title: 'Dni', field: 'dni' },
+        // {
+        //     title: 'Agente de Control de Tránsito',
+        //     field: 'esAgente',
+        //     render: rowData => (rowData.esAgente ? 'SI' : 'NO')
+        // },
         { title: 'Email', field: 'email' },
         { title: 'Teléfono', field: 'numeroTelefono' },
         { title: 'Nro Control', field: 'numeroControl' },

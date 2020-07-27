@@ -54,7 +54,8 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         width: '100%',
-        height: 'auto',
+        objectFit: 'contain',
+        height: '100%',
     },
     button: {
         width: '47%',
@@ -83,7 +84,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: colors.grayTwo,
         // boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
         zIndex: 2,
-        boxShadow: ' -2px 0px 11px -1px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         //height: '100%',
         //backgroundPosition: 'center', 
         //backgroundRepeat: 'no-repeat', 

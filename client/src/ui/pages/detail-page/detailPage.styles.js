@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { colors } from '../../../constants';
-//const innerHeight = window.innerHeight;
+const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,7 +40,8 @@ const useStyles = makeStyles(theme => ({
         color: 'red',
     },
     qrCode: {
-        flexGrow: 1,
+        width: '100%',
+        height: `calc(${innerHeight}px * 0.5)`,
     },
     subtitle: {
         margin: '1% 0 -1% 23%',
@@ -79,7 +80,8 @@ const useStyles = makeStyles(theme => ({
         }
     },
     imagenContein: {
-        height: '18%',
+        //height: '18%',
+        height: `calc(${innerHeight}px * 0.7)`,
         width: '54%',
         margin: '1%',
         display: 'flex',
@@ -89,7 +91,7 @@ const useStyles = makeStyles(theme => ({
         border: '1px solid rgba(181, 170, 170, .5)',
         borderRadius: 4,
         [theme.breakpoints.down('md')]: {
-            height: '15%',
+            height: `calc(${innerHeight}px * 0.4)`,
             width: '80%',
             margin: '3% 3% 9% 3%',
         }
@@ -97,7 +99,14 @@ const useStyles = makeStyles(theme => ({
     imagen: {
         width: '100%',
         height: '100%',
-    }
+        objectFit: 'contain',
+    },
+    fecha: {
+        width: '53%',
+        [theme.breakpoints.down('md')]: {
+            width: '78%',
+        }
+    },
 }));
 
 export default useStyles;

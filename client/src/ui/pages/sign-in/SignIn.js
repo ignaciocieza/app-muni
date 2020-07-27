@@ -35,7 +35,7 @@ export default function SignIn() {
 
         if (auxSignUp || adminValue.password.length !== 8) {
             setErrorValues((auxSignUp && { nuevaContrasena: true }));
-            dispatch(setAlerts('Debe introducir una contraseña de 8 dígitos'));
+            dispatch(setAlerts('Error en el mail o en la contraseña.'));
             return
         }
 

@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     },
     uploadContent: {
         width: '100%',
-        height: '70%',
+        height: `calc(${innerHeight}px * 0.6)`,
         border: '1px solid rgba(181, 170, 170, .5)',
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         borderRadius: 4,
@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
     },
     imagen: {
         width: '100%',
-        height: `calc(${innerHeight}px * 0.5)`,
+        //height: `calc(${innerHeight}px * 0.5)`,
+        height: '95%',
         objectFit: 'contain',
         [theme.breakpoints.down('md')]: {
             // height: `calc(${innerHeight}px * 0.3)`,
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
         display: 'none',
     },
     buttonContent: {
-        marginTop: '5%',
+        marginTop: '2%',
         marginBottom: '2%',
         backgroundColor: colors.blueOne,
     },

@@ -4,7 +4,7 @@ const innerHeight = window.innerHeight;
 
 const useStyles = makeStyles(theme => ({
     form: {
-        //height: `calc(${innerHeight}px * 7.5)`,
+        //height: `calc(${innerHeight}px * 3.5)`,
         marginLeft: '10%',
         paddingTop: '2%',
         display: 'flex',
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         [theme.breakpoints.down('md')]: {
             width: '100vw',
-            height: `calc(${innerHeight}px * 7)`,
+            height: `calc(${innerHeight}px * 3)`,
             position: 'absolute',
             top: `calc(${innerHeight}px * .15)`,
             margin: '1%',
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     textfield: {
         margin: '2%',
         width: '54%',
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             width: '80%',
             margin: '4% 0% 4% 0%',
@@ -53,9 +53,15 @@ const useStyles = makeStyles(theme => ({
     formControl: {
         margin: '2%',
         width: '54%',
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             width: '80%',
+        }
+    },
+    fecha: {
+        width: '53%',
+        [theme.breakpoints.down('md')]: {
+            width: '78%',
         }
     },
     textArea: {
@@ -64,7 +70,7 @@ const useStyles = makeStyles(theme => ({
         width: '52%',
         height: '14%',
         opacity: 0.5,
-        boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
+        boxShadow: colors.shadow,
         borderRadius: 4,
         textAlign: 'justify',
         fontSize: '1.5em',
@@ -74,37 +80,38 @@ const useStyles = makeStyles(theme => ({
             padding: '2%',
         }
     },
-    radioButtons: {
-        width: '54%',
-        margin: '0% 0% 0% 3%',
-    },
     error: {
         border: '1px solid #f44336',
-        width: '47vw',
+        //width: '47vw',
+        width: '54%',
         margin: '2%',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        }
     },
     contentOtro: {
         display: 'flex',
         width: '184%'
     },
     errorContent: {
-        width: '47vw',
+        //width: '47vw',
+        width: '54%',
         margin: '2%',
         [theme.breakpoints.down('md')]: {
-            width: '80vw',
+            width: '80%',
         }
+    },
+    radioButtons: {
+        width: '54%',
+        //margin: '2% 0% 2% 3%',
+        margin: '0% 0% 0% 3%',
     },
     textfieldOtro: {
         margin: '2%',
         width: '100%',
+        boxShadow: colors.shadow,
         [theme.breakpoints.down('md')]: {
             margin: '5%',
-        }
-    },
-    fecha: {
-        width: '53%',
-        [theme.breakpoints.down('md')]: {
-            width: '78%',
         }
     },
     button: {

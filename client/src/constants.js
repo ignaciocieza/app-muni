@@ -11,3 +11,6 @@ export const colors = {
     shadow: '5px 5px 8px -6px rgba(0,0,0,0.65)'
 };
 
+//--Sin Especificar----
+export const sinEspecificar= 'no info';
+

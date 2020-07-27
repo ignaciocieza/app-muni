@@ -21,7 +21,7 @@ export default function ActionAlerts({ type, text, isTypeClose }) {
             {isOpen && (
                 <div className={classes.root}>
                     {(type === 'error') && (
-                        <Zoom in={isOpen}>
+                        <Zoom in={isOpen} >
                             {isTypeClose ? (
                                 <Alert variant="filled" severity="error" >{text}</Alert>
                             ) : (
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         marginBottom: '0.2%',
-    },
+    }
 }));
 
 /*

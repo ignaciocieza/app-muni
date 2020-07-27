@@ -41,7 +41,7 @@ export const isMail = (value) => {
  * Devuelve un array vacio si no tiene errores.
  * @param {valores de usuario} values 
  */
-export const isValidSubmitCirculacion = (values, currentImage, admin) => {
+export const isValidSubmitCirculacion = (values, currentImage, isAdmin, isTipoPermiso) => {
     let respError = [];
 
     if (isDNI(values.dni)) {
@@ -55,13 +55,15 @@ export const isValidSubmitCirculacion = (values, currentImage, admin) => {
             respError.push({ type: 'error', text: 'Debe ingresar un Email válido', key: '3' });
         }
     }
-    if (!values.permisoTipo) {
-        respError.push({ type: 'error', text: 'Debe ingresar un Tipo de Permiso', key: '4' });
+    if (!isTipoPermiso) {
+        if (!values.permisoTipo) {
+            respError.push({ type: 'error', text: 'Debe ingresar un Tipo de Permiso', key: '4' });
+        }
     }
     if (!currentImage) {
         respError.push({ type: 'error', text: 'Debe ingresar una Imagen', key: '5' });
     }
-    if (admin) {
+    if (isAdmin) {
         if (values.permiso === 'PENDIENTE' || !values.permiso) {
             respError.push({ type: 'error', text: 'Debe ingresar un Permiso', key: '6' })
         }
@@ -106,3 +108,31 @@ export const isValidSubmitIngreso = (userValues) => {
     }
     return respError;
 };
+
+export const isValidSubmitPesca = (values) => {
+    let respError = [];
+
+    if (!values.cantidadPasajeros) {
+        respError.push({ type: 'error', text: 'Debe ingresar cantidad de pasajeros', key: '17' });
+    };
+    if (!values.fechaPesca) {
+        respError.push({ type: 'error', text: 'Debe ingresar una fecha', key: '18' });
+    }
+    return respError;
+}
+
+export const isValidSubmitEdit = (values) => {
+    let respError = [];
+
+    if (isDNI(values.dni)) {
+        respError.push({ type: 'error', text: 'Debe ingresar un DNI válido', key: '19' });
+    }
+    if (!values.permisoTipo) {
+        respError.push({ type: 'error', text: 'Debe ingresar un Tipo de Permiso', key: '20' });
+    }
+    if (values.permiso === 'PENDIENTE' || !values.permiso) {
+        respError.push({ type: 'error', text: 'Debe ingresar un Permiso', key: '21' })
+    }
+
+    return respError;
+}

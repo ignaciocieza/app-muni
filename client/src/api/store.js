@@ -19,7 +19,7 @@ import rootSaga from './reducers/rootSaga';
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
 //     actionSanitizer,
 //     stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state,
-// })|| compose;
+// }) || compose;
 //-------------------------------
 const sagaMiddleware = createSagaMiddleware();
 

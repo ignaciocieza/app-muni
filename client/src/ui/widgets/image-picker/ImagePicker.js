@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentImage } from '../../../api/actions/user/userActions';
 import noImage from '../../../assets/no-imagen.png'
 import Button from '@material-ui/core/Button';
+import { sinEspecificar } from '../../../constants';
 import useStyles from './imagePicker.styles';
 
 const ImagePicker = ({ title, subtitle }) => {
@@ -18,7 +19,7 @@ const ImagePicker = ({ title, subtitle }) => {
         // formData.append('file', file);
         // console.dir(formData)
         //axios.post('/fileupload', formData)
-        
+
         if (file) {
             reader = new FileReader();
             reader.readAsDataURL(file);
@@ -33,10 +34,10 @@ const ImagePicker = ({ title, subtitle }) => {
             <span className={classes.title}>{title}</span>
             {subtitle && <span className={classes.subtitle}>{subtitle}</span>}
             <div className={classes.uploadContent}>
-                {(currentImage &&  (currentImage !== 'Sin especificar')) ?(
-                    <img src={currentImage} alt='No imagen' className={classes.imagen} />) :(
-                    <img src={noImage} alt='No imagen' className={classes.imagen} />)
-                } 
+                {(currentImage && (currentImage !== sinEspecificar)) ? (
+                    <img src={currentImage} alt='No imagen' className={classes.imagen} />) : (
+                        <img src={noImage} alt='No imagen' className={classes.imagen} />)
+                }
                 <input
                     accept="image/*"
                     className={classes.input}
@@ -46,7 +47,7 @@ const ImagePicker = ({ title, subtitle }) => {
                     type="file"
                     onChange={(e) => {
                         handleImage(e);
-                    }}                    
+                    }}
                 />
             </div>
             <label htmlFor="contained-button-file" className={classes.buttonContent} >

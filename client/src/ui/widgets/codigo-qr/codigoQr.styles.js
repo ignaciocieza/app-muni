@@ -4,15 +4,12 @@ import { colors } from '../../../constants';
 const useStyles = makeStyles(theme => ({
     content: {
         width: '100%',
-        height: '26%',
+        height: '100%',
         //margin:'2%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        [theme.breakpoints.down('md')]: {
-            height: '18%',
-        }
     },
     imagenContent: {
         width: '22%',
@@ -29,18 +26,24 @@ const useStyles = makeStyles(theme => ({
         }
     },
     imagen: {
-        width: '78%',
-        height: '80%',
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
         [theme.breakpoints.down('md')]: {
             maxHeight: '100%',
             maxWidth: '100%',
         }
     },
+    imagenText: {
+        textAlign: 'center',
+        padding: '2%',
+        opacity: '0.7',
+    },
     downloadTag: {
         width: '15%',
         margin: '2% 0% 2% 0%',
         fontSize: '1.2rem',
-        color: 'transparent',    
+        color: 'transparent',
         [theme.breakpoints.down('md')]: {
             width: '44%',
         }
@@ -52,7 +55,7 @@ const useStyles = makeStyles(theme => ({
             fontSize: '0.6rem',
             marginTop: '6%',
         }
-    }    
+    }
 }));
 
 export default useStyles;

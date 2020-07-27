@@ -11,6 +11,7 @@ const SignIn = lazy(() => import('../pages/sign-in/SignIn'));
 const Permisos = lazy(() => import('../pages/permisos/Permisos'));
 const PermisoIngresoEgreso = lazy(() => import('../pages/permiso-ingreso/PermisoIngresoEgreso'));
 const EditPage = lazy(() => import('../pages/edit-page/EditPage'));
+const PermisoPesca = lazy(() => import('../pages/permiso-pesca/PermisoPesca'));
 
 
 const Main = () => (
@@ -18,15 +19,17 @@ const Main = () => (
         <Switch>
             <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>
-                    <Route exact path='/' component={PermisoCirculacion} />
+                    <Route exact path='/' component={Permisos} />
                     <Route exact path='/signin' component={SignIn} />
                     <Route exact path='/home' component={HomePage} />
-                    <Route exact path='/permisos' component={Permisos} />
+                    {/* <Route exact path='/permisos' component={Permisos} /> */}
                     <Route exact path='/permiso/circulacion' component={PermisoCirculacion} />
                     <Route exact path='/permiso/ingreso' component={PermisoIngresoEgreso} />
+                    <Route exact path='/permiso/pesca' component={PermisoPesca} />
                     <Route exact path='/permiso/edit' component={EditPage} />
                     <Route exact path='/admin' component={AdminPermiso} />
                     <Route exact path='/detail/:id' component={DetailPage} />
+                    <Route exact path='/permisos' component={Permisos} />
                 </Suspense>
             </ErrorBoundary>
         </Switch>

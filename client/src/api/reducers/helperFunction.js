@@ -32,6 +32,7 @@ export const addUserAux = (users, newUser) => {
 }
 
 export const deleteAux = (users, id) =>{
-    delete users[id];
-    return users;
+    const auxUser = {...users};
+    delete auxUser[id];
+    return auxUser;
 }

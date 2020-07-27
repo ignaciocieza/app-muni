@@ -5,6 +5,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import userReducer from './userReducer';
 import accesoReducer from './agenteReducer';
 import mergeReducer from './mergeReducer';
+import pescaReducer from './pescaReducer';
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer,
     agente: accesoReducer,
-    merge: mergeReducer
+    merge: mergeReducer,
+    pesca : pescaReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);;

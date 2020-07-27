@@ -43,12 +43,11 @@ const PermisoIngresoEgreso = () => {
             tiempoDestino: !userValues.tiempoDestino,
             entraCuarentena: !userValues.entraCuarentena,
         });
-
         //seteo errores para la ventana modal 
         isValidArray = isValidSubmitIngreso(userValues);
         if (!isValidArray.length) {
             dispatch(setIsFetching(true));
-            dispatch(setAgenteValuesStart(userValues));
+            dispatch(setAgenteValuesStart({ ...userValues, isRedirect: true }));
         } else {
             dispatch(setAlerts(isValidArray));
         }
@@ -195,7 +194,7 @@ const PermisoIngresoEgreso = () => {
                         <FormControlLabel value="Funcionario publico" control={<Radio color="primary" />} label="Funcionario publico" />
                         <div className={classes.contentOtro} >
                             <FormControlLabel value="otroMotivoViaje" control={<Radio color="primary" />} label="Otro:" />
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 name="otroMotivoViaje"
                                 value={userValues.otroMotivoViaje || ''}

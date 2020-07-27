@@ -58,8 +58,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 isFetchingAgente: false,
                 isFetchedAgente: true,
                 error: false,
-            })
-
+            });
         case agenteTypeActions.RESET_CURRENTS:
             return ({
                 ...state,

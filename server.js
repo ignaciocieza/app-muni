@@ -75,7 +75,7 @@ app.post("/mariadb", async (req, res) => {
             permisoTipo,
             fechaAlta,
             fechaModificacion,
-        } = data ? data : "Sin especificar";
+        } = data ? data : '';
 
         switch (type) {
             case "post":
@@ -128,20 +128,20 @@ app.post("/mariadb", async (req, res) => {
                         fechaModificacion,
                         fechaAlta,
                         "user",
-                        dni,
+                        parseInt(dni),
                     ]
                 );
                 return res.status(200).send(dbResp);
             case "delete":
                 dbResp = await conn.query(
-                    `DELETE FROM persona WHERE DNI ='${req.body.data}'`
+                    `DELETE FROM persona WHERE DNI ='${parseInt(req.body.data)}'`
                 );
                 return res.status(200).send(dbResp);
             default:
                 break;
         }
     } catch (err) {
-        console.log("Error en la conexion!!", err);
+        console.log("Error en la conexion DB PERSONA!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool
@@ -233,7 +233,7 @@ app.post("/mariadb/acceso", async (req, res) => {
             otroMotivoViaje,
             otroResidencia,
             otroTiempoDestino,
-        } = data ? data : "Sin especificar";
+        } = data ? data : '';
 
         switch (type) {
             case "post":
@@ -304,22 +304,83 @@ app.post("/mariadb/acceso", async (req, res) => {
                         otroResidencia,
                         otroTiempoDestino,
                         "age",
-                        dni,
+                        parseInt(dni),
                     ]
                 );
                 return res.status(200).send(dbResp);
             case "delete":
                 dbResp = await conn.query(
-                    `DELETE FROM acceso WHERE DNI ='${req.body.data}'`
+                    `DELETE FROM acceso WHERE DNI ='${parseInt(req.body.data)}'`
                 );
                 return res.status(200).send(dbResp);
             default:
                 break;
         }
     } catch (err) {
-        console.log("Error en la conexion!!", err);
+        console.log("Error en la conexion DB ACCESO!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool
     }
 });
+
+app.post("/mariadb/pesca", async (req, res) => {
+    let conn, dbResp;
+    try {
+        conn = await pool.getConnection();
+        const { type, data } = req.body;
+        const {
+            dni,
+            fecha,
+            lugarPesca,
+        } = data ? data : '';
+
+        switch (type) {
+            case "post":
+                dbResp = await conn.query(
+                    "INSERT INTO `pesca` VALUES(?,?,?,?,?)",
+                    [
+                        parseInt(dni),
+                        fecha,
+                        lugarPesca,
+                        'auxpescauno',
+                        'auxpescados',
+                    ]
+                );
+                return res.status(200).send(dbResp);
+            case "get":
+                dbResp = await conn.query("SELECT * FROM pesca");
+                return res.status(200).send(dbResp);
+            case "findOne":
+                dbResp = await conn.query(
+                    `SELECT * FROM pesca WHERE DNI = ${parseInt(dni)}`
+                );
+                return res.status(200).send(dbResp);
+            case "patch":
+                dbResp = await conn.query(
+                    "UPDATE `pesca` SET fecha= ?, lugardepesca= ?, auxpescauno=?, auxpescados=?  WHERE DNI=?",
+                    [
+                        fecha,
+                        lugarPesca,
+                        'auxpescauno',
+                        'auxpescados',
+                        parseInt(dni),
+                    ]
+                );
+                return res.status(200).send(dbResp);
+            case "delete":
+                dbResp = await conn.query(
+                    `DELETE FROM pesca WHERE DNI ='${parseInt(req.body.data)}'`
+                );
+                return res.status(200).send(dbResp);
+            default:
+                break;
+        }
+    } catch (err) {
+        console.log("Error en la conexion: DB PESCA!!", err);
+        res.status(500).send({ error: err });
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+});
+

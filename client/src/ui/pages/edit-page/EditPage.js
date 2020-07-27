@@ -5,12 +5,19 @@ import { setAlerts, setIsFetching } from '../../../api/actions/commonActions';
 import ImagePicker from '../../widgets/image-picker/ImagePicker';
 import Modal from '../../widgets/modal/TransitionsModal';
 import AlertsList from '../alerts-list/AlertsList';
-import { isDNI, isTelefono, isMail, isValidSubmitCirculacion, isValidSubmitIngreso } from '../permisos/validation';
+import { isDNI, isTelefono, isMail, isValidSubmitEdit } from '../permisos/validation';
 import {
     TextField, Button, Icon, MenuItem,
     Select, FormControl, Radio, RadioGroup,
-    FormControlLabel
+    FormControlLabel, Grid
 } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import esLocale from "date-fns/locale/es";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { sinEspecificar } from '../../../constants';
 import useStyles from './editPage.styles';
 
 const EditPage = () => {
@@ -35,16 +42,17 @@ const EditPage = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         let isValidArray = [];
         //seteo error en input de permisoTipo y permiso
         setErrorValues({ ...errorValues, permisoTipo: !userValues.permisoTipo, permiso: !userValues.permiso });
         //seteo errores para la ventana modal 
-        isValidArray = [...isValidSubmitCirculacion(userValues, admin), ...isValidSubmitIngreso(userValues)];
+        isValidArray = isValidSubmitEdit(userValues);
         if (!isValidArray.length) {
             dispatch(setIsFetching(true));
-            dispatch(editUserAgenteStart({ ...userValues, image: currentImage, currentUser: !!currentUser, isPatch: true }));
+            dispatch(editUserAgenteStart({ ...userValues, image: currentImage }));
         } else {
             dispatch(setAlerts(isValidArray));
         }
@@ -64,6 +72,8 @@ const EditPage = () => {
         }
         setUserValues({ ...userValues, [name]: value });
     };
+
+    if (!admin) { return null }
 
     return (
         <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
@@ -87,21 +97,17 @@ const EditPage = () => {
                 value={userValues.apellido || ''}
                 className={classes.textfield}
                 onChange={handleChange} />
-            {admin && (
-                <React.Fragment>
-                    <span className={classes.subtitle}>* PERMISO</span>
-                    <FormControl variant="outlined" error={errorValues.permiso} className={classes.formControl}>
-                        <Select
-                            value={userValues.permiso || ''}
-                            name='permiso'
-                            onChange={handleChange}
-                        >
-                            <MenuItem value={'PERMITIDO'}>PERMITIDO</MenuItem>
-                            <MenuItem value={'DENEGADO'}>DENEGADO</MenuItem>
-                        </Select>
-                    </FormControl>
-                </React.Fragment>
-            )}
+            <span className={classes.subtitle}>* PERMISO</span>
+            <FormControl variant="outlined" error={errorValues.permiso} className={classes.formControl}>
+                <Select
+                    value={userValues.permiso || ''}
+                    name='permiso'
+                    onChange={handleChange}
+                >
+                    <MenuItem value={'PERMITIDO'}>PERMITIDO</MenuItem>
+                    <MenuItem value={'DENEGADO'}>DENEGADO</MenuItem>
+                </Select>
+            </FormControl>
             <span className={classes.subtitle}>* TIPO DE PERMISO</span>
             <FormControl variant="outlined" error={errorValues.permisoTipo} className={classes.formControl}>
                 <Select
@@ -112,6 +118,8 @@ const EditPage = () => {
                     <MenuItem value={'CIRCULACION'}>CIRCULACIÓN</MenuItem>
                     <MenuItem value={'DELIVERY'}>DELIVERY</MenuItem>
                     <MenuItem value={'VOLUNTARIOS'}>VOLUNTARIOS</MenuItem>
+                    <MenuItem value={'INGRESO EGRESO'}>INGRESO EGRESO</MenuItem>
+                    <MenuItem value={'PESCA'}>PESCA</MenuItem>
                 </Select>
             </FormControl>
             <span className={classes.subtitle}>* D.N.I</span>
@@ -125,7 +133,40 @@ const EditPage = () => {
                 className={classes.textfield}
                 onChange={handleChange}
             />
-            <span className={classes.subtitle}>* CANTIDAD PASAJEROS</span>
+            <span className={classes.subtitle}> LUGAR </span>
+            <TextField
+                variant="outlined"
+                placeholder="Especifique el lugar de la Pesca"
+                name="lugarPesca"
+                value={userValues.lugarPesca || ''}
+                className={classes.textfield}
+                onChange={handleChange}
+            />
+            <span className={classes.subtitle}> FECHA </span>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                <Grid container justify="space-around" >
+                    <KeyboardDatePicker
+                        disableToolbar
+                        // variant="inline"
+                        variant="outlined"
+                        format="dd/MM/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        //label="Fecha del Día de la Pesca"
+                        disablePast={true}
+                        name='fechaPesca'
+                        invalidDateMessage='Formato de la Fecha Inválido'
+                        invalidLabel='Ingrese el día de la pesca'
+                        value={userValues.fechaPesca || ""}
+                        onChange={(e) => setUserValues({ ...userValues, fechaPesca: e })}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                        className={classes.fecha}
+                    />
+                </Grid>
+            </MuiPickersUtilsProvider>
+            <span className={classes.subtitle}> CANTIDAD PASAJEROS</span>
             <div className={errorValues.cantidadPasajeros ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="cantidadPasajeros" value={userValues.cantidadPasajeros || ''} onChange={handleChange}>
@@ -172,12 +213,11 @@ const EditPage = () => {
                 className={classes.textfield}
                 onChange={handleChange}
             />
-            <span className={classes.subtitle}>* NÚMERO DE TELÉFONO</span>
+            <span className={classes.subtitle}>NÚMERO DE TELÉFONO</span>
             <TextField
                 error={errorValues.telefono ? true : false}
                 helperText={errorValues.telefono}
                 variant="outlined"
-                required
                 name="numeroTelefono"
                 type='tel'
                 value={userValues.numeroTelefono || ''}
@@ -186,7 +226,7 @@ const EditPage = () => {
                 placeholder="Whatsapp: CODIGO DE AREA + NUMERO (TOTAL 10 NUMEROS)"
             />
             <ImagePicker title='ADJUNTAR IMAGEN DEL FRENTE DEL DNI' />
-            <span className={classes.subtitle}>* ACCESO</span>
+            <span className={classes.subtitle}> ACCESO</span>
             <div className={errorValues.acceso ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="acceso" value={userValues.acceso || ''} onChange={handleChange}>
@@ -199,7 +239,7 @@ const EditPage = () => {
                             <TextField
                                 variant="outlined"
                                 name="otroAcceso"
-                                value={userValues.otroAcceso === 'Sin especificar' ? '' : userValues.otroAcceso}
+                                value={userValues.otroAcceso === sinEspecificar ? '' : userValues.otroAcceso}
                                 className={classes.textfieldOtro}
                                 onChange={handleChange}
                             />
@@ -207,7 +247,7 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* RESIDENCIA</span>
+            <span className={classes.subtitle}> RESIDENCIA</span>
             <div className={errorValues.residencia ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="residencia" value={userValues.residencia || ''} onChange={handleChange}>
@@ -222,7 +262,7 @@ const EditPage = () => {
                             <TextField
                                 variant="outlined"
                                 name="otroResidencia"
-                                value={userValues.otroResidencia === 'Sin especificar' ? '' : userValues.otroResidencia}
+                                value={userValues.otroResidencia === sinEspecificar ? '' : userValues.otroResidencia}
                                 className={classes.textfieldOtro}
                                 onChange={handleChange}
                             />
@@ -230,7 +270,7 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* REGISTRO</span>
+            <span className={classes.subtitle}> REGISTRO</span>
             <div className={errorValues.registro ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="registro" value={userValues.registro || ''} onChange={handleChange}>
@@ -239,7 +279,7 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* MOTIVO DEL VIAJE</span>
+            <span className={classes.subtitle}> MOTIVO DEL VIAJE</span>
             <div className={errorValues.motivoViaje ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="motivoViaje" value={userValues.motivoViaje || ''} onChange={handleChange}>
@@ -253,7 +293,7 @@ const EditPage = () => {
                             <TextField
                                 variant="outlined"
                                 name="otroMotivoViaje"
-                                value={userValues.otroMotivoViaje === 'Sin especificar' ? '' : userValues.otroMotivoViaje}
+                                value={userValues.otroMotivoViaje === sinEspecificar ? '' : userValues.otroMotivoViaje}
                                 className={classes.textfieldOtro}
                                 onChange={handleChange}
                             />
@@ -261,16 +301,15 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* PATENTE VEHICULO</span>
+            <span className={classes.subtitle}> PATENTE VEHICULO</span>
             <TextField
                 variant="outlined"
-                required
                 name="patente"
                 value={userValues.patente || ''}
                 className={classes.textfield}
                 onChange={handleChange}
             />
-            <span className={classes.subtitle}>* DESTINO DE VIAJE</span>
+            <span className={classes.subtitle}> DESTINO DE VIAJE</span>
             <div className={errorValues.destinoViaje ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="destinoViaje" value={userValues.destinoViaje || ''} onChange={handleChange}>
@@ -286,7 +325,7 @@ const EditPage = () => {
                             <TextField
                                 variant="outlined"
                                 name="otroDestinoViaje"
-                                value={userValues.otroDestinoViaje === 'Sin especificar' ? '' : userValues.otroDestinoViaje}
+                                value={userValues.otroDestinoViaje === sinEspecificar ? '' : userValues.otroDestinoViaje}
                                 className={classes.textfieldOtro}
                                 onChange={handleChange}
                             />
@@ -294,7 +333,7 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* TIEMPO EN DESTINO</span>
+            <span className={classes.subtitle}> TIEMPO EN DESTINO</span>
             <div className={errorValues.tiempoDestino ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="tiempoDestino" value={userValues.tiempoDestino || ''} onChange={handleChange}>
@@ -306,7 +345,7 @@ const EditPage = () => {
                             <TextField
                                 variant="outlined"
                                 name="otroTiempoDestino"
-                                value={userValues.otroTiempoDestino === 'Sin especificar' ? '' : userValues.otroTiempoDestino}
+                                value={userValues.otroTiempoDestino === sinEspecificar ? '' : userValues.otroTiempoDestino}
                                 className={classes.textfieldOtro}
                                 onChange={handleChange}
                             />
@@ -314,7 +353,7 @@ const EditPage = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <span className={classes.subtitle}>* ¿ ENTRA EN CUARENTENA ?</span>
+            <span className={classes.subtitle}> ¿ ENTRA EN CUARENTENA ?</span>
             <div className={errorValues.entraCuarentena ? classes.error : classes.errorContent}>
                 <FormControl component="fieldset" className={classes.radioButtons}>
                     <RadioGroup aria-label="gender" name="entraCuarentena" value={userValues.entraCuarentena || ''} onChange={handleChange}>
@@ -330,14 +369,13 @@ const EditPage = () => {
                 onChange={handleChange}
                 value={userValues.observaciones || ''}
             />
-            <span className={classes.subtitle}>* MOTIVO DE SOLICITUD DE PERMISO</span>
+            <span className={classes.subtitle}> MOTIVO DE SOLICITUD DE PERMISO</span>
             <textarea
                 name='comentario'
                 className={classes.textArea}
                 placeholder='Detalle el motivo de su solicitud...'
                 onChange={handleChange}
                 value={userValues.comentario || ''}
-                required
             />
             <Button
                 variant="contained"

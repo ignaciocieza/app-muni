@@ -2,34 +2,44 @@ import { takeLatest, call, all, put } from 'redux-saga/effects';
 import { normalize, schema } from 'normalizr';
 import axios from 'axios';
 import { setAgenteValueSuccess, fetchAgentesSuccess, fetchAgenteSuccess, deleteAgenteSuccess } from './agenteActions';
+import { setUserStart } from '../user/userActions';
 import { setError } from '../commonActions';
 import agenteTypeActions from './agenteTypeActions';
+import { sinEspecificar } from '../../../constants';
 import history from '../../history';
 
 //---"simple" generator functions------//
 export function* setAgenteValues({ payload }) {
-    let date, auxPost, newAgente = payload;
+    //!!!!newAgente = {...payload} --> 'deep copy', 
+    //!!!para evitar que al copiar objetos, se copie el puntero( valor por fererencia)
+    let auxPost, newAgente = { ...payload };
 
     try {
-        date = new Date().toLocaleString();
-        newAgente.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
-        newAgente.dniPasajeros = payload.dniPasajeros ? payload.dniPasajeros : 'Sin especificar';
-        newAgente.observaciones = payload.observaciones ? payload.observaciones : 'Sin especificar';
-        newAgente.otroDestinoViaje = payload.otroDestinoViaje ? payload.otroDestinoViaje : 'Sin especificar';
-        newAgente.otroAcceso = payload.otroAcceso ? payload.otroAcceso : 'Sin especificar';
-        newAgente.otroMotivoViaje = payload.otroMotivoViaje ? payload.otroMotivoViaje : 'Sin especificar';
-        newAgente.otroResidencia = payload.otroResidencia ? payload.otroResidencia : 'Sin especificar';
-        newAgente.otroTiempoDestino = payload.otroTiempoDestino ? payload.otroTiempoDestino : 'Sin especificar';
+        // date = new Date().toLocaleString();
+        // newAgente.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
+        newAgente.image = false;
+        newAgente.qrData = false;
+
+        [
+            'dniPasajeros', 'otroDestinoViaje', 'patente',
+            'otroAcceso', 'otroMotivoViaje', 'destinoViaje',
+            'otroResidencia', 'otroTiempoDestino', 'tiempoDestino',
+            'registro', 'motivo', 'origen', 'destino', 'entraCuarentena',
+            'pantente', 'pasajeros', 'cuarentena', 'observaciones',
+            'cantidadPasajeros', 'acceso', 'residencia', 'domicilio',
+            'motivoViaje', 'otroMotivoViaje', 'numeroTelefono', 'fechaAlta'
+        ].forEach(item => newAgente[item] = payload[item] ? payload[item] : sinEspecificar)
 
         auxPost = yield axios.post('/mariadb/acceso', { type: 'patch', data: newAgente });
-        
+
         if (!auxPost.data.affectedRows) {
             yield axios.post('/mariadb/acceso', { type: 'post', data: newAgente })
         }
-
-        history.push('/home');
-
+        if (payload.isRedirect) {
+            history.push('/home');
+        }
         yield put(setAgenteValueSuccess(newAgente));
+        yield put(setUserStart({ ...payload, isRedirect: false, permisoTipo: payload.permisoTipo ? payload.permisoTipo : 'INGRESO EGRESO' }));
     } catch (err) {
         console.error(err);
         yield put(setError('Error al cargar el formulario de ingreso y egreso!'));
@@ -71,7 +81,7 @@ export function* fetchAgentes() {
                         otroResidencia: value.otroResidencia,
                         otroTiempoDestino: value.otroTiempoDestino,
                         //agenteDbType: value.agenteDbType,
-                        esAgente: 'si'
+                        //esAgente: 'si'
                     })
                 }
             });
@@ -98,7 +108,7 @@ export function* fetchAgente({ payload }) {
             registro, motivo, dir_destino, destino,
             tiempo_destino, patente, cuarentena,
             observaciones
-        } = response.data[0];
+        } = response.data[0] ? response.data[0] : '';
 
         auxResponse = {
             nombre: nombre,
@@ -117,14 +127,13 @@ export function* fetchAgente({ payload }) {
             patente: patente,
             entraCuarentena: cuarentena,
             observaciones: observaciones,
-            esAgente: 'si'
+            //esAgente: 'si'
         };
         yield put(fetchAgenteSuccess(auxResponse))
     } catch (err) {
         console.error(err);
         yield put(setError('No se encontro usuario, o error en la base de datos'))
     }
-
 }
 
 export function* deleteAgente({ payload }) {

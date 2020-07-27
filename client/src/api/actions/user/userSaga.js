@@ -15,6 +15,7 @@ import { setAgenteSuccess } from '../agente/agenteActions';
 import { setAlerts, setError } from '../commonActions';
 import { bufferToImage, imageToBuffer } from '../herlperFunction';
 import userTypeActions from './userTypeActions';
+import { sinEspecificar } from '../../../constants';
 
 //---"simple" generator functions------//
 
@@ -95,46 +96,51 @@ export function* fetchUser({ payload }) {
 };
 
 export function* setUser({ payload }) {
-    let newUser = payload;
+    let newUser = {...payload};
     let qrCode, nanoid;
     let error = 'Error interno del sistema';
     let date, auxPost;
 
     try {
-        newUser.image = ((payload.image) && (payload.image !== 'Sin especificar')) ? yield imageToBuffer(payload.image) : 'Sin especificar';
-        newUser.nombreComercio = payload.nombreComercio ? payload.nombreComercio : 'Sin especificar';
-        newUser.domicilio = payload.domicilio ? payload.domicilio : 'Sin especificar';
+        newUser.image = ((payload.image) && (payload.image !== sinEspecificar)) ? yield imageToBuffer(payload.image) : sinEspecificar;
+        qrCode = yield QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
+        newUser.qrData = qrCode;
         newUser.email = payload.email ? payload.email : 'sin@especificar.com';
         //https://stackoverflow.com/questions/2013255/how-to-get-year-month-day-from-a-date-object
         //newUser.fechaAlta =  new Date().toLocaleString().split(' ')[0];
         date = new Date().toLocaleString();
         newUser.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
         newUser.fechaModificacion = date;
+        newUser.permiso = payload.permiso ? payload.permiso : 'PENDIENTE';
+        [
+            'nombreComercio', 'domicilio',
+            'numeroTelefono', 'comentario'
+        ].forEach(item => newUser[item] = payload[item] ? payload[item] : sinEspecificar);
 
         if (!payload.numeroControl) {
             nanoid = customAlphabet(payload.dni.toString(), 10);
             newUser.numeroControl = nanoid();
         }
 
-        if (payload.permiso === 'PENDIENTE') {
-            newUser.qrData = 'nodata';
-        } else {
-            qrCode = yield QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
-            newUser.qrData = qrCode;
-        }
+        // if (newUser.permiso === 'PENDIENTE') {
+        //     newUser.qrData = 'nodata';
+        // } else {
+        //     qrCode = yield QRCode.toDataURL(`https://permiso.lasflores.gob.ar/detail/${newUser.dni}`);
+        //     newUser.qrData = qrCode;
+        // }
 
         auxPost = yield axios.post('/mariadb', { type: 'patch', data: newUser });
 
         if (!auxPost.data.affectedRows) {
             yield axios.post('/mariadb', { type: 'post', data: newUser });
         }
-
-        if (payload.permiso === 'PENDIENTE') {
-            history.push('/home');
-        } else {
-            history.push(`/detail/${newUser.dni}`);
+        if (payload.isRedirect) {
+            if (payload.permiso === 'PENDIENTE') {
+                history.push('/home');
+            } else {
+                history.push(`/detail/${newUser.dni}`);
+            }
         }
-
         yield put(setUserSuccess(newUser));
     } catch (err) {
         console.error(err);
