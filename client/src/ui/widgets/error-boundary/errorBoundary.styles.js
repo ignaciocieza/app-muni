@@ -7,7 +7,7 @@ export const ErrorImageOverlay = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #0c0f13;
+  background: #ffffff;
 `;
 
 export const ErrorImageContainer = styled.div`
