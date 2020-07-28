@@ -1,6 +1,6 @@
-import mergeTypeActions from '../actions/merge/mergeTypeActions';
-import commonTypes from '../actions/commonTypes';
-import { deleteAux } from './helperFunction';
+import mergeTypeActions from '../../actions/merge/mergeTypeActions';
+import commonTypes from '../../actions/commonTypes';
+import { deleteAux } from '../helperFunction';
 
 const INITIAL_STATE = {
     merge: [],

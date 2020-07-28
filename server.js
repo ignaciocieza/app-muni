@@ -101,6 +101,7 @@ app.post("/mariadb", async (req, res) => {
                     ]
                 );
                 return res.status(200).send(dbResp);
+            //throw new Error("Error Post");
             case "get":
                 dbResp = await conn.query("SELECT * FROM persona");
                 return res.status(200).send(dbResp);
@@ -132,6 +133,7 @@ app.post("/mariadb", async (req, res) => {
                     ]
                 );
                 return res.status(200).send(dbResp);
+            //throw new Error("Error Patch");
             case "delete":
                 dbResp = await conn.query(
                     `DELETE FROM persona WHERE DNI ='${parseInt(req.body.data)}'`
@@ -152,6 +154,7 @@ app.post("/mariadb/login", async (req, res) => {
     let conn,
         dbResp,
         isMatch = false;
+        
     try {
         conn = await pool.getConnection();
         const { email, password } = req.body;
@@ -167,7 +170,7 @@ app.post("/mariadb/login", async (req, res) => {
         }
         return res.status(200).send({ isUser: isMatch });
     } catch (err) {
-        console.log("Error en la conexion!!", err);
+        console.log("Error en la conexion DB usuario (Login)!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool
@@ -198,7 +201,7 @@ app.post("/mariadb/signup", async (req, res) => {
         }
         return res.status(200).send({ isUser: isMatch });
     } catch (err) {
-        console.log("Error en la conexion!!", err);
+        console.log("Error en la conexion, DB usuario (SignUp)!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool
@@ -317,7 +320,7 @@ app.post("/mariadb/acceso", async (req, res) => {
                 break;
         }
     } catch (err) {
-        console.log("Error en la conexion DB ACCESO!!", err);
+        console.log("Error en la conexion DB acceso!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool
@@ -377,7 +380,7 @@ app.post("/mariadb/pesca", async (req, res) => {
                 break;
         }
     } catch (err) {
-        console.log("Error en la conexion: DB PESCA!!", err);
+        console.log("Error en la conexion: DB pesca!!", err);
         res.status(500).send({ error: err });
     } finally {
         if (conn) conn.release(); //release to pool

@@ -96,10 +96,11 @@ export function* fetchUser({ payload }) {
 };
 
 export function* setUser({ payload }) {
-    let newUser = {...payload};
+    let newUser = { ...payload };
     let qrCode, nanoid;
     let error = 'Error interno del sistema';
     let date, auxPost;
+    const pendiente = 'PENDIENTE';
 
     try {
         newUser.image = ((payload.image) && (payload.image !== sinEspecificar)) ? yield imageToBuffer(payload.image) : sinEspecificar;
@@ -111,7 +112,7 @@ export function* setUser({ payload }) {
         date = new Date().toLocaleString();
         newUser.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
         newUser.fechaModificacion = date;
-        newUser.permiso = payload.permiso ? payload.permiso : 'PENDIENTE';
+        newUser.permiso = payload.permiso ? payload.permiso : pendiente;
         [
             'nombreComercio', 'domicilio',
             'numeroTelefono', 'comentario'
@@ -135,7 +136,8 @@ export function* setUser({ payload }) {
             yield axios.post('/mariadb', { type: 'post', data: newUser });
         }
         if (payload.isRedirect) {
-            if (payload.permiso === 'PENDIENTE') {
+
+            if (newUser.permiso === pendiente) {
                 history.push('/home');
             } else {
                 history.push(`/detail/${newUser.dni}`);

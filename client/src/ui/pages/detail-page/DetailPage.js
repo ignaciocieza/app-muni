@@ -292,7 +292,7 @@ const DetailPage = ({ match }) => {
                     />
                 </>
             )}
-            {(entraCuarentena && (entraCuarentena !== sinEspecificar)) && (
+            {(entraCuarentena && (entraCuarentena !== 'n')) && (
                 <>
                     <span className={classes.subtitle}>¿ ENTRA EN CUARENTENA ?</span>
                     <TextField

@@ -19,12 +19,12 @@ export function* setAgenteValues({ payload }) {
         // newAgente.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
         newAgente.image = false;
         newAgente.qrData = false;
-
+        newAgente.entraCuarentena = payload.entraCuarentena ? payload.entraCuarentena : 'n';
         [
             'dniPasajeros', 'otroDestinoViaje', 'patente',
             'otroAcceso', 'otroMotivoViaje', 'destinoViaje',
             'otroResidencia', 'otroTiempoDestino', 'tiempoDestino',
-            'registro', 'motivo', 'origen', 'destino', 'entraCuarentena',
+            'registro', 'motivo', 'origen', 'destino',
             'pantente', 'pasajeros', 'cuarentena', 'observaciones',
             'cantidadPasajeros', 'acceso', 'residencia', 'domicilio',
             'motivoViaje', 'otroMotivoViaje', 'numeroTelefono', 'fechaAlta'

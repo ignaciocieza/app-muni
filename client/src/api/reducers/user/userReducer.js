@@ -1,6 +1,6 @@
-import userTypeActions from '../actions/user/userTypeActions';
-import commonTypes from '../actions/commonTypes';
-import { deleteAux } from './helperFunction.js';
+import userTypeActions from '../../actions/user/userTypeActions';
+import commonTypes from '../../actions/commonTypes';
+import { deleteAux } from '../helperFunction.js';
 
 /**
  * user--> db "persona"

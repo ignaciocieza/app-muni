@@ -1,6 +1,6 @@
-import agenteTypeActions from '../actions/agente/agenteTypeActions';
-import commonTypes from '../actions/commonTypes';
-import { deleteAux } from './helperFunction';
+import agenteTypeActions from '../../actions/agente/agenteTypeActions';
+import commonTypes from '../../actions/commonTypes';
+import { deleteAux } from '../helperFunction';
 /**
  * agentes --> db "acceso"
  */

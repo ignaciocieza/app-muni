@@ -61,7 +61,7 @@ export const isValidSubmitCirculacion = (values, currentImage, isAdmin, isTipoPe
         }
     }
     if (!currentImage) {
-        respError.push({ type: 'error', text: 'Debe ingresar una Imagen', key: '5' });
+        respError.push({ type: 'error', text: 'Debe ingresar una imagen', key: '5' });
     }
     if (isAdmin) {
         if (values.permiso === 'PENDIENTE' || !values.permiso) {
@@ -113,7 +113,7 @@ export const isValidSubmitPesca = (values) => {
     let respError = [];
 
     if (!values.cantidadPasajeros) {
-        respError.push({ type: 'error', text: 'Debe ingresar cantidad de pasajeros', key: '17' });
+        respError.push({ type: 'error', text: 'Debe ingresar la cantidad de pasajeros', key: '17' });
     };
     if (!values.fechaPesca) {
         respError.push({ type: 'error', text: 'Debe ingresar una fecha', key: '18' });

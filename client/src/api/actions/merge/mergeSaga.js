@@ -39,7 +39,6 @@ export function* fetchUsersAgentes() {
             //     error = true;
             // }
             error++;
-
             //!!!error -> fijarse la cantida de errores con:
             // !!!!console.log(action) y console.log(error)  !!!!
             if ((users && agentes && pescas) || error === 4) {
@@ -72,6 +71,7 @@ export function* fetchUsersAgentes() {
 export function* fetchUserAgente({ payload }) {
     try {
         let user, agente, pesca, error = 1;
+        
         yield put(fetchPescaStart(payload));
         yield put(fetchAgenteStart(payload));
         yield put(fetchUserStart(payload));
@@ -89,9 +89,8 @@ export function* fetchUserAgente({ payload }) {
             // if (action.type === commonTypes.SET_ERROR) {
             //     error = true;
             // }
-            error++
-            
-             //!!!error -> fijarse la cantida de errores con:
+            error++;
+            //!!!error -> fijarse la cantida de errores con:
             // !!!!console.log(action) y console.log(error)  !!!!
             if ((user && agente && pesca) || error === 4) {
                 return 'ok';
@@ -128,6 +127,10 @@ export function* deleteUserAgente({ payload }) {
     }
 }
 
+/**
+ * https://stackoverflow.com/questions/37689562/cancel-a-saga-when-an-action-is-dispatched-with-redux-saga
+ * @param {*} param0 
+ */
 export function* editUserAgente({ payload }) {
     try {
         let user; //pesca, agente, error = 1;
@@ -159,7 +162,7 @@ export function* editUserAgente({ payload }) {
             // console.log(action) 
             // console.log(error)
 
-             //!!!error -> fijarse la cantida de errores con:
+            //!!!error -> fijarse la cantida de errores con:
             // !!!!console.log(action) y console.log(error)  !!!!
             // if ((user && agente && pesca)) {
             //     return 'ok';

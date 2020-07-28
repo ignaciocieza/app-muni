@@ -14,9 +14,7 @@ import history from '../../history';
 export function* setPescaValues({ payload }) {
     let auxPost, objToDB;
 
-
     try {
-        
         objToDB = {
             dni: payload.dni,
             fecha: payload.fechaPesca ? payload.fechaPesca : sinEspecificar,
@@ -46,17 +44,18 @@ export function* fetchPescas() {
     try {
         respData = yield axios.post('/mariadb/pesca', { type: 'get' });
         auxResponse = respData.data;
-        auxPesca = new schema.Entity('users', {}, {
-            idAttribute: 'DNI',
-            processStrategy: (value, parent, key) => {
-                return ({
-                    dni: value.DNI,
-                    lugarPesca: value.lugardepesca,
-                    fechaPesca: value.fecha
-                })
-            }
-        });
+
         if (auxResponse.length) {
+            auxPesca = new schema.Entity('users', {}, {
+                idAttribute: 'DNI',
+                processStrategy: (value, parent, key) => {
+                    return ({
+                        dni: value.DNI,
+                        lugarPesca: value.lugardepesca,
+                        fechaPesca: value.fecha
+                    })
+                }
+            });
             returnObj = normalize(auxResponse, [auxPesca]);
             yield put(fetchPescasSuccess(returnObj.entities.users));
         }

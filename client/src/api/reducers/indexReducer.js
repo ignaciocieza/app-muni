@@ -2,10 +2,10 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 //import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
-import userReducer from './userReducer';
-import accesoReducer from './agenteReducer';
-import mergeReducer from './mergeReducer';
-import pescaReducer from './pescaReducer';
+import userReducer from './user/userReducer';
+import accesoReducer from './agente/agenteReducer';
+import mergeReducer from './merge/mergeReducer';
+import pescaReducer from './pesca/pescaReducer';
 
 const persistConfig = {
     key: 'root',

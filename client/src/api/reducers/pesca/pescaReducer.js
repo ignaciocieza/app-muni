@@ -1,6 +1,6 @@
-import pescaTypeActions from '../actions/pesca/pescaTypeActions';
-import commonTypes from '../actions/commonTypes';
-import { deleteAux } from './helperFunction';
+import pescaTypeActions from '../../actions/pesca/pescaTypeActions';
+import commonTypes from '../../actions/commonTypes';
+import { deleteAux } from '../helperFunction';
 
 const INITIAL_STATE = {
     pescaUsers: false,
