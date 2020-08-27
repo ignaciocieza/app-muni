@@ -38,3 +38,8 @@ export const deletePescaSuccess=(id)=>({
     type: pescaTypeActions.DELETE_PESCA_SUCCESS,
     payload: id
 });
+
+export const setPescaError = (error) => ({
+    type: pescaTypeActions.SET_PESCA_ERROR,
+    payload: error
+});

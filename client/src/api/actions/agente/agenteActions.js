@@ -41,9 +41,14 @@ export const fetchAgenteSuccess = (agente) => ({
 export const deleteAgenteStart = (id) => ({
     type: agenteTypeActions.DELETE_AGENTE_START,
     payload: id
-})
+});
 
 export const deleteAgenteSuccess = (id) => ({
     type: agenteTypeActions.DELETE_AGENTE_SUCCESS,
     payload: id
-})
+});
+
+export const setAgenteError = (error) => ({
+    type: agenteTypeActions.SET_AGENTE_ERROR,
+    payload: error
+});

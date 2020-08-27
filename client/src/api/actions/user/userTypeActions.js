@@ -15,6 +15,7 @@ const userTypeActions = {
     IS_GENERATED : 'IS_GENERATED',
     FIND_USER : 'FIND_USER',    
     SET_TOGGLE_IMG : 'SET_TOGGLE_IMG',
+    SET_USER_ERROR: 'SET_USER_ERROR'
 };
 
 export default userTypeActions;

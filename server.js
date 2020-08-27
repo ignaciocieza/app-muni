@@ -3,11 +3,13 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression"); //--> comprime codigo para ser subido a heroku
-//const enforce = require('express-sslify'); //-->biblio. para encriptar https ("PWA")
 const mariadb = require("mariadb");
-const bcrypt = require("bcryptjs");
-//const fileUpload = require('express-fileupload');
-//const Jimp = require('jimp');
+const personaRoutes = require('./routers/persona');
+const loginRoutes = require('./routers/login');
+const signUp = require('./routers/signUp');
+const acceso = require('./routers/acceso');
+const pesca = require('./routers/pesca');
+const rafam = require('./routers/rafam');
 
 require("dotenv").config(); //accede .env para la clave secreta
 
@@ -15,11 +17,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(compression());
-app.use(bodyParser.json()); //Middalware: que hace que todos los request los parsee a json
-app.use(bodyParser.urlencoded({ extended: true })); //hace que se pasen solo los caracteres habilitados para url
-//app.use(enforce.HTTPS({ trustProtoHeader: true })); //encriptado https para que "PWA" pueda usarse en "Heroku"
-app.use(cors()); //|_Activar Al actualizar Heroku!!!!! (desactivar en desarrollo)
-//app.use(fileUpload());
+app.use(bodyParser.json({limit: '50mb', extended: true })); //Middalware: que hace que todos los request los parsee a json
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true })); //hace que se pasen solo los caracteres habilitados para url
+app.use(cors()); 
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "client/build")));
@@ -34,356 +34,49 @@ app.get("/service-worker.js", (req, res) => {
     res.send(path.resolve(__dirname, "..", "build", "service-worker.js"));
 });
 
+//Config Maria DB persona
+try {
+    const config = {
+        host: process.env.DB_HOST_TEST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE_PER,
+        //connectionLimit: 200
+    };
+    //var pool = mariadb.createPool(config);
+    app.locals.pool = mariadb.createPool(config);
+} catch (error) {
+    console.log(error);
+}
+
+//Config Maria DB rafam
+try {
+    const config = {
+        host: process.env.DB_HOST_TEST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE_RAFAM,
+        //connectionLimit: 200 5
+    };
+    //var pool = mariadb.createPool(config);
+    app.locals.poolRafam = mariadb.createPool(config);
+} catch (error) {
+    console.log(error);
+}
+
+//Routers
+app.use(personaRoutes);
+app.use(loginRoutes);
+app.use(signUp);
+app.use(acceso);
+app.use(pesca);
+app.use(rafam);
+
+
 //despues de que el codigo corra, lo pongo a escuchar en el puerto 5000.
 app.listen(port, (error) => {
     if (error) throw error;
     console.log("server running on port:" + port);
 });
-
-try {
-    const config = {
-        host: process.env.DB_HOST_PROD,
-        port: process.env.DB_PORT,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE,
-        //connectionLimit: 200
-    };
-    var pool = mariadb.createPool(config);
-} catch (error) {
-    console.log(error);
-}
-
-app.post("/mariadb", async (req, res) => {
-    let conn, dbResp;
-    try {
-        conn = await pool.getConnection();
-        const { type, data } = req.body;
-        const {
-            dni,
-            nombre,
-            apellido,
-            permiso,
-            qrData,
-            image,
-            numeroControl,
-            comentario,
-            numeroTelefono,
-            domicilio,
-            nombreComercio,
-            email,
-            permisoTipo,
-            fechaAlta,
-            fechaModificacion,
-        } = data ? data : '';
-
-        switch (type) {
-            case "post":
-                dbResp = await conn.query(
-                    "INSERT INTO `persona` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    [
-                        parseInt(dni),
-                        nombre,
-                        apellido,
-                        numeroControl,
-                        permiso,
-                        qrData,
-                        image,
-                        comentario,
-                        numeroTelefono,
-                        domicilio,
-                        nombreComercio,
-                        email,
-                        permisoTipo,
-                        fechaModificacion,
-                        fechaAlta,
-                        "user",
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            //throw new Error("Error Post");
-            case "get":
-                dbResp = await conn.query("SELECT * FROM persona");
-                return res.status(200).send(dbResp);
-            case "findOne":
-                dbResp = await conn.query(
-                    `SELECT * FROM persona WHERE DNI = ${parseInt(dni)}`
-                );
-                return res.status(200).send(dbResp);
-            case "patch":
-                dbResp = await conn.query(
-                    "UPDATE `persona` SET nombre= ?, apellido= ?, num_control=?, permiso=?, imagen=?, DNI_imagen=?, comentario=?, tel=?, dir=?, comercio=?, correo=?, tipo_permiso=?, fecha_mod=?, fecha_alta=?, userDbType=? WHERE DNI=?",
-                    [
-                        nombre,
-                        apellido,
-                        numeroControl,
-                        permiso,
-                        qrData,
-                        image,
-                        comentario,
-                        numeroTelefono,
-                        domicilio,
-                        nombreComercio,
-                        email,
-                        permisoTipo,
-                        fechaModificacion,
-                        fechaAlta,
-                        "user",
-                        parseInt(dni),
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            //throw new Error("Error Patch");
-            case "delete":
-                dbResp = await conn.query(
-                    `DELETE FROM persona WHERE DNI ='${parseInt(req.body.data)}'`
-                );
-                return res.status(200).send(dbResp);
-            default:
-                break;
-        }
-    } catch (err) {
-        console.log("Error en la conexion DB PERSONA!!", err);
-        res.status(500).send({ error: err });
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-});
-
-app.post("/mariadb/login", async (req, res) => {
-    let conn,
-        dbResp,
-        isMatch = false;
-        
-    try {
-        conn = await pool.getConnection();
-        const { email, password } = req.body;
-        dbResp = await conn.query(
-            `SELECT * FROM ingreso WHERE usuario = '${email.toLowerCase().trim()}'`
-        );
-        //dbResp = await conn.query("SELECT * FROM ingreso");
-
-        //por cuestiones de seguridad
-        //no se debe especificar si es el mail o la contraseña lo que esta mal!!!!
-        if (dbResp) {
-            isMatch = await bcrypt.compare(password, dbResp[0].clave);
-        }
-        return res.status(200).send({ isUser: isMatch });
-    } catch (err) {
-        console.log("Error en la conexion DB usuario (Login)!!", err);
-        res.status(500).send({ error: err });
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-});
-
-app.post("/mariadb/signup", async (req, res) => {
-    let conn,
-        dbResp,
-        hashClave,
-        isMatch = false;
-    try {
-        conn = await pool.getConnection();
-        const { email, newPassword, password } = req.body;
-        dbResp = await conn.query(
-            `SELECT * FROM ingreso WHERE usuario = '${email.toLowerCase().trim()}'`
-        );
-
-        if (dbResp) {
-            isMatch = await bcrypt.compare(password, dbResp[0].clave);
-            if (isMatch) {
-                hashClave = await bcrypt.hash(newPassword, 8);
-                dbResp = await conn.query(
-                    "UPDATE `ingreso` SET clave= ? WHERE usuario=? ",
-                    [hashClave, email]
-                );
-            }
-        }
-        return res.status(200).send({ isUser: isMatch });
-    } catch (err) {
-        console.log("Error en la conexion, DB usuario (SignUp)!!", err);
-        res.status(500).send({ error: err });
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-});
-
-app.post("/mariadb/acceso", async (req, res) => {
-    let conn, dbResp;
-    try {
-        conn = await pool.getConnection();
-        const { type, data } = req.body;
-        const {
-            dni,
-            nombre,
-            apellido,
-            cantidadPasajeros,
-            dniPasajeros,
-            acceso,
-            residencia,
-            domicilio,
-            registro,
-            motivoViaje,
-            numeroTelefono,
-            destinoViaje,
-            tiempoDestino,
-            patente,
-            entraCuarentena,
-            observaciones,
-            fechaAlta,
-            otroDestinoViaje,
-            otroAcceso,
-            otroMotivoViaje,
-            otroResidencia,
-            otroTiempoDestino,
-        } = data ? data : '';
-
-        switch (type) {
-            case "post":
-                dbResp = await conn.query(
-                    "INSERT INTO `acceso` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    [
-                        parseInt(dni),
-                        acceso,
-                        registro,
-                        motivoViaje,
-                        residencia,
-                        domicilio,
-                        destinoViaje,
-                        tiempoDestino,
-                        "numeroTelefono",
-                        "alt",
-                        patente,
-                        cantidadPasajeros,
-                        dniPasajeros,
-                        entraCuarentena,
-                        observaciones,
-                        nombre,
-                        apellido,
-                        fechaAlta,
-                        numeroTelefono,
-                        otroDestinoViaje,
-                        otroAcceso,
-                        otroMotivoViaje,
-                        otroResidencia,
-                        otroTiempoDestino,
-                        "age",
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            case "get":
-                dbResp = await conn.query("SELECT * FROM acceso");
-                return res.status(200).send(dbResp);
-            case "findOne":
-                dbResp = await conn.query(
-                    `SELECT * FROM acceso WHERE DNI = ${parseInt(dni)}`
-                );
-                return res.status(200).send(dbResp);
-            case "patch":
-                dbResp = await conn.query(
-                    "UPDATE `acceso` SET acceso_ciudad= ?, registro= ?, motivo=?, residencia=?, origen=?, destino=?, tiempo_destino=?, dir_destino=?, altura_destino=?, patente=?, pasajeros=?, DNI_pasajeros=?, cuarentena=?, observaciones=?,nombre=?,apellido=?, fecha_alta=?, numeroTelefono=?, otroDestinoViaje=?, otroAcceso=?, otroMotivoViaje=?, otroResidencia=?, otroTiempoDestino=?, agenteDbType=?  WHERE DNI=?",
-                    [
-                        acceso,
-                        registro,
-                        motivoViaje,
-                        residencia,
-                        domicilio,
-                        destinoViaje,
-                        tiempoDestino,
-                        "numeroTelefono",
-                        "alt",
-                        patente,
-                        cantidadPasajeros,
-                        dniPasajeros,
-                        entraCuarentena,
-                        observaciones,
-                        nombre,
-                        apellido,
-                        fechaAlta,
-                        numeroTelefono,
-                        otroDestinoViaje,
-                        otroAcceso,
-                        otroMotivoViaje,
-                        otroResidencia,
-                        otroTiempoDestino,
-                        "age",
-                        parseInt(dni),
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            case "delete":
-                dbResp = await conn.query(
-                    `DELETE FROM acceso WHERE DNI ='${parseInt(req.body.data)}'`
-                );
-                return res.status(200).send(dbResp);
-            default:
-                break;
-        }
-    } catch (err) {
-        console.log("Error en la conexion DB acceso!!", err);
-        res.status(500).send({ error: err });
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-});
-
-app.post("/mariadb/pesca", async (req, res) => {
-    let conn, dbResp;
-    try {
-        conn = await pool.getConnection();
-        const { type, data } = req.body;
-        const {
-            dni,
-            fecha,
-            lugarPesca,
-        } = data ? data : '';
-
-        switch (type) {
-            case "post":
-                dbResp = await conn.query(
-                    "INSERT INTO `pesca` VALUES(?,?,?,?,?)",
-                    [
-                        parseInt(dni),
-                        fecha,
-                        lugarPesca,
-                        'auxpescauno',
-                        'auxpescados',
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            case "get":
-                dbResp = await conn.query("SELECT * FROM pesca");
-                return res.status(200).send(dbResp);
-            case "findOne":
-                dbResp = await conn.query(
-                    `SELECT * FROM pesca WHERE DNI = ${parseInt(dni)}`
-                );
-                return res.status(200).send(dbResp);
-            case "patch":
-                dbResp = await conn.query(
-                    "UPDATE `pesca` SET fecha= ?, lugardepesca= ?, auxpescauno=?, auxpescados=?  WHERE DNI=?",
-                    [
-                        fecha,
-                        lugarPesca,
-                        'auxpescauno',
-                        'auxpescados',
-                        parseInt(dni),
-                    ]
-                );
-                return res.status(200).send(dbResp);
-            case "delete":
-                dbResp = await conn.query(
-                    `DELETE FROM pesca WHERE DNI ='${parseInt(req.body.data)}'`
-                );
-                return res.status(200).send(dbResp);
-            default:
-                break;
-        }
-    } catch (err) {
-        console.log("Error en la conexion: DB pesca!!", err);
-        res.status(500).send({ error: err });
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-});
-

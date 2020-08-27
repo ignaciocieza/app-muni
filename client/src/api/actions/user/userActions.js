@@ -71,5 +71,10 @@ export const setToggleImg = (img) => ({
     payload: img
 });
 
+export const setUserError = (error) => ({
+    type: userTypeActions.SET_USER_ERROR,
+    payload: error
+});
+
 //-------------"Thunks" functions-----------------------------//
 // En info.txt

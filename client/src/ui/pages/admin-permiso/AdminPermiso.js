@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setCurrentUser, setToggleImg } from '../../../api/actions/user/userActions';
-import { setIsFetching } from '../../../api/actions/commonActions';
-import { fetchUsersAgentesStart, deleteUserAgenteStart, setCurrentUserAgente } from '../../../api/actions/merge/mergeActions';
+import { fetchUsersAgentesStart, deleteUserAgenteStart, setCurrentUserAgente, setIsFetchingMerge } from '../../../api/actions/merge/mergeActions';
 import Modal from '../../widgets/modal/TransitionsModal';
+import Spinner from '../../widgets/with-spinner/Spinner';
 import MaterialTable from 'material-table';
 import { sinEspecificar } from '../../../constants';
 import useStyles from './adminPermiso.styles';
@@ -54,7 +54,7 @@ const AdminPermiso = () => {
 
     useEffect(() => {
         if (admin) {
-            dispatch(setIsFetching(true))
+            dispatch(setIsFetchingMerge(true))
             dispatch(fetchUsersAgentesStart())
             window.scrollTo(0, 0);
         }
@@ -65,11 +65,10 @@ const AdminPermiso = () => {
     return (
         <div className={classes.root}>
             {toggleImage.toggle && <Modal image={toggleImage.imgData} />}
-            {(isFetchingMerge) ? <Modal /> : (
+            {(isFetchingMerge) ? <Spinner/> : (
                 <MaterialTable
                     title="Administrar Usuarios"
                     columns={columns}
-                    //data={users}
                     data={Object.values(merge)}
                     //data={pruebaData}
                     //options={{ pageSize: 10 }}

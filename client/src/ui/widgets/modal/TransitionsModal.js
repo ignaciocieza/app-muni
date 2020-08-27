@@ -6,11 +6,7 @@ import { setErrorDB } from '../../../api/actions/commonActions';
 import Spinner from '../with-spinner/Spinner';
 import useStyles from './transitionsModal.styles';
 
-/**
- * Si no se pone entre {} los paramentros, se considera que cada uno tiene un objeto vacio,
- * en cambio con {}, se considera undefine --> Porque se considera como Componente y no una funcion ????
- * @param {*} param0 
- */
+
 export default function TransitionsModal({ timeOut, comentTitle, comentSubtitle, image }) {
     const [open, setOpen] = useState(true);
     const classes = useStyles();

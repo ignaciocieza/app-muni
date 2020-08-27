@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     currenteAgente: '',
     isFetchingAgente: false,
     isFetchedAgente: false,
-    error: '',
+    agenteError: '',
     alerts: '',
 };
 
@@ -32,7 +32,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 agentes: { ...state.agentes, [action.payload.dni]: action.payload },
                 isFetchingAgente: false,
                 isFetchedAgente: true,
-                error: '',
+                agenteError: '',
                 alerts: ''
             });
         case commonTypes.IS_FETCHING:
@@ -40,7 +40,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isFetchingAgente: action.payload,
                 isFetchedAgente: false,
-                error: false,
+                agenteError: false,
                 alerts: false
             });
         case agenteTypeActions.FETCH_AGENTES_SUCCESS:
@@ -49,7 +49,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 agentes: action.payload,
                 isFetchingAgente: false,
                 isFetchedAgente: true,
-                error: false,
+                agenteError: false,
             });
         case agenteTypeActions.FETCH_AGENTE_SUCCESS:
             return ({
@@ -57,7 +57,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 currenteAgente: action.payload,
                 isFetchingAgente: false,
                 isFetchedAgente: true,
-                error: false,
+                agenteError: false,
             });
         case agenteTypeActions.RESET_CURRENTS:
             return ({
@@ -65,7 +65,7 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 currentUser: '',
                 isFetchingAgente: false,
                 isFetchedAgente: false,
-                error: false,
+                agenteError: false,
                 alerts: false,
             });
         case commonTypes.LOGOUT:
@@ -78,10 +78,10 @@ const accesoReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 agentes: deleteAux(state.agentes, action.payload)
             });
-        case commonTypes.SET_ERROR:
+        case agenteTypeActions.SET_AGENTE_ERROR:
             return ({
                 ...state,
-                error: action.payload,
+                agenteError: action.payload,
                 isFetchingAgente: false,
                 isFetchedAgente: false,
             });

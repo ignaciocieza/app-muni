@@ -14,3 +14,6 @@ export const colors = {
 //--Sin Especificar----
 export const sinEspecificar= 'no info';
 
+//Sin especificar para campos de db,que solo acepten una letra
+export const oneLeter= 'n'
+

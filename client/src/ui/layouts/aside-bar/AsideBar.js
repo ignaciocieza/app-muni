@@ -6,6 +6,7 @@ import { Hidden } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import useStyles from './asideBar.styles';
 
 export default function AsideBar() {
@@ -55,6 +56,16 @@ export default function AsideBar() {
                     <SupervisorAccountIcon className={isActive === '/admin' ? classes.iconActive : classes.icon} />
                     <span className={classes.title}>Administrar</span>
                 </div>)}
+                <div
+                    className={isActive === '/rafam' ? classes.contentButtonActive : classes.contentButton}
+                    onClick={() => {
+                        dispatch(resetCurrents());
+                        history.push('/rafam');
+                    }}
+                >
+                    <FindReplaceIcon className={isActive === '/rafam' ? classes.iconActive : classes.icon} />
+                    <span className={classes.title}>Rafam</span>
+                </div>
             </div>
         </Hidden>
     )

@@ -13,7 +13,7 @@ const INITIAL_STATE = {
     isFetching: false,
     isFetched: false,
     isHeader: true,
-    error: '',
+    userError: '',
     alerts: '',
     toggleImage: {
         imgData: '',
@@ -32,7 +32,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 currentUser: action.payload,
                 isFetching: false,
                 isFetched: true,
-                error: '',
+                userError: '',
                 alerts: ''
             });
         case userTypeActions.SET_CURRENT_IMG:
@@ -53,10 +53,10 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 alerts: '',
                 isHeader: true
             });
-        case commonTypes.SET_ERROR:
+        case userTypeActions.SET_USER_ERROR:
             return ({
                 ...state,
-                error: action.payload,
+                userError: action.payload,
                 isFetching: false,
                 isFetched: false,
             });
@@ -77,7 +77,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 currentImage: '',
                 isFetching: false,
                 isFetched: false,
-                error: false,
+                userError: false,
                 alerts: false,
             });
         case userTypeActions.FETCH_USERS_SUCCESS:
@@ -86,7 +86,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 users: action.payload,
                 isFetching: false,
                 isFetched: true,
-                error: false,
+                userError: false,
             });
         case userTypeActions.FETCH_USER_SUCCESS:
             return ({
@@ -94,7 +94,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 currentUser: action.payload,
                 isFetching: false,
                 isFetched: true,
-                error: false,
+                userError: false,
             });
         case userTypeActions.DELETE_USER_SUCCESS:
             return ({
@@ -108,7 +108,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isFetching: action.payload,
                 isFetched: false,
-                error: false,
+                userError: false,
                 alerts: false
             });
         case commonTypes.IS_FETCHED:

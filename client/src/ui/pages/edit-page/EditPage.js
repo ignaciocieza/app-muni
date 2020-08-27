@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserAgenteStart } from '../../../api/actions/merge/mergeActions';
-import { setAlerts, setIsFetching } from '../../../api/actions/commonActions';
+import { editUserAgenteStart, setIsFetchingMerge } from '../../../api/actions/merge/mergeActions';
+import { setAlerts } from '../../../api/actions/commonActions';
 import ImagePicker from '../../widgets/image-picker/ImagePicker';
 import Modal from '../../widgets/modal/TransitionsModal';
 import AlertsList from '../alerts-list/AlertsList';
@@ -20,6 +20,7 @@ import {
 import { sinEspecificar } from '../../../constants';
 import useStyles from './editPage.styles';
 
+
 const EditPage = () => {
     const [errorValues, setErrorValues] = useState({
         dni: '',
@@ -37,7 +38,7 @@ const EditPage = () => {
         entraCuarentena: false,
     });
     const { currentImage, currentUser, admin } = useSelector(state => state.user);
-    const { isFetchingMerge, alerts, error } = useSelector(state => state.merge);
+    const { isFetchingMerge, alerts, errorMerge } = useSelector(state => state.merge);
     const [userValues, setUserValues] = useState(currentUser);
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -51,7 +52,7 @@ const EditPage = () => {
         //seteo errores para la ventana modal 
         isValidArray = isValidSubmitEdit(userValues);
         if (!isValidArray.length) {
-            dispatch(setIsFetching(true));
+            dispatch(setIsFetchingMerge(true));
             dispatch(editUserAgenteStart({ ...userValues, image: currentImage }));
         } else {
             dispatch(setAlerts(isValidArray));
@@ -78,7 +79,7 @@ const EditPage = () => {
     return (
         <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
             {isFetchingMerge && <Modal />}
-            {(error && !isFetchingMerge) && <Modal timeOut={6000} comentTitle='Error!' comentSubtitle={error} />}
+            {(errorMerge && !isFetchingMerge) && <Modal timeOut={6000} comentTitle='Error!' comentSubtitle={errorMerge} />}
             <span className={classes.title}>FORMULARIO DE PERMISOS</span>
             <span className={classes.subtitle}>* NOMBRE</span>
             <TextField

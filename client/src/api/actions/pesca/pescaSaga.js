@@ -1,11 +1,16 @@
 import { takeLatest, call, all, put } from 'redux-saga/effects';
 import { normalize, schema } from 'normalizr';
 import axios from 'axios';
-import { setPescaValuesSuccess, fetchPescasSuccess, fetchPescaSuccess, deletePescaSuccess } from './pescaActions';
+import { 
+    setPescaValuesSuccess, 
+    fetchPescasSuccess, 
+    fetchPescaSuccess, 
+    deletePescaSuccess,
+    setPescaError
+ } from './pescaActions';
 import pescaTypeActions from './pescaTypeActions';
 //import { setUserStart } from '../user/userActions';
 import { setAgenteValuesStart } from '../agente/agenteActions';
-import { setError } from '../commonActions';
 import { sinEspecificar } from '../../../constants';
 import history from '../../history';
 
@@ -34,7 +39,7 @@ export function* setPescaValues({ payload }) {
         //yield put(setUserStart({ ...payload, isRedirect: false, permisoTipo: payload.permisoTipo ? payload.permisoTipo : 'PESCA' }));
     } catch (err) {
         console.error(err);
-        yield put(setError('Error al cargar el formulario de Pesca!'));
+        yield put(setPescaError('Error al cargar el formulario de Pesca!'));
     }
 }
 
@@ -60,11 +65,11 @@ export function* fetchPescas() {
             yield put(fetchPescasSuccess(returnObj.entities.users));
         }
         else {
-            yield put(setError('No se pudo obtener informacion de la base de datos.'))
+            yield put(setPescaError('No se pudo obtener informacion de la base de datos.'))
         }
     } catch (err) {
         console.error(err);
-        yield put(setError('No se pudo obtener informacion de la base de datos.'))
+        yield put(setPescaError('No se pudo obtener informacion de la base de datos.'))
     }
 };
 
@@ -83,7 +88,7 @@ export function* fetchPesca({ payload }) {
         yield put(fetchPescaSuccess(auxResponse))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se encontro usuario, o error en la base de datos.'))
+        yield put(setPescaError('No se encontro usuario, o error en la base de datos.'))
     }
 };
 
@@ -93,7 +98,7 @@ export function* deletePesca({ payload }) {
         yield put(deletePescaSuccess(payload))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se puede borrar usuario. Reintente!'));
+        yield put(setPescaError('No se puede borrar usuario. Reintente!'));
     }
 };
 

@@ -12,6 +12,8 @@ const Permisos = lazy(() => import('../pages/permisos/Permisos'));
 const PermisoIngresoEgreso = lazy(() => import('../pages/permiso-ingreso/PermisoIngresoEgreso'));
 const EditPage = lazy(() => import('../pages/edit-page/EditPage'));
 const PermisoPesca = lazy(() => import('../pages/permiso-pesca/PermisoPesca'));
+const RafamCategory = lazy(() => import('../pages/rafam-category/RafamCategory'));
+const AdminRafam = lazy(() => import('../pages/admin-rafam/AdminRafam'));
 
 
 const Main = () => (
@@ -30,6 +32,8 @@ const Main = () => (
                     <Route exact path='/admin' component={AdminPermiso} />
                     <Route exact path='/detail/:id' component={DetailPage} />
                     <Route exact path='/permisos' component={Permisos} />
+                    <Route exact path='/rafam' component={RafamCategory} />
+                    <Route exact path='/rafam/admin' component={AdminRafam} />
                 </Suspense>
             </ErrorBoundary>
         </Switch>

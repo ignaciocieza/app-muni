@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     isFetchingMerge: false,
     isFetchedMerge: false,
     isHeader: true,
-    error: '',
+    errorMerge: '',
     alerts: '',
 };
 
@@ -29,7 +29,7 @@ const mergeReducer = (state = INITIAL_STATE, action) => {
                 currentMerge: action.payload,
                 isFetchingMerge: false,
                 isFetchedMerge: true,
-                error: '',
+                errorMerge: '',
                 alerts: '',
             });
         case mergeTypeActions.FIND_USER_AGENTE:
@@ -53,23 +53,23 @@ const mergeReducer = (state = INITIAL_STATE, action) => {
                 currentMerge: action.payload,
                 isFetchingMerge: false,
                 isFetchedMerge: true,
-                error: '',
+                errorMerge: '',
                 alerts: ''
             });
-        case commonTypes.SET_ERROR:
-            return ({
-                ...state,
-                error: action.payload,
-                isFetchingMerge: false,
-                isFetchedMerge: false,
-            });
-        case commonTypes.IS_FETCHING:
+        case mergeTypeActions.IS_FETCHING_MERGE:
             return ({
                 ...state,
                 isFetchingMerge: action.payload,
                 isFetchedMerge: false,
-                error: false,
+                errorMerge: false,
                 alerts: false
+            });
+        case mergeTypeActions.SET_ERROR_MERGE:
+            return ({
+                ...state,
+                errorMerge: action.payload,
+                isFetchingMerge: false,
+                isFetchedMerge: false,
             });
         case commonTypes.RESET_CURRENTS:
             return ({
@@ -77,7 +77,7 @@ const mergeReducer = (state = INITIAL_STATE, action) => {
                 currentMerge: '',
                 isFetchingMerge: false,
                 isFetchedMerge: false,
-                error: false,
+                errorMerge: false,
             });
         case commonTypes.SET_ALERTS:
             return ({

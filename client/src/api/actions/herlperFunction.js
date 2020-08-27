@@ -6,11 +6,11 @@ import Jimp from 'jimp';
  */
 export const imageToBuffer = async (img) => {
     let avatar, resp;
-    // console.dir(img)
+
     try {
         avatar = await Jimp.read(img);
-        avatar.resize(200, Jimp.AUTO);
-        avatar.quality(80);
+        avatar.resize(300, Jimp.AUTO);
+        // avatar.quality(80);
         // await avatar.getBufferAsync(Jimp.MIME_JPEG);
         resp = await avatar.getBase64Async(Jimp.MIME_JPEG);
         // formData = new FormData();
@@ -36,6 +36,7 @@ export const bufferToImage = (img) => {
     const arr = new Uint8Array(data);
     return enc.decode(arr);
 };
+
 
 
 

@@ -49,3 +49,17 @@ export const editUserAgenteSuccess = (userValues)=>({
     type: mergeTypeActions.EDIT_USER_AGENTE_SUCCESS,
     payload:userValues
 });
+
+export const endSagaTakeStart = ()=>({
+    type: mergeTypeActions.END_SAGA_TAKE
+});
+
+export const setIsFetchingMerge=(value)=>({
+    type: mergeTypeActions.IS_FETCHING_MERGE,
+    payload: value
+});
+
+export const setErrorMerge = (error) => ({
+    type: mergeTypeActions.SET_ERROR_MERGE,
+    payload: error
+});

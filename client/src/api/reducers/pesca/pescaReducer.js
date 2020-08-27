@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     currentePescaUser: '',
     isFetchingPesca: false,
     isFetchedPesca: false,
-    error: '',
+    pescaError: '',
     alerts: '',
 };
 
@@ -19,7 +19,7 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 pescaUsers: { ...state.pescaUsers, [action.payload.dni]: action.payload },
                 isFetchingPesca: false,
                 isFetchedPesca: true,
-                error: '',
+                pescaError: '',
                 alerts: ''
             });
         case commonTypes.IS_FETCHING:
@@ -27,7 +27,7 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isFetchingPesca: action.payload,
                 isFetchedPesca: false,
-                error: false,
+                pescaError: false,
                 alerts: false
             });
         case commonTypes.SET_ALERTS:
@@ -41,7 +41,7 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 pescaUsers: action.payload,
                 isFetchingPesca: false,
                 isFetchedPesca: true,
-                error: false,
+                pescaError: false,
             });
         case pescaTypeActions.FETCH_PESCA_SUCCESS:
             return ({
@@ -49,7 +49,7 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 currentePescaUser: action.payload,
                 isFetchingPesca: false,
                 isFetchedPesca: true,
-                error: false,
+                pescaError: false,
             });
         case pescaTypeActions.RESET_CURRENTS:
             return ({
@@ -57,7 +57,7 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 currentePescaUser: '',
                 isFetchingPesca: false,
                 isFetchedPesca: false,
-                error: false,
+                pescaError: false,
                 alerts: false,
             });
         case pescaTypeActions.DELETE_PESCA_SUCCESS:
@@ -65,10 +65,10 @@ const pescaReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 pescaUsers: deleteAux(state.pescaUsers, action.payload)
             });
-        case commonTypes.SET_ERROR:
+        case pescaTypeActions.SET_PESCA_ERROR:
             return ({
                 ...state,
-                error: action.payload,
+                pescaError: action.payload,
                 isFetchingPesca: false,
                 isFetchedPesca: false,
             });

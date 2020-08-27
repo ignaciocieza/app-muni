@@ -10,9 +10,10 @@ import {
     setUserSuccess,
     deleteUserSuccess,
     setAdminSuccess,
+    setUserError
 } from './userActions';
 import { setAgenteSuccess } from '../agente/agenteActions';
-import { setAlerts, setError } from '../commonActions';
+import { setAlerts } from '../commonActions';
 import { bufferToImage, imageToBuffer } from '../herlperFunction';
 import userTypeActions from './userTypeActions';
 import { sinEspecificar } from '../../../constants';
@@ -23,6 +24,12 @@ export function* fetchUsers() {
     let respData, auxResponse, returnObj, auxUser;
 
     try {
+        ///Rafam Test
+        // let rafam = yield axios.post('/rafam', { type: 'get' });
+        // console.dir(rafam?.data);
+
+
+        ///------------
         respData = yield axios.post('/mariadb', { type: 'get' });
         auxResponse = respData.data;
         auxUser = new schema.Entity('users', {}, {
@@ -53,11 +60,11 @@ export function* fetchUsers() {
             yield put(fetchUsersSuccess(returnObj.entities.users));
         }
         else {
-            yield put(setError('No se pudo obtener informacion de la base de datos.'))
+            yield put(setUserError('No se pudo obtener informacion de la base de datos.'))
         }
     } catch (err) {
         console.error(err);
-        yield put(setError('No se pudo obtener informacion de la base de datos.'))
+        yield put(setUserError('No se pudo obtener informacion de la base de datos.'))
     }
 };
 
@@ -91,7 +98,7 @@ export function* fetchUser({ payload }) {
         yield put(fetchUserSuccess(auxResponse))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se encontro usuario, o error en la base de datos'))
+        yield put(setUserError('No se encontro usuario, o error en la base de datos'))
     }
 };
 
@@ -146,7 +153,7 @@ export function* setUser({ payload }) {
         yield put(setUserSuccess(newUser));
     } catch (err) {
         console.error(err);
-        yield put(setError(error));
+        yield put(setUserError(error));
     }
 };
 
@@ -156,7 +163,7 @@ export function* deleteUser({ payload }) {
         yield put(deleteUserSuccess(payload))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se puede borrar usuario. Reintente!'));
+        yield put(setUserError('No se puede borrar usuario. Reintente!'));
     }
 };
 

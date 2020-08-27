@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserAgenteStart } from '../../../api/actions/merge/mergeActions';
 import CodigoQr from '../../widgets/codigo-qr/CodigoQr';
-import { sinEspecificar } from '../../../constants';
+import { sinEspecificar, oneLeter } from '../../../constants';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { TextField, Grid } from '@material-ui/core';
@@ -126,7 +126,7 @@ const DetailPage = ({ match }) => {
                     readOnly: true,
                 }}
             />
-            {(cantidadPasajeros && (cantidadPasajeros !== sinEspecificar)) && (
+            {(cantidadPasajeros && (cantidadPasajeros !== oneLeter)) && (
                 <>
                     <span className={classes.subtitle}>CANTIDAD PASAJEROS</span>
                     <TextField
@@ -292,7 +292,7 @@ const DetailPage = ({ match }) => {
                     />
                 </>
             )}
-            {(entraCuarentena && (entraCuarentena !== 'n')) && (
+            {(entraCuarentena && (entraCuarentena !== oneLeter)) && (
                 <>
                     <span className={classes.subtitle}>¿ ENTRA EN CUARENTENA ?</span>
                     <TextField

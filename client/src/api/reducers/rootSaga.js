@@ -3,12 +3,15 @@ import userSaga from '../actions/user/userSaga';
 import agenteSaga from '../actions/agente/agenteSaga';
 import mergeSaga from '../actions/merge/mergeSaga';
 import pescaSagas from '../actions/pesca/pescaSaga';
+//import igcccomSagas from '../actions/rafam/ingcc-com/igcccomSaga'
+import rafamSagas from '../actions/rafam/rafamSaga';
 
 export default function* rootSaga(){
     yield all([
         call(userSaga),
         call(agenteSaga),
         call(mergeSaga),
-        call(pescaSagas)
+        call(pescaSagas),
+        call(rafamSagas)
     ]);
 }

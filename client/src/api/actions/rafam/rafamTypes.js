@@ -1,0 +1,7 @@
+const rafamTypeActions = {
+    SEARCH_BY_FILED_START: 'SEARCH_BY_FILED_START',
+    SEARCH_BY_FILED_SUCCESS: 'SEARCH_BY_FILED_SUCCESS',
+    IS_FETCHING_RAFAM:'IS_FETCHING_RAFAM'
+};
+
+export default rafamTypeActions;

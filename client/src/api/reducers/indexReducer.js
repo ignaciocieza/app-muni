@@ -6,6 +6,7 @@ import userReducer from './user/userReducer';
 import accesoReducer from './agente/agenteReducer';
 import mergeReducer from './merge/mergeReducer';
 import pescaReducer from './pesca/pescaReducer';
+import rafamReducer from './rafam/rafamReducer';
 
 const persistConfig = {
     key: 'root',
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     user: userReducer,
     agente: accesoReducer,
     merge: mergeReducer,
-    pesca : pescaReducer
+    pesca : pescaReducer,
+    rafam: rafamReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);;

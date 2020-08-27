@@ -1,11 +1,16 @@
 import { takeLatest, call, all, put } from 'redux-saga/effects';
 import { normalize, schema } from 'normalizr';
 import axios from 'axios';
-import { setAgenteValueSuccess, fetchAgentesSuccess, fetchAgenteSuccess, deleteAgenteSuccess } from './agenteActions';
+import {
+    setAgenteValueSuccess,
+    fetchAgentesSuccess,
+    fetchAgenteSuccess,
+    deleteAgenteSuccess,
+    setAgenteError
+} from './agenteActions';
 import { setUserStart } from '../user/userActions';
-import { setError } from '../commonActions';
 import agenteTypeActions from './agenteTypeActions';
-import { sinEspecificar } from '../../../constants';
+import { sinEspecificar, oneLeter } from '../../../constants';
 import history from '../../history';
 
 //---"simple" generator functions------//
@@ -19,14 +24,15 @@ export function* setAgenteValues({ payload }) {
         // newAgente.fechaAlta = payload.fechaAlta ? payload.fechaAlta : date;
         newAgente.image = false;
         newAgente.qrData = false;
-        newAgente.entraCuarentena = payload.entraCuarentena ? payload.entraCuarentena : 'n';
+        newAgente.entraCuarentena = payload.entraCuarentena ? payload.entraCuarentena : oneLeter;
+        newAgente.cantidadPasajeros = payload.cantidadPasajeros ? payload.cantidadPasajeros : oneLeter;
         [
             'dniPasajeros', 'otroDestinoViaje', 'patente',
             'otroAcceso', 'otroMotivoViaje', 'destinoViaje',
             'otroResidencia', 'otroTiempoDestino', 'tiempoDestino',
             'registro', 'motivo', 'origen', 'destino',
-            'pantente', 'pasajeros', 'cuarentena', 'observaciones',
-            'cantidadPasajeros', 'acceso', 'residencia', 'domicilio',
+            'pantente', 'cuarentena', 'observaciones',
+            'acceso', 'residencia', 'domicilio',
             'motivoViaje', 'otroMotivoViaje', 'numeroTelefono', 'fechaAlta'
         ].forEach(item => newAgente[item] = payload[item] ? payload[item] : sinEspecificar)
 
@@ -42,7 +48,7 @@ export function* setAgenteValues({ payload }) {
         yield put(setUserStart({ ...payload, isRedirect: false, permisoTipo: payload.permisoTipo ? payload.permisoTipo : 'INGRESO EGRESO' }));
     } catch (err) {
         console.error(err);
-        yield put(setError('Error al cargar el formulario de ingreso y egreso!'));
+        yield put(setAgenteError('Error al cargar el formulario de ingreso y egreso!'));
     }
 };
 
@@ -89,11 +95,11 @@ export function* fetchAgentes() {
             yield put(fetchAgentesSuccess(returnObj.entities.users));
         }
         else {
-            yield put(setError('No se pudo obtener informacion de la base de datos.'))
+            yield put(setAgenteError('No se pudo obtener informacion de la base de datos.'))
         }
     } catch (err) {
         console.error(err);
-        yield put(setError('No se pudo obtener informacion de la base de datos.'))
+        yield put(setAgenteError('No se pudo obtener informacion de la base de datos.'))
     }
 }
 
@@ -132,7 +138,7 @@ export function* fetchAgente({ payload }) {
         yield put(fetchAgenteSuccess(auxResponse))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se encontro usuario, o error en la base de datos'))
+        yield put(setAgenteError('No se encontro usuario, o error en la base de datos'))
     }
 }
 
@@ -142,7 +148,7 @@ export function* deleteAgente({ payload }) {
         yield put(deleteAgenteSuccess(payload))
     } catch (err) {
         console.error(err);
-        yield put(setError('No se puede borrar usuario. Reintente!'));
+        yield put(setAgenteError('No se puede borrar usuario. Reintente!'));
     }
 };
 
