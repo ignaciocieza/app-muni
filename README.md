@@ -19,19 +19,19 @@ Node.js (Express) MariaDB
 
 1) Descargar Node (https://nodejs.org/es/ ) 
 
-2) Abrir consola de comandos dentro de la carpeta "app-muni" y escibrir en la consola "npm install".
+2) Abrir consola de comandos dentro de la carpeta ./ (principal) y escibrir en la consola "npm install".
 
 3) Abrir consola de comandos dentro de la carpeta "client" y escibrir en la consola "npm install".
 
-4) Poner versiones de "node" y "npm" en: package.json (linea 4-7) --> 
+4) Poner versiones de "node" y "npm" en: package.json en ./ (principal) en linea 4-7 --> 
                 
                 "engines": {
                     "node": ">=14.8.0",
                     "npm": ">=6.14.7"
                 }, 
 
-5) Modo Dev:  carpeta "app-muni" y escibrir en la consola "npm run dev".
+5) Modo Dev:  carpeta  ./ (principal) y escibrir en la consola "npm run dev".
 
-5') Modo Build: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run build".
+5') Modo Build: Abrir consola de comandos en la carpeta  ./ (principal) y escibrir en la consola "npm run build".
 
-5'') Solo Server: Abrir consola de comandos en la carpeta "app-muni" y escibrir en la consola "npm run server".
+5'') Solo Server: Abrir consola de comandos en la carpeta  ./ (principal) y escibrir en la consola "npm run server".
