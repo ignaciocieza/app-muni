@@ -12,8 +12,8 @@ App que contiene cuatro páginas:
 
 ## Herramientas Utilizadas:
 
-React React-Hook React-Router Redux Redux-Thunk Material-Design Material-ui
-Node.js (Express) MariaDB
+React React-Hook React-Router Redux Redux-Saga Material-Design Material-ui
+Node.js (Express) MariaDB 
 
 ## Pasos De Instalación: 
 

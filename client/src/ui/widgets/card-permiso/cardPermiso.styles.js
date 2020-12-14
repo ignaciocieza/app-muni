@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '5px 5px 8px -6px rgba(0,0,0,0.65)',
         [theme.breakpoints.down('md')]: {
             width: '80vw',
+            marginBottom: "2%",
         }
     },
     details: {

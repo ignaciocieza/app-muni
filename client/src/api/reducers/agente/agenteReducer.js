@@ -1,4 +1,5 @@
 import agenteTypeActions from '../../actions/agente/agenteTypeActions';
+//import rafamTypeActions from '../../actions/rafam/rafamTypes';
 import commonTypes from '../../actions/commonTypes';
 import { deleteAux } from '../helperFunction';
 /**
@@ -16,6 +17,15 @@ const INITIAL_STATE = {
 
 const accesoReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        // case rafamTypeActions.SEARCH_BY_FILED_SUCCESS:
+        //     return ({
+        //         ...state,
+        //         [action.payload.key]:{...state[action.payload.key],...action.payload.data},
+        //         isFetchingRafam: false,
+        //         isFetchedRafam: true,
+        //         errorRafam: false,
+        //         alerts: false
+        //     });
         case commonTypes.SET_ALERTS:
             return ({
                 ...state,

@@ -12,8 +12,13 @@ const Permisos = lazy(() => import('../pages/permisos/Permisos'));
 const PermisoIngresoEgreso = lazy(() => import('../pages/permiso-ingreso/PermisoIngresoEgreso'));
 const EditPage = lazy(() => import('../pages/edit-page/EditPage'));
 const PermisoPesca = lazy(() => import('../pages/permiso-pesca/PermisoPesca'));
-const RafamCategory = lazy(() => import('../pages/rafam-category/RafamCategory'));
-const AdminRafam = lazy(() => import('../pages/admin-rafam/AdminRafam'));
+// const RafamCategory = lazy(() => import('../pages/rafam-category/RafamCategory'));
+// const AdminRafam = lazy(() => import('../pages/admin-rafam/AdminRafam'));
+const BromatologiaMain = lazy(() => import('../pages/bromatologia/bromatologia-main/BromatologiaMain'));
+const NuevaActa = lazy(() => import('../pages/bromatologia/nueva-acta/NuevaActa'));
+const AdministrarActas = lazy(() => import('../pages/bromatologia/administrar-actas/AdministrarActas'));
+const BromatologiaClaves = lazy(() => import('../pages/bromatologia/administrar-claves/AdministrarClaves'));
+const PrintBromatologia = lazy(() => import('../pages/bromatologia/print-bromatologia/PrintBromatologia'));
 
 
 const Main = () => (
@@ -32,8 +37,15 @@ const Main = () => (
                     <Route exact path='/admin' component={AdminPermiso} />
                     <Route exact path='/detail/:id' component={DetailPage} />
                     <Route exact path='/permisos' component={Permisos} />
-                    <Route exact path='/rafam' component={RafamCategory} />
-                    <Route exact path='/rafam/admin' component={AdminRafam} />
+                    <Route exact path='/bromatologia' component={BromatologiaMain} />
+                    <Route exact path='/bromatologia/form' component={NuevaActa} />
+                    <Route exact path='/bromatologia/administrar' component={AdministrarActas} />
+                    <Route exact path='/bromatologia/claves' component={BromatologiaClaves} />
+                    <Route exact path='/bromatologia/detail/:id' component={PrintBromatologia} />
+                    
+                    {/* <Route exact path='/rafam' component={RafamCategory} /> */}
+                    {/* <Route exact path='/rafam' component={RafamCategory} />
+                    <Route exact path='/rafam/admin' component={AdminRafam} /> */}
                 </Suspense>
             </ErrorBoundary>
         </Switch>

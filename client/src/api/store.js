@@ -1,7 +1,8 @@
 //Develop
-import { createStore, compose, applyMiddleware } from "redux";
+//import { createStore, compose, applyMiddleware } from "redux";
 //Production
-//import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import createSagaMiddleware from 'redux-saga';
 import { persistStore } from 'redux-persist';
 import reducer from "./reducers/indexReducer";
@@ -16,18 +17,18 @@ const actionSanitizer = (action) => (
         { ...action, data: '<<LONG_BLOB>>' } : action
 );
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionSanitizer,
-    stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state,
-}) || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+//     actionSanitizer,
+//     stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state,
+// }) || compose;
 //-------------------------------
 const sagaMiddleware = createSagaMiddleware();
 
 //---- develop-------
-export const store = createStore(reducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+//export const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk,sagaMiddleware)));
 
-//------ Production------
-//export const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+//------ Production------//
+export const store = createStore(reducer, applyMiddleware(thunk,sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
 

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setDataQuery } from '../../../api/actions/rafam/rafamActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import useStyles from './searchRafam.styles';
 
 export default function SearchRafam({ type, textFieldLabel, setIsSelectaCategory, fieldName }) {
     const [value, setValue] = useState();
+    const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
 
@@ -25,7 +28,9 @@ export default function SearchRafam({ type, textFieldLabel, setIsSelectaCategory
                     variant="contained"
                     color="secondary"
                     onClick={() => {
-                        history.push('/rafam/admin', { value , type, subType:'get'}) 
+                        //history.push('/rafam/admin', { value , type, subType:'get'}) 
+                        dispatch(setDataQuery({ value, type, subType: 'get' }))
+                        history.push('/rafam/admin')
                     }}
                 >
                     Traer Todo
@@ -46,7 +51,9 @@ export default function SearchRafam({ type, textFieldLabel, setIsSelectaCategory
                 color="primary"
                 className={classes.button}
                 onClick={() => {
-                    history.push('/rafam/admin', { value, type , subType: 'findOne'})
+                    history.push('/rafam/admin')
+                    //history.push('/rafam/admin', { value, type , subType: 'findone'}) --> es inestable
+                    dispatch(setDataQuery({ value, type, subType: 'findone' }))
                 }}
             >
                 Enviar

@@ -7,20 +7,22 @@ import accesoReducer from './agente/agenteReducer';
 import mergeReducer from './merge/mergeReducer';
 import pescaReducer from './pesca/pescaReducer';
 import rafamReducer from './rafam/rafamReducer';
+import bromatologiaReducer from './bromatologia/bromatologiaReducer';
 
 const persistConfig = {
     key: 'root',
     storage: storageSession,
-    whitelist: ['user', 'merge', 'agente']
+    whitelist: ['user', 'merge', 'agente','bromatologia']
 }
 
 const rootReducer = combineReducers({
+    rafam: rafamReducer,
     user: userReducer,
     agente: accesoReducer,
     merge: mergeReducer,
-    pesca : pescaReducer,
-    rafam: rafamReducer,
+    pesca: pescaReducer,
+    bromatologia: bromatologiaReducer,
 });
 
-export default persistReducer(persistConfig, rootReducer);;
+export default persistReducer(persistConfig, rootReducer);
 

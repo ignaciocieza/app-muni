@@ -19,7 +19,7 @@ import pescaTypeActions from '../pesca/pescaTypeActions';
 //import { setError } from '../commonActions';
 import { sinEspecificar } from '../../../constants';
 
-const delayTime = 5000;
+const delayTime = 10000;
 
 /**
  * Funcion que despacha un actions

@@ -141,12 +141,12 @@ const dataColumns = {
         {
             title: "Fecha Alta",
             field: "fecha_alta",
-            render: rowData => { return (new Date(rowData.fecha_alta).toLocaleString("en", 'dd/MM/yyyy').split(',')[0]) }
+            //render: rowData => { return (new Date(rowData.fecha_alta).toLocaleString("en", 'dd/MM/yyyy').split(',')[0]) }
         },
         {
             title: "Fecha Baja",
             field: "fecha_baja",
-            render: rowData => { return (new Date(rowData.fecha_baja).toLocaleString("en", 'dd/MM/yyyy').split(',')[0]) }
+            //render: rowData => { return (new Date(rowData.fecha_baja).toLocaleString("en", 'dd/MM/yyyy').split(',')[0]) }
         },
         {
             title: "Detalle",

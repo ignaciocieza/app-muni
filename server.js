@@ -9,7 +9,9 @@ const loginRoutes = require('./routers/login');
 const signUp = require('./routers/signUp');
 const acceso = require('./routers/acceso');
 const pesca = require('./routers/pesca');
-const rafam = require('./routers/rafam');
+// const rafam = require('./routers/rafam');
+// const rafamComercios = require('./routers/rafamComercios');
+// const rafamContribuyentes = require('./routers/rafamContribuyentes');
 
 require("dotenv").config(); //accede .env para la clave secreta
 
@@ -51,20 +53,20 @@ try {
 }
 
 //Config Maria DB rafam
-try {
-    const config = {
-        host: process.env.DB_HOST_TEST,
-        port: process.env.DB_PORT,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE_RAFAM,
-        //connectionLimit: 200 5
-    };
-    //var pool = mariadb.createPool(config);
-    app.locals.poolRafam = mariadb.createPool(config);
-} catch (error) {
-    console.log(error);
-}
+// try {
+//     const config = {
+//         host: process.env.DB_HOST_TEST,
+//         port: process.env.DB_PORT,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASSWORD,
+//         database: process.env.DB_DATABASE_RAFAM,
+//         //connectionLimit: 200 
+//     };
+//     //var pool = mariadb.createPool(config);
+//     app.locals.poolRafam = mariadb.createPool(config);
+// } catch (error) {
+//     console.log(error);
+// }
 
 //Routers
 app.use(personaRoutes);
@@ -72,8 +74,9 @@ app.use(loginRoutes);
 app.use(signUp);
 app.use(acceso);
 app.use(pesca);
-app.use(rafam);
-
+// app.use(rafam);
+// app.use(rafamComercios);
+// app.use(rafamContribuyentes);
 
 //despues de que el codigo corra, lo pongo a escuchar en el puerto 5000.
 app.listen(port, (error) => {

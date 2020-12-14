@@ -65,7 +65,7 @@ const AdminPermiso = () => {
     return (
         <div className={classes.root}>
             {toggleImage.toggle && <Modal image={toggleImage.imgData} />}
-            {(isFetchingMerge) ? <Spinner/> : (
+            {(isFetchingMerge) ? <Spinner /> : (
                 <MaterialTable
                     title="Administrar Usuarios"
                     columns={columns}

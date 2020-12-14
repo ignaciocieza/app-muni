@@ -57,14 +57,14 @@ export default function AsideBar() {
                     <span className={classes.title}>Administrar</span>
                 </div>)}
                 <div
-                    className={isActive === '/rafam' ? classes.contentButtonActive : classes.contentButton}
+                    className={isActive === '/bromatologia' ? classes.contentButtonActive : classes.contentButton}
                     onClick={() => {
                         dispatch(resetCurrents());
-                        history.push('/rafam');
+                        history.push('/bromatologia');
                     }}
                 >
-                    <FindReplaceIcon className={isActive === '/rafam' ? classes.iconActive : classes.icon} />
-                    <span className={classes.title}>Rafam</span>
+                    <FindReplaceIcon className={isActive === '/bromatologia' ? classes.iconActive : classes.icon} />
+                    <span className={classes.title}>Bromatología</span>
                 </div>
             </div>
         </Hidden>

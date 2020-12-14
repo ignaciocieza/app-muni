@@ -9,7 +9,37 @@ import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import useStyles from './headerPhone.styles';
+
+
+const itemList = [
+    {
+        text: 'Principal',
+        route: '/home',
+        icon: <HomeIcon />,
+        keyValue: 'home'
+    },
+    {
+        text: 'Permisos',
+        route: '/permisos',
+        icon: <DescriptionIcon />,
+        keyValue: 'generar'
+    },
+    {
+        text: 'Administrar',
+        route: '/admin',
+        icon: <SupervisorAccountIcon />,
+        keyValue: 'admin'
+    },
+    {
+        text: 'Bromatologia',
+        route: '/bromatologia',
+        icon: <FindReplaceIcon />,
+        keyValue: 'bromato'
+    }
+
+];
 
 export default function HeaderPhone() {
     const [state, setState] = useState(false);
@@ -18,26 +48,6 @@ export default function HeaderPhone() {
     const dispatch = useDispatch()
     const classes = useStyles();
 
-    const itemList = [
-        {
-            text: 'Principal',
-            route: '/home',
-            icon: <HomeIcon />,
-            keyValue: 'home'
-        },
-        {
-            text: 'Permisos',
-            route: '/permisos',
-            icon: <DescriptionIcon />,
-            keyValue: 'generar'
-        },
-        {
-            text: 'Administrar',
-            route: '/admin',
-            icon: <SupervisorAccountIcon />,
-            keyValue: 'admin'
-        }
-    ];
 
     const toggleDrawer = (open) => event => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
