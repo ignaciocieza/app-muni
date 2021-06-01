@@ -1,36 +1,83 @@
-import React from "react";
+//@ts-nocheck
+import React, { forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import MaterialTable from "material-table";
-import { deletePermiso, setCurrentPermiso } from "../../../../api/actions/bromatologia/bromatologiaActions";
+import {
+  deletePermiso,
+  setCurrentPermiso,
+} from "../../../../api/actions/bromatologia/bromatologiaActions";
 //import Spinner from '../../../widgets/with-spinner/Spinner';
 import useStyles from "./administrarActas.styles";
+import EditIcon from "@material-ui/icons/Edit";
+import DetailsIcon from "@material-ui/icons/Details";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import Spinner from "../../../widgets/with-spinner/Spinner";
+import SnackBar from "../../../widgets/snack-bar/SnackBar";
 
 export default function AdministrarActas() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const { permisos } = useSelector((state: any) => state.bromatologia);
+  const { isFetchingBromatologia } = useSelector(
+    (state: any) => state.bromatologia
+  );
+  const { errorDB } = useSelector((state: any) => state.bromatologia);
   const classes = useStyles();
   const columns = [
-    { title: "Nombre Comercial", field: "nombreComercial" },
-    { title: "Rubro", field: "rubro" },
+    { title: "Estado Comercio", field: "estadoComercio" },
     { title: "Razon Social", field: "razonSocial" },
+    {
+      title: "Rubro",
+      field: "rubro",
+      render: (row: any) => row["rubro"]?.join?.(", ") ?? row["rubro"],
+    },
     { title: "Domicilio", field: "domicilio" },
+    { title: "Nombre Comercial", field: "nombreComercial" },
     { title: "Expediente", field: "expediente" },
   ];
 
-  if (!permisos) {
-    return null;
+  if (location.pathname === "/bromatologia/historial") {
+    columns.splice(1, 0, { title: "Cese", field: "cese", type: "date" });
+  }
+
+  if (isFetchingBromatologia) {
+    return <Spinner />;
   }
 
   return (
     <div className={classes.root}>
-      {/*(isFetchingMerge) ? <Spinner /> : (*/}
+      {errorDB && (
+        <SnackBar
+          message={errorDB}
+          variant="error"
+          hPosition="right"
+          isResetErrors={true}
+        />
+      )}
       <MaterialTable
-        title="Administrar Actas"
+        title={
+          location.pathname === "/bromatologia/historial"
+            ? "Historial Comercios"
+            : "Administrar Comercios Activos"
+        }
         columns={columns}
+        icons={{
+          Delete: forwardRef((props, ref) => (
+            <DeleteOutlineIcon {...props} ref={ref} />
+          )),
+        }}
         //@ts-ignore
-        data={Object.values(permisos).map((item: any) => item.valuesForm)}
+        data={Object.values(permisos)
+          .filter((item: any) => {
+            if (location.pathname === "/bromatologia/historial") {
+              return item.valuesForm.estadoComercio.toLowerCase() === "cese";
+            } else {
+              return item.valuesForm.estadoComercio.toLowerCase() !== "cese";
+            }
+          })
+          .map((item: any) => item.valuesForm)}
         //data={[{},{}]}
         //options={{ pageSize: 10 }}
         localization={{
@@ -57,14 +104,16 @@ export default function AdministrarActas() {
           onRowDelete: (oldData: any) =>
             new Promise((resolve) => {
               setTimeout(() => {
+                //@ts-ignore
                 resolve();
-                dispatch(deletePermiso(oldData.expediente))
+                dispatch(deletePermiso(oldData.expediente));
               }, 100);
             }),
         }}
         actions={[
           {
-            icon: "edit",
+            //icon: "edit",
+            icon: EditIcon,
             tooltip: "Editar",
             onClick: (event, rowData) => {
               dispatch(setCurrentPermiso(rowData.expediente));
@@ -81,10 +130,11 @@ export default function AdministrarActas() {
           //     }
           // },
           {
-            icon: "details",
+            //icon: "details",
+            icon: DetailsIcon,
             tooltip: "Detalle",
             onClick: (event, rowData) => {
-              dispatch(setCurrentPermiso(rowData.expediente))
+              dispatch(setCurrentPermiso(rowData.expediente));
               history.push(`/bromatologia/detail/${rowData.expediente}`);
             },
           },

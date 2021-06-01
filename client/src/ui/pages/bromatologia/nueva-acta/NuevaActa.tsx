@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MaterialTable from "material-table";
-import { Grid, TextField, Button, Tooltip } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  Tooltip,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -18,7 +25,10 @@ import {
   setPermisoBromatologia,
 } from "../../../../api/actions/bromatologia/bromatologiaActions";
 import useStyles from "./nuevaActa.styles";
-import { useHistory } from "react-router-dom";
+import { parseDate, sortByDate } from "../utils";
+import AutocompleteCustom from "../../../widgets/bromatologia/autocomplete-valorunico/AutocompleteCustom";
+import Tabla from "../../../widgets/tabla-nuevo/Tabla";
+import SnackBar from "../../../widgets/snack-bar/SnackBar";
 
 const LoginSchema = Yup.object().shape({
   nombreComercial: Yup.string()
@@ -43,15 +53,18 @@ export default function NuevaActa() {
   const { rubro } = useSelector((state: any) => state.bromatologia);
   const { nombreComercial } = useSelector((state: any) => state.bromatologia);
   const { razonSocial } = useSelector((state: any) => state.bromatologia);
+  const { errorDB } = useSelector((state: any) => state.bromatologia);
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const auxInitialValues = currentPermiso?.valuesForm
     ? currentPermiso.valuesForm
     : {
-        nombreComercial: "",
-        rubro: "",
+        estadoComercio: "NO HABILITADOS",
         razonSocial: "",
+        rubro: "",
         domicilio: "",
+        nombreComercial: "",
+        clave: "",
         expediente: "",
         inicio: "",
         cese: "",
@@ -66,7 +79,9 @@ export default function NuevaActa() {
     {
       title: "Fecha",
       field: "fecha",
-      type: "date",
+      defaultSort: "asc",
+      customSort: sortByDate,
+      render: (row: any) => <span>{parseDate(row["fecha"])}</span>,
       editComponent: (props: any) => {
         return (
           <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
@@ -78,12 +93,13 @@ export default function NuevaActa() {
                 format="dd/MM/yyyy"
                 margin="normal"
                 id="fecha-picker-inline"
-                disablePast={true}
+                //disablePast={true}
                 name="fecha"
                 invalidDateMessage="Formato de la Fecha Inválido"
                 invalidLabel="Ingrese la fecha del Acta"
-                value={props.value || ""}
+                value={props.value || " "}
                 onChange={(e) => {
+                  ///console.log(e)
                   props.onChange(e);
                 }}
                 KeyboardButtonProps={{
@@ -112,70 +128,59 @@ export default function NuevaActa() {
     },
   ];
   const [data, setData] = useState(currentPermiso?.data ?? []);
-  const {
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-    errors,
-    values,
-  } = useFormik({
-    initialValues: auxInitialValues,
-    onSubmit: (valuesForm) => {
-      console.log(status);
-      dispatch(setPermisoBromatologia({ valuesForm, data }));
-      dispatch(setCurrentPermiso(values.expediente));
-      if (status === "guardar") {
-        history.push("/bromatologia/administrar");
-      }
-      if (status === "imprimir") {
-        history.push(`/bromatologia/detail/${values.expediente}`);
-      }
-    },
-    validationSchema: LoginSchema,
-  });
+  const { handleChange, handleSubmit, setFieldValue, errors, values } =
+    useFormik({
+      initialValues: auxInitialValues,
+      onSubmit: (valuesForm) => {
+        dispatch(setPermisoBromatologia({ valuesForm, data }, status));
+        dispatch(setCurrentPermiso(values.expediente));
+      },
+      validationSchema: LoginSchema,
+    });
 
   return (
     <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
+      {errorDB && (
+        <SnackBar
+          message={errorDB}
+          variant="error"
+          hPosition="right"
+          isResetErrors={true}
+        />
+      )}
       <span className={classes.title}>FORMULARIO DE BROMATOLOGIA</span>
-      <span className={classes.subtitle}>* NOMBRE COMERCIAL</span>
-      <Autocomplete
-        id="combo-box-demo"
-        options={nombreComercial}
+      <span className={classes.subtitle}>ESTADO COMERCIO</span>
+      <Tooltip
+        disableFocusListener={true}
+        disableHoverListener={values.clave ? true : false}
+        title="Debe ingresar una clave para poder habilitar el comercio"
+      >
+        <FormControl
+          variant="outlined"
+          className={classes.formControl}
+          disabled={values.clave ? false : true}
+        >
+          <Select
+            value={values.estadoComercio}
+            name="estadoComercio"
+            onChange={handleChange}
+            //label="Para habilitarse complete el campo clave"
+          >
+            <MenuItem value={"HABILITADOS"}>HABILITADOS</MenuItem>
+            <MenuItem value={"NO HABILITADOS"}>NO HABILITADOS</MenuItem>
+            <MenuItem value={"CESE"}>CESE</MenuItem>
+          </Select>
+        </FormControl>
+      </Tooltip>
+      <span className={classes.subtitle}> CLAVE</span>
+      <TextField
+        variant="outlined"
+        name="clave"
+        value={values.clave}
         className={classes.textfield}
-        onChange={(event, newEvent) => {
-          setFieldValue("nombreComercial", newEvent, true);
-        }}
-        value={values.nombreComercial}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            required
-            variant="outlined"
-            error={!!errors.nombreComercial}
-            helperText={errors.nombreComercial}
-          />
-        )}
+        onChange={handleChange}
       />
-      <span className={classes.subtitle}>* RUBRO</span>
-      <Autocomplete
-        id="combo-box-rubro"
-        options={rubro}
-        className={classes.textfield}
-        onChange={(event, newEvent) => {
-          setFieldValue("rubro", newEvent, true);
-        }}
-        value={values.rubro}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            required
-            variant="outlined"
-            error={!!errors.rubro}
-            helperText={errors.rubro}
-          />
-        )}
-      />
-      <span className={classes.subtitle}>* RAZON SOCIAL</span>
+      <span className={classes.subtitle}>* RAZÓN SOCIAL</span>
       <Autocomplete
         id="combo-box-razonSocial"
         options={razonSocial}
@@ -194,6 +199,16 @@ export default function NuevaActa() {
           />
         )}
       />
+      <span className={classes.subtitle}>* RUBRO</span>
+      <AutocompleteCustom
+        options={rubro}
+        error={errors.rubro}
+        className={classes.textfield}
+        setFieldValue={setFieldValue}
+        fieldName="rubro"
+        values={values.rubro}
+      />
+
       <span className={classes.subtitle}>* DOMICILIO</span>
       <TextField
         variant="outlined"
@@ -204,6 +219,30 @@ export default function NuevaActa() {
         onChange={handleChange}
         error={!!errors.domicilio}
         helperText={errors.domicilio}
+      />
+      <span className={classes.subtitle}>* NOMBRE COMERCIAL</span>
+      <Autocomplete
+        // getOptionSelected={(option, value) => {
+        //   console.log(option); //--> para control de errores con los valores unicos
+        //   console.log(value);
+        //   return true;
+        // }}
+        id="combo-box-demo-nombrecomercial"
+        options={nombreComercial}
+        className={classes.textfield}
+        onChange={(event, newEvent) => {
+          setFieldValue("nombreComercial", newEvent, true);
+        }}
+        value={values.nombreComercial}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            required
+            variant="outlined"
+            error={!!errors.nombreComercial}
+            helperText={errors.nombreComercial}
+          />
+        )}
       />
       <span className={classes.subtitle}>* EXPEDIENTE</span>
       <TextField
@@ -217,84 +256,61 @@ export default function NuevaActa() {
         helperText={errors.expediente}
       />
       <span className={classes.subtitle}>INICIO</span>
-      <TextField
-        variant="outlined"
-        name="inicio"
-        value={values.inicio}
-        className={classes.textfield}
-        onChange={handleChange}
-      />
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+        <Grid container justify="space-around">
+          <KeyboardDatePicker
+            disableToolbar
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline-inicio"
+            //disablePast={true}
+            name="inicio"
+            invalidDateMessage="Formato de la Fecha Inválido"
+            //invalidLabel='Ingrese la fecha de Inicio'
+            value={values.inicio}
+            error={false}
+            onChange={(e) => {
+              const aux = e || "";
+              setFieldValue("inicio", aux, false);
+            }}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+            className={classes.fecha}
+          />
+        </Grid>
+      </MuiPickersUtilsProvider>
       <span className={classes.subtitle}>CESE</span>
-      <TextField
-        variant="outlined"
-        name="cese"
-        value={values.cese}
-        className={classes.textfield}
-        onChange={handleChange}
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+        <Grid container justify="space-around">
+          <KeyboardDatePicker
+            disableToolbar
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline-inicio"
+            //disablePast={true}
+            name="cese"
+            invalidDateMessage="Formato de la Fecha Inválido"
+            //invalidLabel='Ingrese la fecha de Inicio'
+            value={values.cese}
+            error={false}
+            onChange={(e) => {
+              const aux = e || "";
+              setFieldValue("cese", aux, false);
+            }}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+            className={classes.fecha}
+          />
+        </Grid>
+      </MuiPickersUtilsProvider>
+      <Tabla
+        //title="VEHÍCULOS"
+        data={data}
+        setData={setData}
+        columns={columns}
       />
-      <div className={classes.contentMaterialTable}>
-        <div className={classes.materialTable}>
-        <MaterialTable
-          style={{ width: '100%'}}
-          title=""
-          //@ts-ignore
-          columns={columns}
-          data={data}
-          localization={{
-            body: {
-              emptyDataSourceMessage: "No hay items para mostrar",
-              deleteTooltip: "Borrar",
-              editTooltip: "Editar",
-              editRow: {
-                deleteText: "¿Desea borrar definitivamente?",
-                saveTooltip: "Aceptar",
-                cancelTooltip: "Cancelar",
-              },
-            },
-            header: {
-              actions: "Acciones",
-            },
-            pagination: {
-              labelRowsSelect: "renglones",
-            },
-            toolbar: {
-              searchPlaceholder: "Buscar...",
-            },
-          }}
-          editable={{
-            onRowAdd: (newData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  setData([...data, newData]);
-                  resolve();
-                }, 1000);
-              }),
-            onRowUpdate: (newData, oldData: any) => {
-              console.dir({ newData, oldData });
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const dataUpdate = [...data];
-                  const index = oldData.tableData.id;
-                  dataUpdate[index] = newData;
-                  setData([...dataUpdate]);
-                  resolve();
-                }, 1000);
-              });
-            },
-            onRowDelete: (oldData: any) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const dataDelete = [...data];
-                  const index = oldData.tableData.id;
-                  dataDelete.splice(index, 1);
-                  setData([...dataDelete]);
-                  resolve();
-                }, 1000);
-              }),
-          }}
-        />
-        </div>
-      </div>
       <div
         style={{
           display: "flex",
@@ -303,7 +319,7 @@ export default function NuevaActa() {
           alignItems: "center",
         }}
       >
-        <Tooltip title="Guardar e ir a Administrar Comercios">
+        <Tooltip title="Guardar y ver Comercios">
           <Button
             variant="contained"
             color="primary"

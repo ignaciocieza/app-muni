@@ -1,63 +1,36 @@
 import bromatologiaType from "../../actions/bromatologia/bromatologiaTypes";
 import commonTypes from "../../actions/commonTypes";
 import { deleteAux } from "./utils";
+// import { auxRubro } from "./constRubro";
+// import { nombreComercial } from "./constNombreComercial";
+// import { constRazonSocial } from "./constRazonSocial";
+// import {dataPermisos} from "./array.js"
 
-/**
- * agentes --> db "acceso"
- */
 const INITIAL_STATE = {
   permisos: [],
+  //permisos: dataPermisos,
   currentPermiso: false,
   isFetchingBromatologia: false,
   isFetchedBromatologia: false,
-  rubro: [
-    "DESPENSA",
-    "FRUTERIA Y VERDULERIA",
-    "COMEDOR",
-    "CARNICERIA",
-    "MINIMERCADO",
-    "GRANJA",
-    "FRUTERIA - VERDULERIA",
-    "SUPERMERCADO",
-    "DESPENSA Y GRANJA",
-    "SALA DE EXTRACCION DE MIEL",
-    "RESTAURANT",
-  ],
-  nombreComercial: [
-    "EL ECONÓMICO",
-    "DIA %",
-    "CHOCHAN",
-    "DOBLE A",
-    "FIORELLA",
-    "SOLAMENTE",
-    "ALMENDRA",
-    "DULCE TRADICIÓN",
-    "BATACAZO",
-    "ZELKI Dulces Caseros",
-    "LA PORTEÑITA",
-    "MINIMERCADO VIDAL",
-    "DE PASO",
-    "LO DE JUAN",
-    "BON AMISS",
-  ],
-  razonSocial: [
-    "ACTUAL LAS FLORES",
-    "LI, ZUGAN",
-    "CHEN CHUMHE",
-    "LIN WENPONG",
-    "WENG LIHUA",
-    "DIA ARGENTINA S.A.",
-    "SOLAMENTE",
-    "LIN, GUOLONG",
-    "CHEN LI MEI",
-    "INCHASTOY, HUGO E.",
-    "ZHAUNG SONG",
-    "ZARATE, MARIO ALBERTO",
-  ],
+  // rubro: auxRubro,
+  // nombreComercial: nombreComercial,
+  // razonSocial: constRazonSocial,
+  rubro: [],
+  nombreComercial: [],
+  razonSocial: [],
+  errorDB: "",
 };
 
 const bromatologiaReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case bromatologiaType.SET_PERMISOS_BROMATOLOGIA:
+      return {
+        ...state,
+        permisos: action.payload,
+        isFetchingBromatologia: false,
+        isFetchedBromatologia: true,
+        errorDB: "",
+      };
     case bromatologiaType.SET_PERMISO_BROMATOLOGIA:
       return {
         ...state,
@@ -68,6 +41,7 @@ const bromatologiaReducer = (state = INITIAL_STATE, action) => {
         },
         isFetchingBromatologia: false,
         isFetchedBromatologia: true,
+        errorDB: "",
       };
     case bromatologiaType.SET_CURRENT_PERMISO:
       return {
@@ -98,6 +72,22 @@ const bromatologiaReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         permisos: deleteAux(state.permisos, action.payload),
+      };
+    case bromatologiaType.SET_IS_FETCHING_BROMATOLOGIA:
+      return {
+        ...state,
+        isFetchingBromatologia: action.payload,
+      };
+    case bromatologiaType.SET_ERROR_DB:
+      return {
+        ...state,
+        errorDB: action.payload,
+        isFetchingBromatologia: false,
+      };
+    case commonTypes.RESET_SNACKBAR:
+      return {
+        ...state,
+        errorDB: "",
       };
     default:
       return state;

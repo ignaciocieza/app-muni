@@ -4,12 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { resetCurrents, setIsHeader, logout } from '../../../api/actions/commonActions';
 import { SwipeableDrawer, IconButton, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import HomeIcon from '@material-ui/icons/Home';
-import DescriptionIcon from '@material-ui/icons/Description';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import useStyles from './headerPhone.styles';
 
 
@@ -20,25 +17,6 @@ const itemList = [
         icon: <HomeIcon />,
         keyValue: 'home'
     },
-    {
-        text: 'Permisos',
-        route: '/permisos',
-        icon: <DescriptionIcon />,
-        keyValue: 'generar'
-    },
-    {
-        text: 'Administrar',
-        route: '/admin',
-        icon: <SupervisorAccountIcon />,
-        keyValue: 'admin'
-    },
-    {
-        text: 'Bromatologia',
-        route: '/bromatologia',
-        icon: <FindReplaceIcon />,
-        keyValue: 'bromato'
-    }
-
 ];
 
 export default function HeaderPhone() {
@@ -101,7 +79,7 @@ export default function HeaderPhone() {
                             onClick={() => {
                                 setState(false);
                                 dispatch(logout());
-                                history.push('/home');
+                                history.push('/signout');
                             }}>
                             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                             <ListItemText primary='Salir' />
@@ -116,7 +94,7 @@ export default function HeaderPhone() {
                                 setState(false);
                                 dispatch(setIsHeader(false));
                                 dispatch(resetCurrents());
-                                history.push('/signin');
+                                history.push('/');
                             }}
                         >
                             <ListItemIcon><VpnKeyIcon /></ListItemIcon>

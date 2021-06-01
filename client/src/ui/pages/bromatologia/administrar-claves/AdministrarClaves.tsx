@@ -12,6 +12,7 @@ import {
   setNombreComercial,
   setRazonSocial,
 } from "../../../../api/actions/bromatologia/bromatologiaActions";
+import SnackBar from "../../../widgets/snack-bar/SnackBar";
 
 export default function AdministrarClaves() {
   const classes = useStyles();
@@ -21,11 +22,38 @@ export default function AdministrarClaves() {
   const { nombreComercial } = useSelector((state) => state.bromatologia);
   //@ts-ignore
   const { razonSocial } = useSelector((state) => state.bromatologia);
+  //@ts-ignore
+  const { errorDB } = useSelector((state) => state.bromatologia);
 
   return (
     <div className={classes.root}>
+      {errorDB && (
+        <SnackBar
+          message={errorDB}
+          variant="error"
+          hPosition="right"
+          isResetErrors={true}
+        />
+      )}
       <span className={classes.title}>BROMATOLOGÍA</span>
-      <span className={classes.subtitle}>CLAVES</span>
+      <span className={classes.subtitle}>VALOR ÚNICO</span>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>RAZÓN SOCIAL</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ListaClaves
+            categoriaItem={razonSocial}
+            categoriaToDispatch={setRazonSocial}
+            placeHolder="Ingrese Razón Social"
+            titleButton="Agregar Razón Social"
+          />
+        </AccordionDetails>
+      </Accordion>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -35,7 +63,12 @@ export default function AdministrarClaves() {
           <Typography className={classes.heading}>RUBRO</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ListaClaves categoriaItem={rubro} categoriaToDispatch={setRubro} />
+          <ListaClaves
+            categoriaItem={rubro}
+            categoriaToDispatch={setRubro}
+            placeHolder="Ingrese Rubro"
+            titleButton="Agregar Rubro"
+          />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -50,21 +83,8 @@ export default function AdministrarClaves() {
           <ListaClaves
             categoriaItem={nombreComercial}
             categoriaToDispatch={setNombreComercial}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
-        >
-          <Typography className={classes.heading}>RAZÓN SOCIAL</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ListaClaves
-            categoriaItem={razonSocial}
-            categoriaToDispatch={setRazonSocial}
+            placeHolder="Ingrese Nomnbre Comercial"
+            titleButton="Agregar Nomnbre Comercial"
           />
         </AccordionDetails>
       </Accordion>

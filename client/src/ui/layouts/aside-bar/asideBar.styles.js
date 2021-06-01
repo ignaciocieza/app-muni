@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         color: colors.gray,
         fontWeight: 'regular',
-        fontSize: 14,
+        fontSize: 13,
     },
 }));
 

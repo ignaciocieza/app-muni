@@ -12,7 +12,7 @@ const INITIAL_STATE = {
     admin: false,
     isFetching: false,
     isFetched: false,
-    isHeader: true,
+    isHeader: false,
     userError: '',
     alerts: '',
     toggleImage: {

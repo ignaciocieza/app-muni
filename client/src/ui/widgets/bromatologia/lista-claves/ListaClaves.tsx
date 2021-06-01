@@ -1,16 +1,26 @@
 import React, { useState } from "react";
-import { Chip, Paper, TextField, Button, Icon } from "@material-ui/core";
+import {
+  Chip,
+  Paper,
+  TextField,
+  Button,
+  Icon,
+} from "@material-ui/core";
 import useStyles from "./listaClaves.styles";
 import { useDispatch } from "react-redux";
 
 interface ListaClavesProps {
   categoriaItem: string[];
   categoriaToDispatch: (e: string[]) => {};
+  placeHolder: string;
+  titleButton: string;
 }
 
 export default function ListaClaves({
   categoriaItem,
   categoriaToDispatch,
+  placeHolder,
+  titleButton,
 }: ListaClavesProps) {
   const [mainData, setMainData] = useState(categoriaItem);
   const [searchData, setSearchData] = useState<Array<string>>();
@@ -50,7 +60,7 @@ export default function ListaClaves({
         className={classes.textfield}
         onChange={handleChange}
         value={value}
-        placeholder="Ingrese Clave..."
+        placeholder={placeHolder} //"Ingrese Clave..."
         //error={!!errors.nombre}
         //helperText={errors.nombre}
       />
@@ -68,7 +78,7 @@ export default function ListaClaves({
             setSearchData([aux]);
           }}
         >
-          Agregar Clave
+          {titleButton}
         </Button>
       </div>
       <Paper elevation={3} className={classes.paper}>
@@ -84,21 +94,20 @@ export default function ListaClaves({
         ))}
       </Paper>
       <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          //style={{ marginTop: "12%" }}
-          //endIcon={<Icon>send</Icon>}
-          //type="submit"
-          onClick={() => {
-            console.dir(mainData);
-            dispatch(categoriaToDispatch(mainData));
-            setSearchData(undefined);
-            setValue("");
-          }}
-        >
-          Guardar
-        </Button>
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        //style={{ marginTop: "12%" }}
+        //endIcon={<Icon>send</Icon>}
+        //type="submit"
+        onClick={() => {
+          dispatch(categoriaToDispatch(mainData));
+          setSearchData(undefined);
+          setValue("");
+        }}
+      >
+        Guardar
+      </Button>
     </div>
   );
 }

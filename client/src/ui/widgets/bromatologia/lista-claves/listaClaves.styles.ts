@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    overflowY: "scroll",
+    resize: "horizontal",
+    overflow: "auto",
     [theme.breakpoints.down("md")]: {
       width: "80%",
       height: "100%",

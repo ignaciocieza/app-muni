@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import imageLogoBromatologia from "../../../../assets/bromatologia-logo.png";
+import imageLogoBromatologia from "../../../../assets/bromatologia-logo.jpeg";
 import { Button } from "@material-ui/core";
 import QRCode from "qrcode";
 //@ts-ignore
 import ReactToPrint from "react-to-print";
 import useStyle from "./printBromatologia.styles";
 import { setCurrentPermiso } from "../../../../api/actions/bromatologia/bromatologiaActions";
+import { parseDate, sortByDate } from "../utils";
+
 const borderStyle = "1px solid #A48C85";
 
 const { innerWidth } = window;
-const width = innerWidth < 600 ? "200vw" : "100vw";
+const eqToStyleValue= {one:"98vw", two:"198vw"};
+const width = innerWidth < 600 ?  eqToStyleValue.two: eqToStyleValue.one;
 
 export default function PrintBromatologia({ match }: { match: any }) {
   const [qrCode, setQrCode] = useState("");
@@ -19,6 +22,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
   const classes = useStyle();
   const dispatch = useDispatch();
   const ref = React.useRef(null!);
+  
 
   useEffect(() => {
     dispatch(setCurrentPermiso(match.params.id));
@@ -33,6 +37,8 @@ export default function PrintBromatologia({ match }: { match: any }) {
   }, [dispatch, currentPermiso]);
 
   if (!currentPermiso) return null;
+
+  const auxRubro = currentPermiso.valuesForm.rubro;
 
   return (
     <>
@@ -66,7 +72,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 1,
             }}
           >
-            NOMBRE COMERCIAL:
+            RAZON SOCIAL:
           </span>
           <span
             style={{
@@ -74,7 +80,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 1,
             }}
           >
-            {currentPermiso.valuesForm.nombreComercial}
+            {currentPermiso.valuesForm.razonSocial.toUpperCase() || "--"}
           </span>
           <span
             style={{
@@ -90,28 +96,13 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 2,
             }}
           >
-            {currentPermiso.valuesForm.rubro}
+            {(auxRubro?.join?.(", ").toUpperCase() ?? auxRubro?.toUpperCase()) ||
+              "--"}
           </span>
           <span
             style={{
               gridColumn: "3/5",
               gridRow: 3,
-            }}
-          >
-            RAZON SOCIAL:
-          </span>
-          <span
-            style={{
-              gridColumn: "5/8",
-              gridRow: 3,
-            }}
-          >
-            {currentPermiso.valuesForm.razonSocial}
-          </span>
-          <span
-            style={{
-              gridColumn: "3/5",
-              gridRow: 4,
             }}
           >
             DOMICILIO:
@@ -119,10 +110,26 @@ export default function PrintBromatologia({ match }: { match: any }) {
           <span
             style={{
               gridColumn: "5/8",
+              gridRow: 3,
+            }}
+          >
+            {currentPermiso.valuesForm.domicilio.toUpperCase() || "--"}
+          </span>
+          <span
+            style={{
+              gridColumn: "3/5",
               gridRow: 4,
             }}
           >
-            {currentPermiso.valuesForm.domicilio}
+            NOMBRE COMERCIAL:
+          </span>
+          <span
+            style={{
+              gridColumn: "5/8",
+              gridRow: 4,
+            }}
+          >
+            {currentPermiso.valuesForm.nombreComercial.toUpperCase() || "--"}
           </span>
           <span
             style={{
@@ -138,7 +145,9 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 1,
             }}
           >
-            --
+            {currentPermiso.valuesForm.clave
+              ? currentPermiso.valuesForm.clave
+              : "--"}
           </span>
           <span
             style={{
@@ -154,7 +163,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 2,
             }}
           >
-            {currentPermiso.valuesForm.expediente}
+            {currentPermiso.valuesForm.expediente || "--"}
           </span>
           <span
             style={{
@@ -170,7 +179,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 3,
             }}
           >
-            {currentPermiso.valuesForm.inicio}
+            {parseDate(currentPermiso.valuesForm.inicio)}
           </span>
           <span
             style={{
@@ -186,7 +195,7 @@ export default function PrintBromatologia({ match }: { match: any }) {
               gridRow: 4,
             }}
           >
-            {currentPermiso.valuesForm.cese}
+            {parseDate(currentPermiso.valuesForm.cese)}
           </span>
           {qrCode && (
             <div
@@ -254,42 +263,54 @@ export default function PrintBromatologia({ match }: { match: any }) {
           >
             <span>INSPECCIONES REALIZADAS</span>
           </div>
-          {currentPermiso.data?.map((item: any, index: number) => {
-            let a = new Date(item.fecha);
-            return (
-              <React.Fragment key={index}>
-                <span
-                  style={{
-                    gridColumn: 1,
-                    gridRow: 6 + index,
-                    alignSelf: "center",
-                  }}
-                >
-                  {item.acta}
-                </span>
-                <span
-                  style={{
-                    gridColumn: 2,
-                    gridRow: 6 + index,
-                    alignSelf: "center",
-                  }}
-                >
-                  {a.toLocaleDateString()}
-                </span>
-                <span
-                  style={{
-                    gridColumn: "3/13",
-                    gridRow: 6 + index,
-                    placeSelf: "center",
-                  }}
-                >
-                  {item.inspeccionRealizada}
-                </span>
-              </React.Fragment>
-            );
-          })}
+          {currentPermiso.data
+            ?.sort(sortByDate)
+            .map((item: any, index: number) => {
+              const marginTop = 10;
+              const marginBottom = 10;
+
+              return (
+                <React.Fragment key={index}>
+                  <span
+                    style={{
+                      gridColumn: 1,
+                      gridRow: 6 + index,
+                      alignSelf: "center",
+                      marginBottom,
+                      marginTop,
+                      //marginLeft: "15%",
+                    }}
+                  >
+                    {item.acta}
+                  </span>
+                  <span
+                    style={{
+                      gridColumn: 2,
+                      gridRow: 6 + index,
+                      alignSelf: "center",
+                      marginBottom,
+                      marginTop,
+                    }}
+                  >
+                    {parseDate(item.fecha)}
+                  </span>
+                  <span
+                    style={{
+                      gridColumn: "3/13",
+                      gridRow: 6 + index,
+                      placeSelf: "center",
+                      textAlign: "center",
+                      marginBottom,
+                      marginTop,
+                    }}
+                  >
+                    {item.inspeccionRealizada}
+                  </span>
+                </React.Fragment>
+              );
+            })}
         </div>
-        {styleValue === "100vw" && (
+        {styleValue === eqToStyleValue.one && (
           <ReactToPrint
             trigger={() => {
               //setStyleValue('100vw')
@@ -309,22 +330,22 @@ export default function PrintBromatologia({ match }: { match: any }) {
             content={() => ref.current}
           />
         )}
-        {styleValue === "200vw" && (
+        {styleValue === eqToStyleValue.two && (
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => setStyleValue("100vw")}
+            onClick={() => setStyleValue(eqToStyleValue.one)}
           >
             Ir a imprimir
           </Button>
         )}
-        {styleValue !== "200vw" && innerWidth < 600 && (
+        {styleValue !== eqToStyleValue.two && innerWidth < 600 && (
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => setStyleValue("200vw")}
+            onClick={() => setStyleValue(eqToStyleValue.two)}
           >
             Ver Tabla Correctamente
           </Button>
