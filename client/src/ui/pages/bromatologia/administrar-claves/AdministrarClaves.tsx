@@ -83,8 +83,8 @@ export default function AdministrarClaves() {
           <ListaClaves
             categoriaItem={nombreComercial}
             categoriaToDispatch={setNombreComercial}
-            placeHolder="Ingrese Nomnbre Comercial"
-            titleButton="Agregar Nomnbre Comercial"
+            placeHolder="Ingrese Nombre Comercial"
+            titleButton="Agregar Nombre Comercial"
           />
         </AccordionDetails>
       </Accordion>

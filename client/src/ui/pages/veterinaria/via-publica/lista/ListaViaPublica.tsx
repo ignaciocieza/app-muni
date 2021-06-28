@@ -47,15 +47,9 @@ export default function ListaViaPublica() {
       ...defaultCell,
     },
     {
-      title: "FECHA",
+      title: "FECHA Y HORA ",
       field: "fecha",
-      render: (row: any) => <span>{parseDate(row["fecha"])}</span>,
-      ...defaultCell,
-    },
-    {
-      title: "HORA",
-      field: "hora",
-      render: (row: any) => <span>{parseTime(row["hora"])}</span>,
+      render: (row: any) => <span>{parseDate(row["fecha"])} {parseTime(row["hora"])}</span>,
       ...defaultCell,
     },
     {
@@ -76,26 +70,6 @@ export default function ListaViaPublica() {
     {
       title: "RECIBIDA POR",
       field: "recibidaPor",
-      ...defaultCell,
-    },
-    {
-      title: "APELLIDO Y NOMBRE",
-      field: "apellidoNombre",
-      ...defaultCell,
-    },
-    {
-      title: "DNI",
-      field: "dni",
-      ...defaultCell,
-    },
-    {
-      title: "DIRECCIÓN",
-      field: "direccion",
-      ...defaultCell,
-    },
-    {
-      title: "TELÉFONOS",
-      field: "telefonos",
       ...defaultCell,
     },
   ];

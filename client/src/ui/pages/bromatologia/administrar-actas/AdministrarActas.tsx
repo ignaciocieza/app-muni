@@ -69,15 +69,23 @@ export default function AdministrarActas() {
           )),
         }}
         //@ts-ignore
-        data={Object.values(permisos)
-          .filter((item: any) => {
-            if (location.pathname === "/bromatologia/historial") {
-              return item.valuesForm.estadoComercio.toLowerCase() === "cese";
-            } else {
-              return item.valuesForm.estadoComercio.toLowerCase() !== "cese";
-            }
-          })
-          .map((item: any) => item.valuesForm)}
+        data={
+          permisos
+            ? Object.values(permisos)
+                .filter((item: any) => {
+                  if (location.pathname === "/bromatologia/historial") {
+                    return (
+                      item.valuesForm.estadoComercio.toLowerCase() === "cese"
+                    );
+                  } else {
+                    return (
+                      item.valuesForm.estadoComercio.toLowerCase() !== "cese"
+                    );
+                  }
+                })
+                .map((item: any) => item.valuesForm)
+            : []
+        }
         //data={[{},{}]}
         //options={{ pageSize: 10 }}
         localization={{

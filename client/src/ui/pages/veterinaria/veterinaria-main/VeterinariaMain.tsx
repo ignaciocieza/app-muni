@@ -24,8 +24,8 @@ export default function VeterinariaMain() {
 
   return (
     <div className={classes.root}>
-      <span className={classes.title}>VETERINARIA</span>
-      <span className={classes.subtitle}>PANEL DE GESTIÓN DE VETERINARIA</span>
+      <span className={classes.title}>CUIDADO ANIMAL</span>
+      <span className={classes.subtitle}>PANEL DE GESTIÓN DE CUIDADO ANIMAL</span>
       <div className={classes.permisosContent}>
         <CardPermisos
           title="Intervención en vía pública"

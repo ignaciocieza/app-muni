@@ -2,7 +2,9 @@
 //@ts-nocheck
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
 import { FormikErrors } from "formik";
 
 /**
@@ -17,6 +19,7 @@ export default function AutocompleteCustom({
   setOnChange,
   values,
   fieldName,
+  isCanAdd,
 }: {
   options: string[];
   error?:
@@ -30,7 +33,27 @@ export default function AutocompleteCustom({
   values: string | string[];
   fieldName: string;
   setOnChange?: any;
+  isCanAdd?: boolean;
 }) {
+  const othersProps = {};
+  const filter = createFilterOptions();
+
+  if (isCanAdd) {
+    othersProps["selectOnFocus"] = true;
+    othersProps["clearOnBlur"] = true;
+    othersProps["handleHomeEndKeys"] = true;
+    othersProps["freeSolo"] = true;
+    othersProps["filterOptions"] = (options, params) => {
+      const filtered = filter(options, params);
+
+      // Suggest the creation of a new value
+      if (params.inputValue !== "" && !filtered.length) {
+        filtered.push(`Agregar: ${params.inputValue}`);
+      }
+
+      return filtered;
+    };
+  }
   return (
     <Autocomplete
       multiple
@@ -44,7 +67,24 @@ export default function AutocompleteCustom({
       filterSelectedOptions
       onChange={(event, newEvent) => {
         if (!!setFieldValue) {
-          setFieldValue(fieldName, newEvent, true);
+          if (isCanAdd) {
+            console.log([
+              `${newEvent[0]?.replace?.("Agregar:", "").trim().toUpperCase()}`,
+            ]);
+            setFieldValue(
+              fieldName,
+              [
+                `${newEvent[0]
+                  ?.replace?.("Agregar:", "")
+                  .trim()
+                  .toUpperCase()}`,
+              ],
+              true
+            );
+          } else {
+            console.log(newEvent);
+            setFieldValue(fieldName, newEvent, true);
+          }
         } else {
           setOnChange(newEvent);
         }
@@ -61,6 +101,7 @@ export default function AutocompleteCustom({
           helperText={error}
         />
       )}
+      {...othersProps}
     />
   );
 }

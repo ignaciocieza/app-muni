@@ -3,7 +3,7 @@ import MaterialTable from "material-table";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import useStyles from "../../pages/transportistas/nuevo-transportista/nuevoTransportista.styles";
-import { colors } from "../../../constants";
+import { colors, isMobile } from "../../../constants";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -56,6 +56,9 @@ export default function Tabla({
             }}
             //onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
             options={{
+              addRowPosition: "first",
+              toolbarButtonAlignment: isMobile ? "left" : "right",
+              searchFieldAlignment: isMobile ? "left" : "right",
               //exportButton: true,
               //paging: false,
               tableLayout: "auto",

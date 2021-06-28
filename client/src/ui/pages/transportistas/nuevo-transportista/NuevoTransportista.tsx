@@ -353,7 +353,7 @@ export default function NuevoTransportista() {
       ),
     },
     {
-      title: "NRO. HABILITACIÓN MUNICIPAL",
+      title: "HABILITACIÓN MUNICIPAL",
       field: "nroMunicipal",
       cellStyle: {
         whiteSpace: "nowrap",
@@ -466,7 +466,7 @@ export default function NuevoTransportista() {
       ),
     },
     {
-      title: "PERMISO",
+      title: "NÚMERO CARNET DE MANIPULADOR DE ALIMENTOS",
       field: "permiso",
       cellStyle: {
         whiteSpace: "nowrap",
@@ -558,6 +558,7 @@ export default function NuevoTransportista() {
       <span className={classes.title}>FORMULARIO DE TRANSPORTISTAS</span>
       <span className={classes.subtitle}>* EMPRESA</span>
       <Autocomplete
+        className={classes.textfieldAutocomplete}
         value={values.empresa}
         onChange={(event, newValue) => {
           setFieldValue(
@@ -581,7 +582,7 @@ export default function NuevoTransportista() {
         handleHomeEndKeys
         id="free-solo-with-text-demo"
         options={empresas}
-        style={{ width: 500, marginTop: "2%" }}
+        //style={{ width: 500, marginTop: "2%" }}
         freeSolo
         renderInput={(params) => (
           <TextField

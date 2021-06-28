@@ -13,7 +13,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import DateFnsUtils from "@date-io/date-fns";
@@ -29,6 +31,12 @@ import { parseDate, sortByDate } from "../utils";
 import AutocompleteCustom from "../../../widgets/bromatologia/autocomplete-valorunico/AutocompleteCustom";
 import Tabla from "../../../widgets/tabla-nuevo/Tabla";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
+import {
+  setRubro,
+  setNombreComercial,
+  setRazonSocial,
+} from "../../../../api/actions/bromatologia/bromatologiaActions";
+import { nanoid } from "nanoid";
 
 const LoginSchema = Yup.object().shape({
   nombreComercial: Yup.string()
@@ -41,6 +49,8 @@ const LoginSchema = Yup.object().shape({
   domicilio: Yup.string().required("Debe ingresar un domicilio"),
   expediente: Yup.string().required("Debe ingresar un número de expediente"),
 });
+
+const filter = createFilterOptions();
 
 /**
  * (https://material-table.com/#/docs/features/editable)
@@ -65,7 +75,7 @@ export default function NuevaActa() {
         domicilio: "",
         nombreComercial: "",
         clave: "",
-        expediente: "",
+        expediente: `FaltaExpediente${nanoid(5)}`,
         inicio: "",
         cese: "",
       };
@@ -132,6 +142,11 @@ export default function NuevaActa() {
     useFormik({
       initialValues: auxInitialValues,
       onSubmit: (valuesForm) => {
+        dispatch(
+          setNombreComercial([...nombreComercial, valuesForm.nombreComercial])
+        );
+        //dispatch(setRubro([...rubro, valuesForm.rubro]));
+        dispatch(setRazonSocial([...razonSocial, valuesForm.razonSocial]));
         dispatch(setPermisoBromatologia({ valuesForm, data }, status));
         dispatch(setCurrentPermiso(values.expediente));
       },
@@ -186,9 +201,28 @@ export default function NuevaActa() {
         options={razonSocial}
         className={classes.textfield}
         onChange={(event, newEvent) => {
-          setFieldValue("razonSocial", newEvent, true);
+          //setFieldValue("razonSocial", newEvent, true);
+          setFieldValue(
+            "razonSocial",
+            newEvent?.replace?.("Agregar:", "").trim().toUpperCase(),
+            true
+          );
         }}
         value={values.razonSocial}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+
+          // Suggest the creation of a new value
+          if (params.inputValue !== "" && !filtered.length) {
+            filtered.push(`Agregar: ${params.inputValue}`);
+          }
+
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        freeSolo
         renderInput={(params) => (
           <TextField
             {...params}
@@ -201,6 +235,7 @@ export default function NuevaActa() {
       />
       <span className={classes.subtitle}>* RUBRO</span>
       <AutocompleteCustom
+        //isCanAdd
         options={rubro}
         error={errors.rubro}
         className={classes.textfield}
@@ -231,8 +266,27 @@ export default function NuevaActa() {
         options={nombreComercial}
         className={classes.textfield}
         onChange={(event, newEvent) => {
-          setFieldValue("nombreComercial", newEvent, true);
+          //setFieldValue("nombreComercial", newEvent, true);
+          setFieldValue(
+            "nombreComercial",
+            newEvent?.replace?.("Agregar:", "").trim().toUpperCase(),
+            true
+          );
         }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+
+          // Suggest the creation of a new value
+          if (params.inputValue !== "" && !filtered.length) {
+            filtered.push(`Agregar: ${params.inputValue}`);
+          }
+
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        freeSolo
         value={values.nombreComercial}
         renderInput={(params) => (
           <TextField

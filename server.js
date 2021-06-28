@@ -56,7 +56,8 @@ app.get("/service-worker.js", (req, res) => {
 let conn;
 try {
   const config = {
-    host: process.env.DB_HOST_TEST,
+    //host: process.env.DB_HOST_TEST,
+    host: process.env.DB_HOST_PROD,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

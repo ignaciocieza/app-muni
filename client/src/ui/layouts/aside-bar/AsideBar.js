@@ -41,13 +41,13 @@ export default function AsideBar() {
           title="Transportistas"
           setIsActive={setIsActive}
         />
-         <AsideBarIcon
+         {/* <AsideBarIcon
           isActive={isActive}
           Icon={PetsIcon}
           rute={"/veterinaria/viapublica/main"}
           title="Cuidado Animal"
           setIsActive={setIsActive}
-        />
+        /> */}
       </div>
     </Hidden>
   );

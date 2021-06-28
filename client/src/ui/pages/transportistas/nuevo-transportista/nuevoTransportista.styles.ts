@@ -47,6 +47,14 @@ const useStyles = makeStyles((theme) => ({
     width:250,
     boxShadow,
     [theme.breakpoints.down("md")]: {
+      margin: "4% 0% 4% 0%",
+    },
+  },
+  textfieldAutocomplete: {
+    margin: "2%",
+    //width: "100%",
+    width:500,
+    [theme.breakpoints.down("md")]: {
       width: "80%",
       margin: "4% 0% 4% 0%",
     },
@@ -80,9 +88,9 @@ const useStyles = makeStyles((theme) => ({
     //width: "100%",
     width:250,
     boxShadow,
-    [theme.breakpoints.down("md")]: {
-      width: "78%",
-    },
+    // [theme.breakpoints.down("md")]: {
+    //   width: "78%",
+    // },
   },
   contentMaterialTable: {
     width: "85vw",

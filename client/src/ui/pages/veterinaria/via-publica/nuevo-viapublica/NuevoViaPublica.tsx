@@ -30,6 +30,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import esLocale from "date-fns/locale/es";
 import ImagePicker from "../../../../widgets/image-picker/ImagePicker";
 import { nanoid } from "nanoid";
+import Tabla from "../../../../widgets/tabla-nuevo/Tabla";
 
 const errorMsj = "Campo Requerido!";
 
@@ -48,12 +49,26 @@ const LoginSchema = Yup.object().shape({
   sexo: Yup.string().required(errorMsj),
   color: Yup.string().required(errorMsj),
   accionesRealizadas: Yup.string().required(errorMsj),
-  medicacionSuministrada: Yup.string().required(errorMsj),
   estadoActuacion: Yup.string().required(errorMsj),
 });
 const filter = createFilterOptions();
-// //@ts-ignore
-// let auxIdVehiculo = [];
+
+const columnsMedicamentos = [
+  {
+    title: "NOMBRE MEDICAMENTO",
+    field: "nombreMedicamento",
+    cellStyle: {
+      whiteSpace: "nowrap",
+    },
+  },
+  {
+    title: "DOSIS",
+    field: "dosis",
+    cellStyle: {
+      whiteSpace: "nowrap",
+    },
+  },
+];
 
 export default function NuevoViaPublica() {
   const [status, setStatus] = useState("none");
@@ -61,6 +76,9 @@ export default function NuevoViaPublica() {
   const { colores } = useSelector((state: any) => state.veterinaria);
   const { currentRegistroViaPublica } = useSelector(
     (state: any) => state.veterinaria
+  );
+  const [medicamentos, setMedicamentos] = useState(
+    currentRegistroViaPublica?.medicamentos ?? []
   );
 
   const dispatch = useDispatch();
@@ -86,10 +104,9 @@ export default function NuevoViaPublica() {
             sexo: "",
             color: "",
             accionesRealizadas: "",
-            medicacionSuministrada: "",
             estadoActuacion: "",
             imagenAnimal: "",
-            idAnimal: nanoid(),
+            idAnimal: nanoid(10),
           },
       onSubmit: (valuesForm) => {
         if (especiesAnimales?.indexOf(valuesForm.especieAnimal) === -1) {
@@ -101,7 +118,7 @@ export default function NuevoViaPublica() {
           dispatch(setColores([...colores, valuesForm.color]));
         }
         if (status === "guardar") {
-          dispatch(setRegistroViaPublica({ valuesForm }));
+          dispatch(setRegistroViaPublica({ valuesForm, medicamentos }));
           history.push("/veterinaria/viapublica/lista");
         }
         // if (status === "imprimir") {
@@ -124,7 +141,7 @@ export default function NuevoViaPublica() {
         />
       )} */}
       <span className={classes.title}>
-        SOLICITUD DE INTERVENCION EN VIA PÚBLICA
+        SOLICITUD DE INTERVENCIÓN EN VÍA PÚBLICA
       </span>
       <span className={classes.subtitle}>NÚMERO DE IDENTIFICACIÓN ANIMAL</span>
       <TextField
@@ -148,6 +165,8 @@ export default function NuevoViaPublica() {
           <MenuItem value={"ASISTENCIA EN ALBERGUE"}>
             ASISTENCIA EN ALBERGUE
           </MenuItem>
+          <MenuItem value={"EXPOSICIÓN CIVIL"}>EXPOSICIÓN CIVIL</MenuItem>
+          <MenuItem value={"DENUNCIA PENAL"}>DENUNCIA PENAL</MenuItem>
         </Select>
       </FormControl>
       <span className={classes.subtitle}>* FECHA</span>
@@ -161,7 +180,7 @@ export default function NuevoViaPublica() {
           id="date-picker-inline-inicio"
           //disablePast={true}
           name="fecha"
-          invalidDateMessage="Formato de la Fecha Inválido"
+          invalidDateMessage="Formato de la fecha inválido"
           //invalidLabel='Ingrese la fecha de Inicio'
           value={values.fecha}
           error={!!errors.fecha}
@@ -185,6 +204,7 @@ export default function NuevoViaPublica() {
           name="hora"
           value={values.hora}
           error={!!errors.hora}
+          invalidDateMessage="Formato de hora inválido"
           onChange={(e) => {
             const aux = e || "";
             setFieldValue("hora", aux, false);
@@ -378,6 +398,13 @@ export default function NuevoViaPublica() {
         value={values.accionesRealizadas}
       />
       <span className={classes.subtitle}>* MEDICACIÓN SUMINISTRADA</span>
+      <Tabla
+        title=""
+        data={medicamentos}
+        setData={setMedicamentos}
+        columns={columnsMedicamentos}
+      />
+      {/* <span className={classes.subtitle}>* MEDICACIÓN SUMINISTRADA</span>
       <textarea
         required
         name="medicacionSuministrada"
@@ -385,7 +412,7 @@ export default function NuevoViaPublica() {
         placeholder="Detalles de la inspección"
         onChange={handleChange}
         value={values.medicacionSuministrada}
-      />
+      /> */}
       {/* <span className={classes.subtitle}>* DOSIS</span> */}
       <span className={classes.subtitle}>* ESTADO DE LA ACTUACÍON</span>{" "}
       <FormControl variant="outlined" className={classes.formControl}>

@@ -17,5 +17,9 @@ export const boxShadow= "5px 5px 8px -6px rgba(0,0,0,0.65)";
 export const sinEspecificar= 'no info';
 
 //Sin especificar para campos de db,que solo acepten una letra
-export const oneLeter= 'n'
+export const oneLeter= 'n';
+
+export const isMobile =
+  typeof window.orientation !== "undefined" ||
+  navigator.userAgent.indexOf("IEMobile") !== -1;
 
