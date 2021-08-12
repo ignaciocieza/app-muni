@@ -23,11 +23,11 @@ const transporte = require("./routers/transporteRegistros");
 // const empresasDB = require("./db/transporteDBempresa");
 // const tipoAlimentosTransportarDb = require("./db/transporteDBtipoAlimento");
 // const localidadesDB = require("./db/trasnporteDBLocalidades");
-
-//const fs = require("fs");
-//const bromatologiaJSon = require("./csvBromatologiaDB");
-//const transportistasJSon = require("./db/csvTransportistasDB");
-//const moment = require("moment");
+// const arrayData = require("./array");
+// const fs = require("fs");
+// const bromatologiaJSon = require("./db/csvBromatologiaDB");
+// const transportistasJSon = require("./db/csvTransportistasDB");
+// const moment = require("moment");
 
 require("dotenv").config(); //accede .env para la clave secreta
 

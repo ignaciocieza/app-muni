@@ -3,6 +3,7 @@ import { boxShadow } from "../../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position:"relative",
     margin: "1% 1% 0 8%",
     [theme.breakpoints.down("md")]: {
       margin: "5% 1% 0 1%",

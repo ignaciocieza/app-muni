@@ -15,10 +15,9 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 
+
 export default function AdministrarActas() {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
+  //const [isTablaCompleta, setIsTablaCompleta] = useState(false);
   const { permisos } = useSelector((state: any) => state.bromatologia);
   const { isFetchingBromatologia } = useSelector(
     (state: any) => state.bromatologia
@@ -37,6 +36,9 @@ export default function AdministrarActas() {
     { title: "Nombre Comercial", field: "nombreComercial" },
     { title: "Expediente", field: "expediente" },
   ];
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
   if (location.pathname === "/bromatologia/historial") {
     columns.splice(1, 0, { title: "Cese", field: "cese", type: "date" });
@@ -56,6 +58,28 @@ export default function AdministrarActas() {
           isResetErrors={true}
         />
       )}
+      {/* <div
+        style={{
+          position: "absolute",
+          top: "9.5%",
+          right: "1.5%",
+          display: "flex",
+          zIndex: 1000,
+          alignItems: "center",
+        }}
+      >
+        <span style={{ fontSize: "1em", marginRight: 5 }}>
+          Exportar tabla completa?
+        </span>
+        <input
+          type="checkbox"
+          name="isTablaCompleta"
+          checked={isTablaCompleta}
+          onChange={() => {
+            setIsTablaCompleta((prev) => !prev);
+          }}
+        ></input>
+      </div> */}
       <MaterialTable
         title={
           location.pathname === "/bromatologia/historial"
@@ -63,6 +87,11 @@ export default function AdministrarActas() {
             : "Administrar Comercios Activos"
         }
         columns={columns}
+        options={{
+          exportButton: true,
+          //exportAllData: isTablaCompleta,
+          exportAllData:true
+        }}
         icons={{
           Delete: forwardRef((props, ref) => (
             <DeleteOutlineIcon {...props} ref={ref} />
@@ -106,6 +135,9 @@ export default function AdministrarActas() {
           },
           toolbar: {
             searchPlaceholder: "Buscar...",
+            exportTitle: "Exportar",
+            exportCSVName: "Exportar como CSV",
+            exportPDFName: "Exportar como PDF",
           },
         }}
         editable={{

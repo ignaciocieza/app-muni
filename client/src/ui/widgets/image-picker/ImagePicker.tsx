@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import noImage from "../../../assets/no-imagen.png";
 import Button from "@material-ui/core/Button";
 import { sinEspecificar } from "../../../constants";

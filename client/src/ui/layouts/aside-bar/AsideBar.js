@@ -7,7 +7,7 @@ import FastfoodIcon from '@material-ui/icons/Fastfood';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import useStyles from "./asideBar.styles";
 import AsideBarIcon from "./AsideBarIcon";
-import PetsIcon from '@material-ui/icons/Pets';
+//import PetsIcon from '@material-ui/icons/Pets';
 
 export default function AsideBar() {
   const [isActive, setIsActive] = useState(false);

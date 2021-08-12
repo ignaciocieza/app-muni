@@ -18,7 +18,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
-import PetsIcon from "@material-ui/icons/Pets";
+//import PetsIcon from "@material-ui/icons/Pets";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import useStyles from "./headerPhone.styles";

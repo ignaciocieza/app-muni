@@ -7,8 +7,6 @@ import QRCode from "qrcode";
 import ReactToPrint from "react-to-print";
 import useStyle from "./detalleTransportista.styles";
 import { setCurrentPermiso } from "../../../../api/actions/bromatologia/bromatologiaActions";
-import { parseDate, sortByDate } from "../utils";
-import { colors } from "../../../../constants";
 import Chofer from "./Chofer";
 import Vehiculo from "./Vehiculo";
 

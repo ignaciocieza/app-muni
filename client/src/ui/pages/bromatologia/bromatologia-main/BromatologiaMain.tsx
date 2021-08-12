@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getDataBromatologia,
   setIsFetchingBromatologia,
@@ -12,16 +12,16 @@ import useStyles from "./BromatologiaMain.styles";
 export default function BromatologiaMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { rubro } = useSelector((state: any) => state.bromatologia);
+  //const { rubro } = useSelector((state: any) => state.bromatologia);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     //dispatch(setIsHeader(true))
 
-    if (!rubro.length) {
+    //if (!rubro.length) {
       dispatch(setIsFetchingBromatologia(true));
       dispatch(getDataBromatologia());
-    }
+    
   }, []);
 
   return (

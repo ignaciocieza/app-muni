@@ -32,7 +32,6 @@ import AutocompleteCustom from "../../../widgets/bromatologia/autocomplete-valor
 import Tabla from "../../../widgets/tabla-nuevo/Tabla";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import {
-  setRubro,
   setNombreComercial,
   setRazonSocial,
 } from "../../../../api/actions/bromatologia/bromatologiaActions";
@@ -66,19 +65,6 @@ export default function NuevaActa() {
   const { errorDB } = useSelector((state: any) => state.bromatologia);
   const dispatch = useDispatch();
 
-  const auxInitialValues = currentPermiso?.valuesForm
-    ? currentPermiso.valuesForm
-    : {
-        estadoComercio: "NO HABILITADOS",
-        razonSocial: "",
-        rubro: "",
-        domicilio: "",
-        nombreComercial: "",
-        clave: "",
-        expediente: `FaltaExpediente${nanoid(5)}`,
-        inicio: "",
-        cese: "",
-      };
   const columns = [
     {
       title: "Acta",
@@ -140,7 +126,19 @@ export default function NuevaActa() {
   const [data, setData] = useState(currentPermiso?.data ?? []);
   const { handleChange, handleSubmit, setFieldValue, errors, values } =
     useFormik({
-      initialValues: auxInitialValues,
+      initialValues: currentPermiso?.valuesForm
+        ? currentPermiso.valuesForm
+        : {
+            estadoComercio: "NO HABILITADOS",
+            razonSocial: "",
+            rubro: "",
+            domicilio: "",
+            nombreComercial: "",
+            clave: "",
+            expediente: `FaltaExpediente${nanoid(5)}`,
+            inicio: "",
+            cese: "",
+          },
       onSubmit: (valuesForm) => {
         dispatch(
           setNombreComercial([...nombreComercial, valuesForm.nombreComercial])
@@ -167,13 +165,13 @@ export default function NuevaActa() {
       <span className={classes.subtitle}>ESTADO COMERCIO</span>
       <Tooltip
         disableFocusListener={true}
-        disableHoverListener={values.clave ? true : false}
+        disableHoverListener={values.clave}
         title="Debe ingresar una clave para poder habilitar el comercio"
       >
         <FormControl
           variant="outlined"
           className={classes.formControl}
-          disabled={values.clave ? false : true}
+          disabled={!values.clave}
         >
           <Select
             value={values.estadoComercio}
@@ -183,6 +181,11 @@ export default function NuevaActa() {
           >
             <MenuItem value={"HABILITADOS"}>HABILITADOS</MenuItem>
             <MenuItem value={"NO HABILITADOS"}>NO HABILITADOS</MenuItem>
+            <MenuItem value={"APÍCOLA"}>APÍCOLA</MenuItem>
+            <MenuItem value={"ESCUELAS Y CENTROS"}>ESCUELAS Y CENTROS</MenuItem>
+            <MenuItem value={"PRODUCTORES ARTESANALES"}>
+              PRODUCTORES ARTESANALES
+            </MenuItem>
             <MenuItem value={"CESE"}>CESE</MenuItem>
           </Select>
         </FormControl>

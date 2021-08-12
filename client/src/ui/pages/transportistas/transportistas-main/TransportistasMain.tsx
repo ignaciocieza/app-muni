@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getDataTransporte,
   setIsFetchingTransporte,
@@ -10,16 +10,16 @@ import useStyles from "./transportistasMain.styles";
 
 export default function TransportistasMain() {
   const classes = useStyles();
-  const { empresas } = useSelector((state: any) => state.transportistas);
+  //const { empresas } = useSelector((state: any) => state.transportistas);
   const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     //dispatch(setIsHeader(true))
-    if (!empresas.length) {
+    //if (!empresas.length) {
       dispatch(setIsFetchingTransporte(true));
       dispatch(getDataTransporte());
-    }
+    
   }, []);
 
   return (

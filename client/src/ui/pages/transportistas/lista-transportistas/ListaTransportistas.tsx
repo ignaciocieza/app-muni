@@ -15,14 +15,16 @@ import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 
 export default function ListaTransportistas() {
-  const dispatch = useDispatch();
-  const history = useHistory();
+  // const [isTablaCompleta, setIsTablaCompleta] = useState(false);
   const { registros } = useSelector((state: any) => state.transportistas);
-  const { isFetchingRegistrosTransporte } = useSelector((state: any) => state.transportistas);
+  const { isFetchingRegistrosTransporte } = useSelector(
+    (state: any) => state.transportistas
+  );
   const { errorDBtransporte } = useSelector(
     (state: any) => state.transportistas
   );
-
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const columns = [
     {
@@ -78,6 +80,28 @@ export default function ListaTransportistas() {
           isResetErrors={true}
         />
       )}
+        {/* <div
+        style={{
+          position: "absolute",
+          top: "11.5%",
+          right: "1.5%",
+          display: "flex",
+          zIndex: 1000,
+          alignItems: "center",
+        }}
+      >
+        <span style={{ fontSize: "1em", marginRight: 5 }}>
+          Exportar tabla completa?
+        </span>
+        <input
+          type="checkbox"
+          name="isTablaCompleta"
+          checked={isTablaCompleta}
+          onChange={() => {
+            setIsTablaCompleta((prev) => !prev);
+          }}
+        ></input>
+      </div> */}
       <MaterialTable
         title={"Administrar Transportistas"}
         columns={columns}
@@ -85,6 +109,12 @@ export default function ListaTransportistas() {
           Delete: forwardRef((props, ref) => (
             <DeleteOutlineIcon {...props} ref={ref} />
           )),
+        }}
+        options={{
+          //exporta solamente lo que se muestra en pantalla
+          exportButton: true,
+          //exportAllData: isTablaCompleta,
+          exportAllData:true
         }}
         //@ts-ignore
         data={Object.values(registros).map((item: any) => item.valuesForm)}
@@ -108,6 +138,9 @@ export default function ListaTransportistas() {
           },
           toolbar: {
             searchPlaceholder: "Buscar...",
+            exportTitle: "Exportar",
+            exportCSVName: "Exportar como CSV",
+            exportPDFName: "Exportar como PDF",
           },
         }}
         editable={{
