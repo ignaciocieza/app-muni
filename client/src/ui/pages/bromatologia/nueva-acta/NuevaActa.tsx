@@ -186,6 +186,7 @@ export default function NuevaActa() {
             <MenuItem value={"PRODUCTORES ARTESANALES"}>
               PRODUCTORES ARTESANALES
             </MenuItem>
+            <MenuItem value={"CARRO GASTRONÓMICO"}>CARRO GASTRONÓMICO</MenuItem>
             <MenuItem value={"CESE"}>CESE</MenuItem>
           </Select>
         </FormControl>

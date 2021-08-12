@@ -28,6 +28,6 @@ yarn-error.log*
 vpn
 imagenes
 heroku-jsonserver
-/db
+db
 array.txt
 array.js

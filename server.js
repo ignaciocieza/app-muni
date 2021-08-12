@@ -72,7 +72,6 @@ try {
   if (conn) conn.release(); //release to pool
 }
 
-
 //Routers
 app.use(bromatologia);
 app.use(transporte);
