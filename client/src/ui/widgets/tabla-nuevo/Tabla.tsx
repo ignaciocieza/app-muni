@@ -19,7 +19,7 @@ export default function Tabla({
   columns: any;
 }) {
   const classes = useStyles();
-  //const [selectedRow, setSelectedRow] = useState(null);
+  //const [selectedRow, setSelectedRow] = useState(false);
 
   return (
     <>
@@ -56,6 +56,7 @@ export default function Tabla({
             }}
             //onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
             options={{
+              //actionsColumnIndex: -1,
               addRowPosition: "first",
               toolbarButtonAlignment: isMobile ? "left" : "right",
               searchFieldAlignment: isMobile ? "left" : "right",

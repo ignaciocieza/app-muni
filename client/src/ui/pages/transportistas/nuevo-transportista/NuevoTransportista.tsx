@@ -401,6 +401,9 @@ export default function NuevoTransportista() {
             invalidLabel="Ingrese la fecha"
             value={props.value || ""}
             error={false}
+            onKeyPress={function (e) {
+              e.preventDefault();
+            }}
             onChange={(e) => {
               const aux = e || "";
               props.onChange(aux);
@@ -530,6 +533,9 @@ export default function NuevoTransportista() {
               invalidDateMessage="Formato de la Fecha Inválido"
               invalidLabel="Ingrese la fecha"
               value={props.value || ""}
+              onKeyPress={function (e) {
+                e.preventDefault();
+              }}
               onChange={(e) => {
                 const aux = e || "";
                 props.onChange(aux);
@@ -546,7 +552,14 @@ export default function NuevoTransportista() {
   ];
   //https://material-ui.com/components/autocomplete/
   return (
-    <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
+    <form
+      className={classes.form}
+      onSubmit={function (e) {
+        e.preventDefault();
+        handleSubmit(e);
+      }}
+      autoComplete="off"
+    >
       {errorDBtransporte && (
         <SnackBar
           message={errorDBtransporte}

@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Chip,
-  Paper,
-  TextField,
-  Button,
-  Icon,
-} from "@material-ui/core";
+import { Chip, Paper, TextField, Button, Icon } from "@material-ui/core";
 import useStyles from "./listaClaves.styles";
 import { useDispatch } from "react-redux";
 
@@ -82,9 +76,9 @@ export default function ListaClaves({
         </Button>
       </div>
       <Paper elevation={3} className={classes.paper}>
-        {(searchData || mainData).map((item) => (
+        {(searchData || mainData).map((item, index) => (
           <Chip
-            key={item}
+            key={item + index}
             label={item}
             onDelete={() => onDelete(item)}
             color="primary"

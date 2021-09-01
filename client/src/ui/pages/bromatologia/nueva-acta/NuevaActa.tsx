@@ -94,6 +94,9 @@ export default function NuevaActa() {
                 invalidDateMessage="Formato de la Fecha Inválido"
                 invalidLabel="Ingrese la fecha del Acta"
                 value={props.value || " "}
+                onKeyPress={function (e) {
+                  e.preventDefault();
+                }}
                 onChange={(e) => {
                   ///console.log(e)
                   props.onChange(e);
@@ -152,7 +155,14 @@ export default function NuevaActa() {
     });
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
+    <form
+      className={classes.form}
+      onSubmit={function (e) {
+        e.preventDefault();
+        handleSubmit(e);
+      }}
+      autoComplete="off"
+    >
       {errorDB && (
         <SnackBar
           message={errorDB}
@@ -165,7 +175,7 @@ export default function NuevaActa() {
       <span className={classes.subtitle}>ESTADO COMERCIO</span>
       <Tooltip
         disableFocusListener={true}
-        disableHoverListener={values.clave}
+        disableHoverListener={!!values.clave}
         title="Debe ingresar una clave para poder habilitar el comercio"
       >
         <FormControl

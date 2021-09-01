@@ -14,8 +14,16 @@ import DetailsIcon from "@material-ui/icons/Details";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
+import { parseDate, getFechaActa, sortByDateTwo } from "../utils";
 
+function capitalizeFirstLetter(string) {
+  return string?.charAt(0).toUpperCase() + string?.slice(1);
+}
 
+/**
+ * https://github.com/mbrn/material-table/issues/2557
+ * @returns
+ */
 export default function AdministrarActas() {
   //const [isTablaCompleta, setIsTablaCompleta] = useState(false);
   const { permisos } = useSelector((state: any) => state.bromatologia);
@@ -24,17 +32,90 @@ export default function AdministrarActas() {
   );
   const { errorDB } = useSelector((state: any) => state.bromatologia);
   const classes = useStyles();
+
   const columns = [
-    { title: "Estado Comercio", field: "estadoComercio" },
-    { title: "Razon Social", field: "razonSocial" },
+    {
+      title: "Estado Comercio",
+      field: "estadoComercio",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      render: (row: any) =>row["estadoComercio"].toUpperCase()
+    },
+    {
+      title: "Razon Social",
+      field: "razonSocial",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      render: (row: any) =>row["razonSocial"].toUpperCase()
+    },
     {
       title: "Rubro",
-      field: "rubro",
-      render: (row: any) => row["rubro"]?.join?.(", ") ?? row["rubro"],
+      //field: "rubro",
+      field: "rubroAux",
+      render: (row: any) =>row["rubroAux"].toUpperCase(),
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
     },
-    { title: "Domicilio", field: "domicilio" },
-    { title: "Nombre Comercial", field: "nombreComercial" },
-    { title: "Expediente", field: "expediente" },
+    {
+      title: "Domicilio",
+      field: "domicilio",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      render: (row: any) =>row["domicilio"].toUpperCase()
+    },
+    {
+      title: "Nombre Comercial",
+      field: "nombreComercial",
+      //export: false,
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      render: (row: any) =>row["nombreComercial"].toUpperCase()
+    },
+    // {
+    //   title: "Fecha Antigua",
+    //   field: "fechaActaAntigua",
+    //   headerStyle: {
+    //     whiteSpace: "nowrap",
+    //   },
+    //   customSort: (row, rowTwo) =>
+    //     sortByDateTwo(row.fechaActaAntiguaSort, rowTwo.fechaActaAntiguaSort),
+    //   // render: (row: any) => {
+    //   //   return <span>{parseDate(row.fechaActaAntigua)}</span>;
+    //   // },
+    // },
+    {
+      title: "Fecha Reciente",
+      field: "fechaActaUltima",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      customSort: (row, rowTwo) =>
+        sortByDateTwo(row.fechaActaUltimaSort, rowTwo.fechaActaUltimaSort),
+      // render: (row: any) => {
+      //   return <span>{parseDate(row.fechaActaUltima)}</span>;
+      // },
+    },
+    {
+      title: "Detalle Acta",
+      //export: false,
+      field: "detalleActaUltima",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+      render: (row: any) =>row["detalleActaUltima"].toUpperCase()
+    },
+    {
+      title: "Expediente",
+      field: "expediente",
+      headerStyle: {
+        whiteSpace: "nowrap",
+      },
+    },
   ];
   const dispatch = useDispatch();
   const history = useHistory();
@@ -90,7 +171,11 @@ export default function AdministrarActas() {
         options={{
           exportButton: true,
           //exportAllData: isTablaCompleta,
-          exportAllData:true
+          exportAllData: true,
+          filtering: true,
+          // exportPdf: (tableColumns, tableData) => {
+          //   console.log({ tableColumns, tableData });
+          // },
         }}
         icons={{
           Delete: forwardRef((props, ref) => (
@@ -112,7 +197,41 @@ export default function AdministrarActas() {
                     );
                   }
                 })
-                .map((item: any) => item.valuesForm)
+                .map((item: any) => {
+                  const auxUltima = getFechaActa(item.data, "ultima");
+                  //const auxAntigua = getFechaActa(item.data, "antigua");
+
+                  ///Formato para generar pdf
+                  return {
+                    ...item.valuesForm,
+                    nombreComercial: capitalizeFirstLetter(
+                      item.valuesForm.nombreComercial.toLocaleLowerCase()
+                    ),
+                    domicilio: capitalizeFirstLetter(
+                      item.valuesForm.domicilio.toLocaleLowerCase()
+                    ),
+                    estadoComercio: capitalizeFirstLetter(
+                      item.valuesForm.estadoComercio.toLocaleLowerCase()
+                    ),
+                    razonSocial: capitalizeFirstLetter(
+                      item.valuesForm.razonSocial.toLocaleLowerCase()
+                    ),
+                    fechaActaUltima: parseDate(auxUltima?.fecha),
+                    fechaActaUltimaSort: auxUltima?.fecha,
+                    detalleActaUltima: capitalizeFirstLetter(
+                      auxUltima?.inspeccionRealizada.toLocaleLowerCase()
+                    ),
+                    // fechaActaAntigua: parseDate(auxAntigua?.fecha),
+                    // fechaActaAntiguaSort: auxAntigua?.fecha,
+                    rubroAux:
+                      item.valuesForm["rubro"]
+                        ?.join?.(", ")
+                        .toLocaleLowerCase() ??
+                      capitalizeFirstLetter(
+                        item.valuesForm["rubro"].toLocaleLowerCase()
+                      ),
+                  };
+                })
             : []
         }
         //data={[{},{}]}

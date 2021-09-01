@@ -82,7 +82,6 @@ export default function AutocompleteCustom({
               true
             );
           } else {
-            console.log(newEvent);
             setFieldValue(fieldName, newEvent, true);
           }
         } else {
