@@ -17,7 +17,7 @@ import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import { parseDate, getFechaActa, sortByDateTwo } from "../utils";
 
 function capitalizeFirstLetter(string) {
-  return string?.charAt(0).toUpperCase() + string?.slice(1);
+  return string?.charAt(0)?.toUpperCase?.() + string?.slice?.(1);
 }
 
 /**
@@ -40,7 +40,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["estadoComercio"].toUpperCase()
+      render: (row: any) =>row["estadoComercio"]?.toUpperCase?.()
     },
     {
       title: "Razon Social",
@@ -48,13 +48,13 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["razonSocial"].toUpperCase()
+      render: (row: any) =>row["razonSocial"]?.toUpperCase?.()
     },
     {
       title: "Rubro",
       //field: "rubro",
       field: "rubroAux",
-      render: (row: any) =>row["rubroAux"].toUpperCase(),
+      render: (row: any) =>row["rubroAux"]?.toUpperCase?.(),
       headerStyle: {
         whiteSpace: "nowrap",
       },
@@ -65,7 +65,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["domicilio"].toUpperCase()
+      render: (row: any) =>row["domicilio"]?.toUpperCase?.()
     },
     {
       title: "Nombre Comercial",
@@ -74,7 +74,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["nombreComercial"].toUpperCase()
+      render: (row: any) =>row["nombreComercial"]?.toUpperCase?.()
     },
     // {
     //   title: "Fecha Antigua",
@@ -107,7 +107,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["detalleActaUltima"].toUpperCase()
+      render: (row: any) =>row["detalleActaUltima"]?.toUpperCase?.()
     },
     {
       title: "Expediente",
