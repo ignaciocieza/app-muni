@@ -8,6 +8,9 @@ import {
 import CardPermisos from "../../../widgets/card-permiso/CardPermiso";
 //import { setIsHeader } from '../../../api/actions/commonActions';
 import useStyles from "./BromatologiaMain.styles";
+import { host } from "../../../../constants";
+
+const hostName = window.location.host;
 
 export default function BromatologiaMain() {
   const classes = useStyles();
@@ -19,9 +22,8 @@ export default function BromatologiaMain() {
     //dispatch(setIsHeader(true))
 
     //if (!rubro.length) {
-      dispatch(setIsFetchingBromatologia(true));
-      dispatch(getDataBromatologia());
-    
+    dispatch(setIsFetchingBromatologia(true));
+    dispatch(getDataBromatologia());
   }, []);
 
   return (
@@ -34,16 +36,20 @@ export default function BromatologiaMain() {
           subtitle="Lista de todos los Comercios"
           onClick={"/bromatologia/administrar"}
         />
-        <CardPermisos
-          title="Valor Único"
-          subtitle="Para Razón Social, Rubro y Nombre Comercial"
-          onClick={"/bromatologia/claves"}
-        />
-        <CardPermisos
-          title="Nuevo Comercio"
-          subtitle="Agregar un nuevo Comercio"
-          onClick={"/bromatologia/form"}
-        />
+        {host === hostName && (
+          <>
+            <CardPermisos
+              title="Valor Único"
+              subtitle="Para Razón Social, Rubro y Nombre Comercial"
+              onClick={"/bromatologia/claves"}
+            />
+            <CardPermisos
+              title="Nuevo Comercio"
+              subtitle="Agregar un nuevo Comercio"
+              onClick={"/bromatologia/form"}
+            />
+          </>
+        )}
         <CardPermisos
           title="Historial"
           subtitle="Ver comercios que han cesado"

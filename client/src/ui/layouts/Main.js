@@ -48,6 +48,7 @@ const ListaViaPublica = lazy(() =>
 const AdministrarClavesVeterinaria = lazy(() =>
   import("../pages/veterinaria/administrar-claves/AdministrarClaves")
 );
+const AdminPanel = lazy(() => import("../pages/admin-panel/AdminPanel"));
 
 export default function Main() {
   const { admin } = useSelector((state) => state.user);
@@ -123,6 +124,12 @@ export default function Main() {
             path="/veterinaria/viapublica/claves"
             component={AdministrarClavesVeterinaria}
           />
+          <Route
+            exact
+            path="/admin"
+            component={AdminPanel}
+          />
+
           {!admin && <Redirect to="/" />}
         </Suspense>
       </ErrorBoundary>

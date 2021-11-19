@@ -15,7 +15,8 @@ export default function Tabla({
 }: {
   title?: string;
   data: any;
-  setData: React.Dispatch<any>;
+  //setData: React.Dispatch<any>;
+  setData:any;
   columns: any;
 }) {
   const classes = useStyles();
@@ -93,7 +94,7 @@ export default function Tabla({
               onRowAdd: (newData) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    setData([...data, newData]);
+                    setData([...data, newData],newData);
                     //@ts-ignore
                     resolve();
                   }, 1000);
@@ -106,7 +107,7 @@ export default function Tabla({
                     const index = oldData.tableData.id;
                     //@ts-ignore
                     dataUpdate[index] = newData;
-                    setData([...dataUpdate]);
+                    setData([...dataUpdate],newData);
                     //@ts-ignore
                     resolve();
                   }, 1000);
@@ -118,7 +119,7 @@ export default function Tabla({
                     const dataDelete = [...data];
                     const index = oldData.tableData.id;
                     dataDelete.splice(index, 1);
-                    setData([...dataDelete]);
+                    setData([...dataDelete],oldData);
                     //@ts-ignore
                     resolve();
                   }, 1000);

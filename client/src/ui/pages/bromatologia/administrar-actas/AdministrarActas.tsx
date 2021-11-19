@@ -15,6 +15,9 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import { parseDate, getFechaActa, sortByDateTwo } from "../utils";
+import { host } from "../../../../constants";
+
+const hostName = window.location.host;
 
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase?.() + string?.slice?.(1);
@@ -40,7 +43,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["estadoComercio"]?.toUpperCase?.()
+      render: (row: any) => row["estadoComercio"]?.toUpperCase?.(),
     },
     {
       title: "Razon Social",
@@ -48,13 +51,13 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["razonSocial"]?.toUpperCase?.()
+      render: (row: any) => row["razonSocial"]?.toUpperCase?.(),
     },
     {
       title: "Rubro",
       //field: "rubro",
       field: "rubroAux",
-      render: (row: any) =>row["rubroAux"]?.toUpperCase?.(),
+      render: (row: any) => row["rubroAux"]?.toUpperCase?.(),
       headerStyle: {
         whiteSpace: "nowrap",
       },
@@ -65,7 +68,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["domicilio"]?.toUpperCase?.()
+      render: (row: any) => row["domicilio"]?.toUpperCase?.(),
     },
     {
       title: "Nombre Comercial",
@@ -74,7 +77,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["nombreComercial"]?.toUpperCase?.()
+      render: (row: any) => row["nombreComercial"]?.toUpperCase?.(),
     },
     // {
     //   title: "Fecha Antigua",
@@ -107,7 +110,7 @@ export default function AdministrarActas() {
       headerStyle: {
         whiteSpace: "nowrap",
       },
-      render: (row: any) =>row["detalleActaUltima"]?.toUpperCase?.()
+      render: (row: any) => row["detalleActaUltima"]?.toUpperCase?.(),
     },
     {
       title: "Expediente",
@@ -259,18 +262,20 @@ export default function AdministrarActas() {
             exportPDFName: "Exportar como PDF",
           },
         }}
-        editable={{
-          onRowDelete: (oldData: any) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                //@ts-ignore
-                resolve();
-                dispatch(deletePermiso(oldData.expediente));
-              }, 100);
-            }),
-        }}
+        editable={
+          host === hostName && {
+            onRowDelete: (oldData: any) =>
+              new Promise((resolve) => {
+                setTimeout(() => {
+                  //@ts-ignore
+                  resolve();
+                  dispatch(deletePermiso(oldData.expediente));
+                }, 100);
+              }),
+          }
+        }
         actions={[
-          {
+          host === hostName && {
             //icon: "edit",
             icon: EditIcon,
             tooltip: "Editar",

@@ -13,6 +13,9 @@ import {
 } from "../../../../api/actions/transporte/transportistaActions";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import Spinner from "../../../widgets/with-spinner/Spinner";
+import { host } from "../../../../constants";
+
+const hostName = window.location.host;
 
 export default function ListaTransportistas() {
   // const [isTablaCompleta, setIsTablaCompleta] = useState(false);
@@ -143,7 +146,7 @@ export default function ListaTransportistas() {
             exportPDFName: "Exportar como PDF",
           },
         }}
-        editable={{
+        editable={ host === hostName &&{
           onRowDelete: (oldData: any) =>
             new Promise((resolve) => {
               setTimeout(() => {
@@ -172,7 +175,7 @@ export default function ListaTransportistas() {
         //   },
         // ]}
         actions={[
-          {
+          host === hostName && {
             //icon: "edit",
             icon: EditIcon,
             tooltip: "Editar",

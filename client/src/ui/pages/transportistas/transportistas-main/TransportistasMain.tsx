@@ -4,9 +4,12 @@ import {
   getDataTransporte,
   setIsFetchingTransporte,
 } from "../../../../api/actions/transporte/transportistaActions";
+import { host } from "../../../../constants";
 import CardPermisos from "../../../widgets/card-permiso/CardPermiso";
 //import { setIsHeader } from '../../../api/actions/commonActions';
 import useStyles from "./transportistasMain.styles";
+
+const hostName = window.location.host;
 
 export default function TransportistasMain() {
   const classes = useStyles();
@@ -17,9 +20,8 @@ export default function TransportistasMain() {
     window.scrollTo(0, 0);
     //dispatch(setIsHeader(true))
     //if (!empresas.length) {
-      dispatch(setIsFetchingTransporte(true));
-      dispatch(getDataTransporte());
-    
+    dispatch(setIsFetchingTransporte(true));
+    dispatch(getDataTransporte());
   }, []);
 
   return (
@@ -34,16 +36,20 @@ export default function TransportistasMain() {
           subtitle="Lista de todos los Transportistas"
           onClick={"/transportistas/administrar"}
         />
-        <CardPermisos
-          title="Valor Único"
-          subtitle="Para Localidad, Tipo de Alimentos a Transportar y Empresa"
-          onClick={"/transportistas/claves"}
-        />
-        <CardPermisos
-          title="Nuevo Transportista"
-          subtitle="Agregar un nuevo Transportista"
-          onClick={"/transportistas/form"}
-        />
+        {host === hostName && (
+          <>
+            <CardPermisos
+              title="Valor Único"
+              subtitle="Para Localidad, Tipo de Alimentos a Transportar y Empresa"
+              onClick={"/transportistas/claves"}
+            />
+            <CardPermisos
+              title="Nuevo Transportista"
+              subtitle="Agregar un nuevo Transportista"
+              onClick={"/transportistas/form"}
+            />
+          </>
+        )}
       </div>
     </div>
   );

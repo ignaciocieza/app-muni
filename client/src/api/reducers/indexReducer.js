@@ -10,11 +10,18 @@ import userReducer from "./user/userReducer";
 import bromatologiaReducer from "./bromatologia/bromatologiaReducer";
 import transporteReducer from "./transporte/transporteReducer";
 import veterinariaReducer from "./veterinaria/veterinariaReducer";
+import adminUsersReducer from "./admin-users/adminUsersReducer";
 
 const persistConfig = {
   key: "root",
   storage: storageSession,
-  whitelist: ["user", "transportistas", "bromatologia", "veterinaria"],
+  whitelist: [
+    "user",
+    "transportistas",
+    "bromatologia",
+    "veterinaria",
+    "adminUsers",
+  ],
 };
 
 const rootReducer = combineReducers({
@@ -26,6 +33,7 @@ const rootReducer = combineReducers({
   bromatologia: bromatologiaReducer,
   transportistas: transporteReducer,
   veterinaria: veterinariaReducer,
+  adminUsers: adminUsersReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

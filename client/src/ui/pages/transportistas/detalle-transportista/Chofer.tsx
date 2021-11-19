@@ -124,7 +124,7 @@ export default function Chofer({
               }}
               className={classes.choferCell}
             >
-              {item.nombreYapellido.toUpperCase()}
+              {item.nombreYapellido?.toUpperCase()}
             </span>
             <span
               style={{
@@ -133,7 +133,7 @@ export default function Chofer({
               }}
               className={classes.choferCell}
             >
-              {item.permiso.toUpperCase()}
+              {item.permiso?.toUpperCase?.()}
             </span>
             <span
               style={{
@@ -142,7 +142,7 @@ export default function Chofer({
               }}
               className={classes.choferCell}
             >
-              {item.otorgadoPor.toUpperCase()}
+              {item.otorgadoPor?.toUpperCase()}
             </span>
             <span
               className={classes.choferCell}
