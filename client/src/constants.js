@@ -23,5 +23,6 @@ export const isMobile =
   typeof window.orientation !== "undefined" ||
   navigator.userAgent.indexOf("IEMobile") !== -1;
 
-export const host = "10.10.91.202";
+export const host = "10.10.91.202:8443";
+//export const host = "10.10.91.202";
 //export const host = "localhost:3000";
