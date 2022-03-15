@@ -8,9 +8,10 @@ import {
 import CardPermisos from "../../../widgets/card-permiso/CardPermiso";
 //import { setIsHeader } from '../../../api/actions/commonActions';
 import useStyles from "./BromatologiaMain.styles";
-import { host } from "../../../../constants";
+//import { host } from "../../../../constants";
 
-const hostName = window.location.host;
+//const isSameHostName = window.location.host === host;
+const isSameHostName = true;
 
 export default function BromatologiaMain() {
   const classes = useStyles();
@@ -36,7 +37,7 @@ export default function BromatologiaMain() {
           subtitle="Lista de todos los Comercios"
           onClick={"/bromatologia/administrar"}
         />
-        {host === hostName && (
+        {isSameHostName && (
           <>
             <CardPermisos
               title="Valor Único"

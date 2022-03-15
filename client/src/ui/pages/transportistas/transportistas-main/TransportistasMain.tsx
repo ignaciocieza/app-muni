@@ -4,12 +4,13 @@ import {
   getDataTransporte,
   setIsFetchingTransporte,
 } from "../../../../api/actions/transporte/transportistaActions";
-import { host } from "../../../../constants";
+//import { host } from "../../../../constants";
 import CardPermisos from "../../../widgets/card-permiso/CardPermiso";
 //import { setIsHeader } from '../../../api/actions/commonActions';
 import useStyles from "./transportistasMain.styles";
 
-const hostName = window.location.host;
+//const isSameHostName = window.location.host === host;
+const isSameHostName = true;
 
 export default function TransportistasMain() {
   const classes = useStyles();
@@ -36,7 +37,7 @@ export default function TransportistasMain() {
           subtitle="Lista de todos los Transportistas"
           onClick={"/transportistas/administrar"}
         />
-        {host === hostName && (
+        {isSameHostName && (
           <>
             <CardPermisos
               title="Valor Único"

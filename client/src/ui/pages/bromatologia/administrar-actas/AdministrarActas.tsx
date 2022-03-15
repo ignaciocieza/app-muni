@@ -15,9 +15,10 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import { parseDate, getFechaActa, sortByDateTwo } from "../utils";
-import { host } from "../../../../constants";
+//import { host } from "../../../../constants";
 
-const hostName = window.location.host;
+//const isSameHostName = window.location.host === host;
+const isSameHostName = true;
 
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase?.() + string?.slice?.(1);
@@ -263,7 +264,7 @@ export default function AdministrarActas() {
           },
         }}
         editable={
-          host === hostName && {
+         isSameHostName && {
             onRowDelete: (oldData: any) =>
               new Promise((resolve) => {
                 setTimeout(() => {
@@ -275,7 +276,7 @@ export default function AdministrarActas() {
           }
         }
         actions={[
-          host === hostName && {
+         isSameHostName && {
             //icon: "edit",
             icon: EditIcon,
             tooltip: "Editar",
