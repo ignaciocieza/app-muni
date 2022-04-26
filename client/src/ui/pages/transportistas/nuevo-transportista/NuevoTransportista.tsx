@@ -469,7 +469,7 @@ export default function NuevoTransportista() {
       ),
     },
     {
-      title: "NÚMERO CARNET DE MANIPULADOR DE ALIMENTOS",
+      title: "CARNET DE MANIPULADOR DE ALIMENTOS",
       field: "permiso",
       cellStyle: {
         whiteSpace: "nowrap",
@@ -482,7 +482,8 @@ export default function NuevoTransportista() {
             onChange={(e) => props.onChange(e.target.value)}
             //label="Para habilitarse complete el campo clave"
           >
-            <MenuItem value={"LIBRETA SANITARIA"}>LIBRETA SANITARIA</MenuItem>
+            {/* <MenuItem value={"LIBRETA SANITARIA"}>LIBRETA SANITARIA</MenuItem> */}
+            <MenuItem value={"CARNET DE MANIPULADOR DE ALIMENTOS"}>CARNET DE MANIPULADOR DE ALIMENTOS</MenuItem>
             <MenuItem value={"CURSO DE MANIPULACIÓN DE ALIMENTOS"}>
               CURSO DE MANIPULACIÓN DE ALIMENTOS
             </MenuItem>
@@ -491,7 +492,7 @@ export default function NuevoTransportista() {
       ),
     },
     {
-      title: "OTORGADO POR",
+      title: "NÚMERO DE CARNET",
       field: "otorgadoPor",
       cellStyle: {
         whiteSpace: "nowrap",

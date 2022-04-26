@@ -4,14 +4,11 @@ import {
   getDataBromatologia,
   setIsFetchingBromatologia,
 } from "../../../../api/actions/bromatologia/bromatologiaActions";
+import { isMobile } from "../../../../constants";
 //import { useSelector, useDispatch } from 'react-redux';
 import CardPermisos from "../../../widgets/card-permiso/CardPermiso";
 //import { setIsHeader } from '../../../api/actions/commonActions';
 import useStyles from "./BromatologiaMain.styles";
-//import { host } from "../../../../constants";
-
-//const isSameHostName = window.location.host === host;
-const isSameHostName = true;
 
 export default function BromatologiaMain() {
   const classes = useStyles();
@@ -37,7 +34,7 @@ export default function BromatologiaMain() {
           subtitle="Lista de todos los Comercios"
           onClick={"/bromatologia/administrar"}
         />
-        {isSameHostName && (
+        {isMobile ? null : (
           <>
             <CardPermisos
               title="Valor Único"

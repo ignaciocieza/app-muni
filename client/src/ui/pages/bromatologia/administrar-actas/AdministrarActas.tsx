@@ -15,10 +15,7 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Spinner from "../../../widgets/with-spinner/Spinner";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import { parseDate, getFechaActa, sortByDateTwo } from "../utils";
-//import { host } from "../../../../constants";
-
-//const isSameHostName = window.location.host === host;
-const isSameHostName = true;
+import { isMobile } from "../../../../constants";
 
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase?.() + string?.slice?.(1);
@@ -264,27 +261,31 @@ export default function AdministrarActas() {
           },
         }}
         editable={
-         isSameHostName && {
-            onRowDelete: (oldData: any) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  //@ts-ignore
-                  resolve();
-                  dispatch(deletePermiso(oldData.expediente));
-                }, 100);
-              }),
-          }
+          isMobile
+            ? null
+            : {
+                onRowDelete: (oldData: any) =>
+                  new Promise((resolve) => {
+                    setTimeout(() => {
+                      //@ts-ignore
+                      resolve();
+                      dispatch(deletePermiso(oldData.expediente));
+                    }, 100);
+                  }),
+              }
         }
         actions={[
-         isSameHostName && {
-            //icon: "edit",
-            icon: EditIcon,
-            tooltip: "Editar",
-            onClick: (event, rowData) => {
-              dispatch(setCurrentPermiso(rowData.expediente));
-              history.push("/bromatologia/form");
-            },
-          },
+          isMobile
+            ? null
+            : {
+                //icon: "edit",
+                icon: EditIcon,
+                tooltip: "Editar",
+                onClick: (event, rowData) => {
+                  dispatch(setCurrentPermiso(rowData.expediente));
+                  history.push("/bromatologia/form");
+                },
+              },
           // {
           //     icon: 'delete',
           //     tooltip: 'Borrar',

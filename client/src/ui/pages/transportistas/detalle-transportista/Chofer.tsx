@@ -83,7 +83,7 @@ export default function Chofer({
         }}
         className={classes.choferHeaderContainer}
       >
-        <span className={classes.choferHeaderContent}>NÚMERO CARNET DE MANIPULADOR DE ALIMENTOS</span>
+        <span className={classes.choferHeaderContent}>CARNET DE MANIPULADOR DE ALIMENTOS</span>
       </div>
       <div
         style={{
@@ -91,7 +91,7 @@ export default function Chofer({
         }}
         className={classes.choferHeaderContainer}
       >
-        <span className={classes.choferHeaderContent}>OTORGADO POR</span>
+        <span className={classes.choferHeaderContent}>NÚMERO DE CARNET</span>
       </div>
       <div
         style={{

@@ -13,10 +13,7 @@ import {
 } from "../../../../api/actions/transporte/transportistaActions";
 import SnackBar from "../../../widgets/snack-bar/SnackBar";
 import Spinner from "../../../widgets/with-spinner/Spinner";
-//import { host } from "../../../../constants";
-
-//const isSameHostName = window.location.host === host;
-const isSameHostName = true;
+import { isMobile } from "../../../../constants";
 
 export default function ListaTransportistas() {
   // const [isTablaCompleta, setIsTablaCompleta] = useState(false);
@@ -84,7 +81,7 @@ export default function ListaTransportistas() {
           isResetErrors={true}
         />
       )}
-        {/* <div
+      {/* <div
         style={{
           position: "absolute",
           top: "11.5%",
@@ -118,7 +115,7 @@ export default function ListaTransportistas() {
           //exporta solamente lo que se muestra en pantalla
           exportButton: true,
           //exportAllData: isTablaCompleta,
-          exportAllData:true
+          exportAllData: true,
         }}
         //@ts-ignore
         data={Object.values(registros).map((item: any) => item.valuesForm)}
@@ -147,16 +144,20 @@ export default function ListaTransportistas() {
             exportPDFName: "Exportar como PDF",
           },
         }}
-        editable={isSameHostName &&{
-          onRowDelete: (oldData: any) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                //@ts-ignore
-                resolve();
-                dispatch(deleteRegistro(oldData.empresa));
-              }, 100);
-            }),
-        }}
+        editable={
+          isMobile
+            ? null
+            : {
+                onRowDelete: (oldData: any) =>
+                  new Promise((resolve) => {
+                    setTimeout(() => {
+                      //@ts-ignore
+                      resolve();
+                      dispatch(deleteRegistro(oldData.empresa));
+                    }, 100);
+                  }),
+              }
+        }
         // detailPanel={[
         //   {
         //     tooltip: "Show Name",
@@ -176,15 +177,17 @@ export default function ListaTransportistas() {
         //   },
         // ]}
         actions={[
-          isSameHostName && {
-            //icon: "edit",
-            icon: EditIcon,
-            tooltip: "Editar",
-            onClick: (event, rowData) => {
-              dispatch(setCurrentRegistro(rowData.empresa));
-              history.push("/transportistas/form");
-            },
-          },
+          isMobile
+            ? null
+            : {
+                //icon: "edit",
+                icon: EditIcon,
+                tooltip: "Editar",
+                onClick: (event, rowData) => {
+                  dispatch(setCurrentRegistro(rowData.empresa));
+                  history.push("/transportistas/form");
+                },
+              },
           {
             icon: DetailsIcon,
             tooltip: "Detalle",
